@@ -88,7 +88,41 @@ Package 檔案末尾的 `/` 是常見 Oracle 用戶端（例如 SQL*Plus/SQLcl�
 
 `backend/` 是獨立的 Java 21、Maven、Spring Web 專案。啟動後可用 `GET /api/lineage/search?column=EFFECTIVE_DATE` 搜尋 `packages/` 下的 `.pks` 和 `.pkb`，回傳檔名、行數、匹配行及可辨識的 Procedure 名稱。搜尋不區分大小寫，並依 Oracle 識別字邊界比對；找不到時回傳空陣列。結果直接來自 Package 原始碼，不讀取 `evaluation/lineage_ground_truth.json`。
 
-在 `backend/` 目錄執行 `mvn spring-boot:run` 啟動服務；執行 `mvn test` 跑單元測試。預設 Packages 路徑為 `../packages`，可透過 `LINEAGE_PACKAGES_DIR` 環境變數或 `lineage.packages-directory` 設定覆寫。API 尚未做完整 PL/SQL 語法解析、血緣推論、資料庫存取、分頁或 RAG。
+在 `backend/` 目錄執行 `mvn spring-boot:run` 啟動服務；執行 `mvn test` 跑單元測試。Chunking 與 Retrieval 預設會尋找專案內的 `packages/`；外部資料夾請設定優先使用的 `LINEAGE_PACKAGES_PATH`（舊名稱 `LINEAGE_PACKAGES_DIR` 仍相容）。欄位搜尋 API 尚未做完整 PL/SQL 語法解析、血緣推論、資料庫存取、分頁或 RAG。
+
+### 改用公司 PCK 資料夾
+
+後端可直接讀取外部 Package 資料夾，不需要複製或修改原始 PCK。Windows PowerShell 範例（請在專案根目錄執行，將路徑換成公司核准的唯讀程式碼目錄）：
+
+```powershell
+cd C:\Martin\project\ai-data-lineage-assistant\ai-data-lineage
+$companyPackages = 'D:\Company\PACKAGES'
+if (-not (Test-Path -LiteralPath $companyPackages -PathType Container)) {
+    throw "Package 目錄不存在：$companyPackages"
+}
+$env:LINEAGE_PACKAGES_PATH = (Resolve-Path -LiteralPath $companyPackages).Path
+
+# 先只驗證本機 Chunking / Retrieval，不呼叫任何 AI Provider。
+$env:LINEAGE_ASSISTANT_PROVIDER = 'none'
+$env:LINEAGE_ASSISTANT_LOG_PROMPT = 'false'
+cd backend
+mvn spring-boot:run
+```
+
+啟動成功後，先用 `GET http://localhost:8080/api/chunks` 確認有載入 Chunk，再用 `GET http://localhost:8080/api/retrieval/search?query=TABLE.COLUMN&limit=5` 檢查欄位檢索結果。Provider 設為 `none` 時，Chunk 與 Retrieval API 可測；`POST /api/assistant/ask` 不會呼叫模型，會回報 Provider 未設定。
+
+掃描會遞迴處理 `.pck`、`.pkb`、`.pks`、`.sql`，副檔名不分大小寫。程式只讀取來源，並在啟動日誌輸出 Package 根目錄、檔案／Chunk 數、失敗數與耗時；不會把完整 PCK 寫入一般日誌。單一檔案讀取或解析失敗會列入失敗統計，其他檔案仍會繼續處理。預設上限為 10,000 個檔案、單檔 16 MB、總計 256 MB。若根目錄不存在或不可讀，後端會明確啟動失敗，不會靜默改用模擬資料。Chunking 在啟動時建立記憶體快照；新增或更新 PCK 後，需停止並重新啟動後端才會重新載入。
+
+確認檢索結果後，若要使用問答，才設定 `LINEAGE_ASSISTANT_PROVIDER` 與相應模型設定。公司 PCK 會連同問題及檢索片段送給所選 Provider；未經公司核准前，不要選擇 OpenAI、Gemini 或 GitHub Copilot 等雲端 Provider。使用 Ollama 時也要確認 `OLLAMA_BASE_URL` 指向公司核准的本機或內部端點。公司程式碼驗證期間請保持 `LINEAGE_ASSISTANT_LOG_PROMPT=false`，避免將完整程式碼印入日誌。
+
+要切回專案內的虛構資料，請在同一個 PowerShell 視窗回到專案根目錄並設定：
+
+```powershell
+cd C:\Martin\project\ai-data-lineage-assistant\ai-data-lineage
+$env:LINEAGE_PACKAGES_PATH = (Resolve-Path .\packages).Path
+```
+
+之後重新啟動後端。若要恢復自動使用預設資料夾，也可移除外部路徑變數：`Remove-Item Env:\LINEAGE_PACKAGES_PATH -ErrorAction SilentlyContinue`；若曾設定相容舊名稱 `LINEAGE_PACKAGES_DIR`，也要一併移除。
 
 ### PL/SQL Chunk API
 

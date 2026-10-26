@@ -1,0 +1,2631 @@
+{
+  "evaluation": "12-question end-to-end evaluation using production Spring Boot Retrieval, SQL Dependency Analyzer, Structured Prompt Grounding, and local Ollama",
+  "generatedAt": "2026-10-23T20:15:15.9320922+08:00",
+  "provider": {
+    "name": "ollama",
+    "model": "qwen3:8b",
+    "endpoint": "http://localhost:8080/api/assistant/ask",
+    "ollamaEndpoint": "http://localhost:11434",
+    "mockModel": false
+  },
+  "executionPolicy": {
+    "questionCount": 12,
+    "requestsAreIndependent": true,
+    "llmCalls": 12,
+    "retrievalLimit": 8,
+    "modelInputs": "Each POST contained only original question and, only when explicitly extractable by the existing question-text rule, column.",
+    "modelInputExcluded": [
+      "expected_answer",
+      "expected_source_files",
+      "related_columns",
+      "lineage_ground_truth.json"
+    ],
+    "cloudLlmCalls": 0,
+    "groundTruthUsedForRetrievalOrPrompt": false,
+    "missingTargetQuestions": [
+      6,
+      8,
+      12
+    ],
+    "missingTargetHandling": "No column supplied; formal service did not perform field retrieval, but each question still received an independent Ollama answer request.",
+    "allResponsesCompleted": true
+  },
+  "overallStatistics": {
+    "total": 12,
+    "successfulResponses": 12,
+    "failedResponses": 0,
+    "missingTarget": 3,
+    "classificationCounts": {
+      "correct": 3,
+      "partial": 4,
+      "incorrect": 1,
+      "insufficient_evidence": 1,
+      "manual_review": 3
+    },
+    "fullyCorrectRate": 0.25,
+    "correctPlusPartialRate": 0.5833,
+    "totalElapsedMs": 71320.0,
+    "averageElapsedMs": 5943.3
+  },
+  "q1PromptCheck": {
+    "verifiedSqlDependenciesHeaderPresent": true,
+    "retrievedChunkCount": 3,
+    "dependencyEdgeCount": 13,
+    "allThreePackageChunksInAssistantSources": true,
+    "promptDependencyEdges": [
+      {
+        "source": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "target": "TGT_POLICY.EFFECTIVE_DATE",
+        "citationId": "S1",
+        "packageName": "PKG_POLICY_LOAD",
+        "procedureName": "LOAD_TARGET",
+        "fileName": "PKG_POLICY_LOAD.pkb",
+        "startLine": 10,
+        "endLine": 40,
+        "evidenceLine": 23
+      },
+      {
+        "source": "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+        "target": "TGT_POLICY.POLICY_STATUS",
+        "citationId": "S1",
+        "packageName": "PKG_POLICY_LOAD",
+        "procedureName": "LOAD_TARGET",
+        "fileName": "PKG_POLICY_LOAD.pkb",
+        "startLine": 10,
+        "endLine": 40,
+        "evidenceLine": 24
+      },
+      {
+        "source": "STG_POLICY.POLICY_STATUS",
+        "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "citationId": "S2",
+        "packageName": "PKG_POLICY_TRANSFORM",
+        "procedureName": "BUILD_TRANSFORMED_ROWS",
+        "fileName": "PKG_POLICY_TRANSFORM.pkb",
+        "startLine": 10,
+        "endLine": 36,
+        "evidenceLine": 23
+      },
+      {
+        "source": "STG_POLICY.START_DATE",
+        "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "citationId": "S2",
+        "packageName": "PKG_POLICY_TRANSFORM",
+        "procedureName": "BUILD_TRANSFORMED_ROWS",
+        "fileName": "PKG_POLICY_TRANSFORM.pkb",
+        "startLine": 10,
+        "endLine": 36,
+        "evidenceLine": 24
+      },
+      {
+        "source": "STG_POLICY.POLICY_STATUS",
+        "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "citationId": "S2",
+        "packageName": "PKG_POLICY_TRANSFORM",
+        "procedureName": "BUILD_TRANSFORMED_ROWS",
+        "fileName": "PKG_POLICY_TRANSFORM.pkb",
+        "startLine": 10,
+        "endLine": 36,
+        "evidenceLine": 25
+      },
+      {
+        "source": "STG_POLICY.REQUESTED_START_DATE",
+        "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "citationId": "S2",
+        "packageName": "PKG_POLICY_TRANSFORM",
+        "procedureName": "BUILD_TRANSFORMED_ROWS",
+        "fileName": "PKG_POLICY_TRANSFORM.pkb",
+        "startLine": 10,
+        "endLine": 36,
+        "evidenceLine": 27
+      },
+      {
+        "source": "STG_POLICY.START_DATE",
+        "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "citationId": "S2",
+        "packageName": "PKG_POLICY_TRANSFORM",
+        "procedureName": "BUILD_TRANSFORMED_ROWS",
+        "fileName": "PKG_POLICY_TRANSFORM.pkb",
+        "startLine": 10,
+        "endLine": 36,
+        "evidenceLine": 27
+      },
+      {
+        "source": "STG_POLICY.START_DATE",
+        "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "citationId": "S2",
+        "packageName": "PKG_POLICY_TRANSFORM",
+        "procedureName": "BUILD_TRANSFORMED_ROWS",
+        "fileName": "PKG_POLICY_TRANSFORM.pkb",
+        "startLine": 10,
+        "endLine": 36,
+        "evidenceLine": 30
+      },
+      {
+        "source": "STG_POLICY.POLICY_STATUS",
+        "target": "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+        "citationId": "S2",
+        "packageName": "PKG_POLICY_TRANSFORM",
+        "procedureName": "BUILD_TRANSFORMED_ROWS",
+        "fileName": "PKG_POLICY_TRANSFORM.pkb",
+        "startLine": 10,
+        "endLine": 36,
+        "evidenceLine": 23
+      },
+      {
+        "source": "SRC_POLICY.POLICY_STATUS",
+        "target": "STG_POLICY.POLICY_STATUS",
+        "citationId": "S3",
+        "packageName": "PKG_POLICY_EXTRACT",
+        "procedureName": "LOAD_SOURCE_TO_STAGE",
+        "fileName": "PKG_POLICY_EXTRACT.pkb",
+        "startLine": 8,
+        "endLine": 33,
+        "evidenceLine": 27
+      },
+      {
+        "source": "SRC_POLICY.POLICY_START_DT",
+        "target": "STG_POLICY.START_DATE",
+        "citationId": "S3",
+        "packageName": "PKG_POLICY_EXTRACT",
+        "procedureName": "LOAD_SOURCE_TO_STAGE",
+        "fileName": "PKG_POLICY_EXTRACT.pkb",
+        "startLine": 8,
+        "endLine": 33,
+        "evidenceLine": 21
+      },
+      {
+        "source": "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+        "target": "STG_POLICY.REQUESTED_START_DATE",
+        "citationId": "S3",
+        "packageName": "PKG_POLICY_EXTRACT",
+        "procedureName": "LOAD_SOURCE_TO_STAGE",
+        "fileName": "PKG_POLICY_EXTRACT.pkb",
+        "startLine": 8,
+        "endLine": 33,
+        "evidenceLine": 23
+      },
+      {
+        "source": "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+        "target": "STG_POLICY.REQUESTED_START_DATE",
+        "citationId": "S3",
+        "packageName": "PKG_POLICY_EXTRACT",
+        "procedureName": "LOAD_SOURCE_TO_STAGE",
+        "fileName": "PKG_POLICY_EXTRACT.pkb",
+        "startLine": 8,
+        "endLine": 33,
+        "evidenceLine": 24
+      }
+    ]
+  },
+  "focusChecks": {
+    "q1": {
+      "classification": "partial",
+      "retrievedExtract": true,
+      "answerNamesRawPolicyStartDate": false,
+      "assessment": "Extract 證據有提供且 Prompt 有結構化邊，但回答仍停在 STG_POLICY，沒有辨識最原始欄名。"
+    },
+    "q2": {
+      "classification": "correct",
+      "retrievedExtract": true,
+      "answerListsAllThreePackages": true,
+      "assessment": "列出並總結 Extract → Transform → Load，較前次 SQL Analyzer 評估完整。"
+    },
+    "q10": {
+      "classification": "partial",
+      "retrievedExtract": true,
+      "answerNamesRawPolicyStartDate": false,
+      "assessment": "Retrieved Extract 並列出跨段依賴，但誤稱中介欄 START_DATE、REQUESTED_START_DATE 是 SRC_POLICY 的原始欄位，因此依本次嚴格欄位判準列 incorrect。"
+    },
+    "q11": {
+      "classification": "insufficient_evidence",
+      "retrievedChunkCount": 0,
+      "archiveFalseAttribution": false,
+      "assessment": "Archive 查詢無命中，模型 abstain；未發生錯誤歸因，但不能由空檢索證明不存在任何依賴。"
+    }
+  },
+  "comparison": {
+    "previousEvaluations": [
+      {
+        "report": "evaluation/ollama_evaluation_report.json",
+        "generatedAt": "2026-10-23T19:33:41.2849562+08:00",
+        "counts": {
+          "correct": 2,
+          "partial": 5,
+          "incorrect": 1,
+          "insufficientEvidence": 1,
+          "manualReview": 3
+        },
+        "fullyCorrectCountChange": 1
+      },
+      {
+        "report": "evaluation/ollama_evaluation_report_2026-10-23_dependency_analyzer.json",
+        "generatedAt": "2026-10-23T19:46:55.2375533+08:00",
+        "counts": {
+          "correct": 3,
+          "partial": 4,
+          "incorrect": 1,
+          "insufficientEvidence": 1,
+          "manualReview": 3
+        },
+        "fullyCorrectCountChange": 0
+      }
+    ],
+    "sameOriginalQuestions": true,
+    "sameMissingTargetInputRule": true,
+    "strictlyComparable": false,
+    "comparabilityNote": "各版使用原始 12 題與 question-only 欄位擷取規則；但 Prompt grounding、Retrieval limit 記錄/設定及本次明確嚴格欄位判準不完全一致。舊報告分數不重算；差異只作描述性比較，不能直接視為模型能力提升。",
+    "q1Q2Q10Q11": {
+      "q1": "相較第一版維持 partial；相較 SQL Analyzer 版由 incorrect 改為 partial。回答仍未列出原始 SRC_POLICY 欄位，但已避免將 CALCULATED_EFFECTIVE_DATE 當作終點。",
+      "q2": "相較第一版及 SQL Analyzer 版都有改善：本次總結明確列出 Extract → Transform → Load，三個 Package 齊全。",
+      "q10": "本次仍未精確列出 POLICY_START_DT / REQUESTED_EFFECTIVE_DT，並把中介欄名當成 SRC_POLICY 欄位；比 SQL Analyzer 版的 partial 更嚴重，按本次欄位正確性標準列 incorrect。",
+      "q11": "相較第一版由錯誤歸因 Archive 改為證據不足；與 SQL Analyzer 版相同，Archive 查詢無命中且模型 abstain。"
+    },
+    "questionLevelChanges": {
+      "againstFirstEvaluation": {
+        "q1": "partial → partial",
+        "q2": "partial → correct",
+        "q10": "partial → incorrect",
+        "q11": "incorrect → insufficient_evidence",
+        "aggregate": "correct +1；partial -1；其他分類總數不變。",
+        "q9": "partial → partial，答出 source-to-stage 轉換但未答 Package 使用差異。"
+      },
+      "againstSqlAnalyzerEvaluation": {
+        "q1": "incorrect → partial",
+        "q2": "partial → correct",
+        "q9": "correct → partial",
+        "q10": "partial → incorrect",
+        "q11": "insufficient_evidence → insufficient_evidence",
+        "aggregate": "各分類總數相同，但題目層級有改善與退步互相抵銷。"
+      },
+      "interpretation": "前版題目輸入規則相同，但 Prompt grounding、部分 Retrieval 上限及本次更明確的錯誤欄位判準不完全一致；這是歷史描述性比較，不能直接推論模型能力提升。"
+    }
+  },
+  "results": [
+    {
+      "questionNumber": 1,
+      "question": "TGT_POLICY.EFFECTIVE_DATE 的原始來源欄位是什麼？",
+      "submittedColumn": "TGT_POLICY.EFFECTIVE_DATE",
+      "missingTarget": false,
+      "retrievalAttempted": true,
+      "retrievalLimit": 8,
+      "retrievedChunkCount": 3,
+      "retrievedEvidence": [
+        {
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40
+        },
+        {
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36
+        },
+        {
+          "chunkId": "chunk-0a8bd2e26625855d0bc5b543",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33
+        }
+      ],
+      "verifiedSqlDependenciesIncluded": true,
+      "promptDependencyEdges": [
+        {
+          "source": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "target": "TGT_POLICY.EFFECTIVE_DATE",
+          "citationId": "S1",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "evidenceLine": 23
+        },
+        {
+          "source": "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+          "target": "TGT_POLICY.POLICY_STATUS",
+          "citationId": "S1",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "evidenceLine": 24
+        },
+        {
+          "source": "STG_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 23
+        },
+        {
+          "source": "STG_POLICY.START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 24
+        },
+        {
+          "source": "STG_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 25
+        },
+        {
+          "source": "STG_POLICY.REQUESTED_START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 27
+        },
+        {
+          "source": "STG_POLICY.START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 27
+        },
+        {
+          "source": "STG_POLICY.START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 30
+        },
+        {
+          "source": "STG_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 23
+        },
+        {
+          "source": "SRC_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY.POLICY_STATUS",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 27
+        },
+        {
+          "source": "SRC_POLICY.POLICY_START_DT",
+          "target": "STG_POLICY.START_DATE",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 21
+        },
+        {
+          "source": "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+          "target": "STG_POLICY.REQUESTED_START_DATE",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 23
+        },
+        {
+          "source": "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+          "target": "STG_POLICY.REQUESTED_START_DATE",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 24
+        }
+      ],
+      "ollamaAnswer": "根據提供的證據，TGT_POLICY.EFFECTIVE_DATE 的原始來源欄位是 **STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE**，這是由 [S1] 中的 MERGE 語句直接指定的。\n\n進一步追蹤 STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE 的來源，根據 [S2] 中的 SQL 語句，這個欄位是透過一個 CASE 表達式計算得出的，其計算邏輯依賴於 STG_POLICY 中的多個欄位，包括：\n\n- `s.POLICY_STATUS`\n- `s.START_DATE`\n- `s.REQUESTED_START_DATE`\n\n因此，**TGT_POLICY.EFFECTIVE_DATE 的最終原始來源欄位是 STG_POLICY 中的 START_DATE 和 REQUESTED_START_DATE，並根據 POLICY_STATUS 的狀態進行計算**。\n\n但需注意，這些欄位在 STG_POLICY 中的值可能已經經過處理（例如日期格式轉換或 NULL 值處理），因此不能直接視為原始資料來源。若要明確確認原始資料來源，需進一步確認 STG_POLICY 中 START_DATE 和 REQUESTED_START_DATE 的來源。",
+      "citedSourceIds": [
+        "S1",
+        "S2"
+      ],
+      "invalidCitationIds": [],
+      "sources": [
+        {
+          "citationId": "S1",
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "matchedLines": [
+            {
+              "lineNumber": 23,
+              "code": "            t.EFFECTIVE_DATE = s.CALCULATED_EFFECTIVE_DATE,"
+            },
+            {
+              "lineNumber": 24,
+              "code": "            t.POLICY_STATUS = s.POLICY_STATUS,"
+            },
+            {
+              "lineNumber": 29,
+              "code": "            EFFECTIVE_DATE,"
+            }
+          ]
+        },
+        {
+          "citationId": "S2",
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "matchedLines": [
+            {
+              "lineNumber": 23,
+              "code": "                   WHEN s.POLICY_STATUS = 'ACTIVE'"
+            },
+            {
+              "lineNumber": 24,
+              "code": "                       THEN TO_DATE(TO_CHAR(s.START_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            },
+            {
+              "lineNumber": 25,
+              "code": "                   WHEN s.POLICY_STATUS = 'PENDING'"
+            },
+            {
+              "lineNumber": 27,
+              "code": "                           TO_CHAR(NVL(s.REQUESTED_START_DATE, s.START_DATE + 30), 'YYYY-MM-DD'),"
+            },
+            {
+              "lineNumber": 30,
+              "code": "                   ELSE TO_DATE(TO_CHAR(s.START_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            }
+          ]
+        },
+        {
+          "citationId": "S3",
+          "chunkId": "chunk-0a8bd2e26625855d0bc5b543",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "matchedLines": [
+            {
+              "lineNumber": 21,
+              "code": "               TO_DATE(TO_CHAR(p.POLICY_START_DT, 'YYYY-MM-DD'), 'YYYY-MM-DD'),"
+            },
+            {
+              "lineNumber": 23,
+              "code": "                   WHEN p.REQUESTED_EFFECTIVE_DT IS NOT NULL"
+            },
+            {
+              "lineNumber": 24,
+              "code": "                       THEN TO_DATE(TO_CHAR(p.REQUESTED_EFFECTIVE_DT, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            },
+            {
+              "lineNumber": 27,
+              "code": "               p.POLICY_STATUS,"
+            }
+          ]
+        }
+      ],
+      "sourcesMatchIndependentRetrieval": true,
+      "elapsedMs": 6389,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "classification": "partial",
+      "assessment": "找到直接中介欄位與 Transform 計算依賴，但未追到 [S3] 的 SRC_POLICY.POLICY_START_DT、REQUESTED_EFFECTIVE_DT 等原始來源欄位，回答仍停在 STG_POLICY。",
+      "expectedAnswer": "主要日期來源是 SRC_POLICY.POLICY_START_DT；PENDING 保單還會優先使用 SRC_POLICY.REQUESTED_EFFECTIVE_DT，且分支條件依賴 SRC_POLICY.POLICY_STATUS。",
+      "expectedSourceFiles": [
+        "packages/PKG_POLICY_EXTRACT.pkb",
+        "packages/PKG_POLICY_TRANSFORM.pkb",
+        "packages/PKG_POLICY_LOAD.pkb"
+      ],
+      "relatedColumns": [
+        "SRC_POLICY.POLICY_START_DT",
+        "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+        "SRC_POLICY.POLICY_STATUS",
+        "TGT_POLICY.EFFECTIVE_DATE"
+      ]
+    },
+    {
+      "questionNumber": 2,
+      "question": "EFFECTIVE_DATE 經過哪些 Package？",
+      "submittedColumn": "EFFECTIVE_DATE",
+      "missingTarget": false,
+      "retrievalAttempted": true,
+      "retrievalLimit": 8,
+      "retrievedChunkCount": 3,
+      "retrievedEvidence": [
+        {
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40
+        },
+        {
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36
+        },
+        {
+          "chunkId": "chunk-0a8bd2e26625855d0bc5b543",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33
+        }
+      ],
+      "verifiedSqlDependenciesIncluded": true,
+      "promptDependencyEdges": [
+        {
+          "source": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "target": "TGT_POLICY.EFFECTIVE_DATE",
+          "citationId": "S1",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "evidenceLine": 23
+        },
+        {
+          "source": "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+          "target": "TGT_POLICY.POLICY_STATUS",
+          "citationId": "S1",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "evidenceLine": 24
+        },
+        {
+          "source": "STG_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 23
+        },
+        {
+          "source": "STG_POLICY.START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 24
+        },
+        {
+          "source": "STG_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 25
+        },
+        {
+          "source": "STG_POLICY.REQUESTED_START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 27
+        },
+        {
+          "source": "STG_POLICY.START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 27
+        },
+        {
+          "source": "STG_POLICY.START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 30
+        },
+        {
+          "source": "STG_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 23
+        },
+        {
+          "source": "SRC_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY.POLICY_STATUS",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 27
+        },
+        {
+          "source": "SRC_POLICY.POLICY_START_DT",
+          "target": "STG_POLICY.START_DATE",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 21
+        },
+        {
+          "source": "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+          "target": "STG_POLICY.REQUESTED_START_DATE",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 23
+        },
+        {
+          "source": "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+          "target": "STG_POLICY.REQUESTED_START_DATE",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 24
+        }
+      ],
+      "ollamaAnswer": "根據提供的證據，`EFFECTIVE_DATE` 經過以下的 Package：\n\n1. **PKG_POLICY_LOAD**  \n   - 位於 `[S1]` 中，`EFFECTIVE_DATE` 是透過 `LOAD_TARGET` Procedure 來自 `STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE` 載入至 `TGT_POLICY.EFFECTIVE_DATE`。\n\n2. **PKG_POLICY_TRANSFORM**  \n   - 位於 `[S2]` 中，`CALCULATED_EFFECTIVE_DATE` 是由 `STG_POLICY` 中的欄位（如 `START_DATE`、`REQUESTED_START_DATE`、`POLICY_STATUS`）透過 `BUILD_TRANSFORMED_ROWS` Procedure 計算產生，並存入 `STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE`。\n\n3. **PKG_POLICY_EXTRACT**  \n   - 位於 `[S3]` 中，`START_DATE` 和 `REQUESTED_START_DATE` 是來自 `SRC_POLICY` 的 `POLICY_START_DT` 和 `REQUESTED_EFFECTIVE_DT`，這些欄位被載入至 `STG_POLICY`，再進一步用於計算 `CALCULATED_EFFECTIVE_DATE`。\n\n### 總結\n`EFFECTIVE_DATE` 經過的 Package 有：\n- **PKG_POLICY_EXTRACT**（提供原始資料）\n- **PKG_POLICY_TRANSFORM**（計算 `CALCULATED_EFFECTIVE_DATE`）\n- **PKG_POLICY_LOAD**（將 `CALCULATED_EFFECTIVE_DATE` 載入至目標表 `TGT_POLICY.EFFECTIVE_DATE`）",
+      "citedSourceIds": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "invalidCitationIds": [],
+      "sources": [
+        {
+          "citationId": "S1",
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "matchedLines": [
+            {
+              "lineNumber": 23,
+              "code": "            t.EFFECTIVE_DATE = s.CALCULATED_EFFECTIVE_DATE,"
+            },
+            {
+              "lineNumber": 24,
+              "code": "            t.POLICY_STATUS = s.POLICY_STATUS,"
+            },
+            {
+              "lineNumber": 29,
+              "code": "            EFFECTIVE_DATE,"
+            }
+          ]
+        },
+        {
+          "citationId": "S2",
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "matchedLines": [
+            {
+              "lineNumber": 23,
+              "code": "                   WHEN s.POLICY_STATUS = 'ACTIVE'"
+            },
+            {
+              "lineNumber": 24,
+              "code": "                       THEN TO_DATE(TO_CHAR(s.START_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            },
+            {
+              "lineNumber": 25,
+              "code": "                   WHEN s.POLICY_STATUS = 'PENDING'"
+            },
+            {
+              "lineNumber": 27,
+              "code": "                           TO_CHAR(NVL(s.REQUESTED_START_DATE, s.START_DATE + 30), 'YYYY-MM-DD'),"
+            },
+            {
+              "lineNumber": 30,
+              "code": "                   ELSE TO_DATE(TO_CHAR(s.START_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            }
+          ]
+        },
+        {
+          "citationId": "S3",
+          "chunkId": "chunk-0a8bd2e26625855d0bc5b543",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "matchedLines": [
+            {
+              "lineNumber": 21,
+              "code": "               TO_DATE(TO_CHAR(p.POLICY_START_DT, 'YYYY-MM-DD'), 'YYYY-MM-DD'),"
+            },
+            {
+              "lineNumber": 23,
+              "code": "                   WHEN p.REQUESTED_EFFECTIVE_DT IS NOT NULL"
+            },
+            {
+              "lineNumber": 24,
+              "code": "                       THEN TO_DATE(TO_CHAR(p.REQUESTED_EFFECTIVE_DT, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            },
+            {
+              "lineNumber": 27,
+              "code": "               p.POLICY_STATUS,"
+            }
+          ]
+        }
+      ],
+      "sourcesMatchIndependentRetrieval": true,
+      "elapsedMs": 6843,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "classification": "correct",
+      "assessment": "列出 Extract、Transform、Load 三個 Package 及資料流向，與檢索到的三段證據一致。",
+      "expectedAnswer": "依序經過 PKG_POLICY_EXTRACT、PKG_POLICY_TRANSFORM、PKG_POLICY_LOAD。",
+      "expectedSourceFiles": [
+        "packages/PKG_POLICY_EXTRACT.pkb",
+        "packages/PKG_POLICY_TRANSFORM.pkb",
+        "packages/PKG_POLICY_LOAD.pkb"
+      ],
+      "relatedColumns": [
+        "STG_POLICY.START_DATE",
+        "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "TGT_POLICY.EFFECTIVE_DATE"
+      ]
+    },
+    {
+      "questionNumber": 3,
+      "question": "EFFECTIVE_DATE 是否經過 CASE WHEN？",
+      "submittedColumn": "EFFECTIVE_DATE",
+      "missingTarget": false,
+      "retrievalAttempted": true,
+      "retrievalLimit": 8,
+      "retrievedChunkCount": 3,
+      "retrievedEvidence": [
+        {
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40
+        },
+        {
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36
+        },
+        {
+          "chunkId": "chunk-0a8bd2e26625855d0bc5b543",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33
+        }
+      ],
+      "verifiedSqlDependenciesIncluded": true,
+      "promptDependencyEdges": [
+        {
+          "source": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "target": "TGT_POLICY.EFFECTIVE_DATE",
+          "citationId": "S1",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "evidenceLine": 23
+        },
+        {
+          "source": "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+          "target": "TGT_POLICY.POLICY_STATUS",
+          "citationId": "S1",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "evidenceLine": 24
+        },
+        {
+          "source": "STG_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 23
+        },
+        {
+          "source": "STG_POLICY.START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 24
+        },
+        {
+          "source": "STG_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 25
+        },
+        {
+          "source": "STG_POLICY.REQUESTED_START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 27
+        },
+        {
+          "source": "STG_POLICY.START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 27
+        },
+        {
+          "source": "STG_POLICY.START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 30
+        },
+        {
+          "source": "STG_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 23
+        },
+        {
+          "source": "SRC_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY.POLICY_STATUS",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 27
+        },
+        {
+          "source": "SRC_POLICY.POLICY_START_DT",
+          "target": "STG_POLICY.START_DATE",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 21
+        },
+        {
+          "source": "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+          "target": "STG_POLICY.REQUESTED_START_DATE",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 23
+        },
+        {
+          "source": "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+          "target": "STG_POLICY.REQUESTED_START_DATE",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 24
+        }
+      ],
+      "ollamaAnswer": "根據提供的證據，`EFFECTIVE_DATE` 並未直接經過 `CASE WHEN` 處理。以下是具體分析：\n\n1. **目標欄位來源**：\n   - `TGT_POLICY.EFFECTIVE_DATE` 的值來自 `STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE`（見 [S1]）。\n\n2. **`CALCULATED_EFFECTIVE_DATE` 的計算邏輯**：\n   - `CALCULATED_EFFECTIVE_DATE` 是在 `STG_POLICY_TRANSFORMED` 表中計算的，其計算邏輯在 [S2] 中的 `CASE` 語句中明確顯示。\n   - 這個 `CASE` 語句根據 `STG_POLICY.POLICY_STATUS` 的值來決定最終的日期格式與計算方式。\n\n3. **`CALCULATED_EFFECTIVE_DATE` 的來源**：\n   - `STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE` 的值來自 `STG_POLICY` 表的 `START_DATE` 或 `REQUESTED_START_DATE`，並根據 `POLICY_STATUS` 的值進行條件處理（見 [S2]）。\n\n4. **總結**：\n   - `EFFECTIVE_DATE` 並不是直接由 `CASE WHEN` 處理，而是間接通過 `CALCULATED_EFFECTIVE_DATE` 來傳遞值。\n   - `CALCULATED_EFFECTIVE_DATE` 本身確實經過 `CASE WHEN` 的條件判斷，但 `EFFECTIVE_DATE` 並未直接使用 `CASE WHEN` 處理。\n\n**結論**：  \n`EFFECTIVE_DATE` 並未直接經過 `CASE WHEN` 處理，但其值是間接透過 `CALCULATED_EFFECTIVE_DATE` 來計算，而 `CALCULATED_EFFECTIVE_DATE` 本身確實使用了 `CASE WHEN`。",
+      "citedSourceIds": [
+        "S1",
+        "S2"
+      ],
+      "invalidCitationIds": [],
+      "sources": [
+        {
+          "citationId": "S1",
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "matchedLines": [
+            {
+              "lineNumber": 23,
+              "code": "            t.EFFECTIVE_DATE = s.CALCULATED_EFFECTIVE_DATE,"
+            },
+            {
+              "lineNumber": 24,
+              "code": "            t.POLICY_STATUS = s.POLICY_STATUS,"
+            },
+            {
+              "lineNumber": 29,
+              "code": "            EFFECTIVE_DATE,"
+            }
+          ]
+        },
+        {
+          "citationId": "S2",
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "matchedLines": [
+            {
+              "lineNumber": 23,
+              "code": "                   WHEN s.POLICY_STATUS = 'ACTIVE'"
+            },
+            {
+              "lineNumber": 24,
+              "code": "                       THEN TO_DATE(TO_CHAR(s.START_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            },
+            {
+              "lineNumber": 25,
+              "code": "                   WHEN s.POLICY_STATUS = 'PENDING'"
+            },
+            {
+              "lineNumber": 27,
+              "code": "                           TO_CHAR(NVL(s.REQUESTED_START_DATE, s.START_DATE + 30), 'YYYY-MM-DD'),"
+            },
+            {
+              "lineNumber": 30,
+              "code": "                   ELSE TO_DATE(TO_CHAR(s.START_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            }
+          ]
+        },
+        {
+          "citationId": "S3",
+          "chunkId": "chunk-0a8bd2e26625855d0bc5b543",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "matchedLines": [
+            {
+              "lineNumber": 21,
+              "code": "               TO_DATE(TO_CHAR(p.POLICY_START_DT, 'YYYY-MM-DD'), 'YYYY-MM-DD'),"
+            },
+            {
+              "lineNumber": 23,
+              "code": "                   WHEN p.REQUESTED_EFFECTIVE_DT IS NOT NULL"
+            },
+            {
+              "lineNumber": 24,
+              "code": "                       THEN TO_DATE(TO_CHAR(p.REQUESTED_EFFECTIVE_DT, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            },
+            {
+              "lineNumber": 27,
+              "code": "               p.POLICY_STATUS,"
+            }
+          ]
+        }
+      ],
+      "sourcesMatchIndependentRetrieval": true,
+      "elapsedMs": 8300,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "classification": "correct",
+      "assessment": "指出目標值透過 CALCULATED_EFFECTIVE_DATE 間接承接 CASE；有正確區分直接欄位賦值與上游條件轉換。",
+      "expectedAnswer": "是。PKG_POLICY_TRANSFORM.BUILD_TRANSFORMED_ROWS 依 POLICY_STATUS 分成 ACTIVE、PENDING 和其他狀態。",
+      "expectedSourceFiles": [
+        "packages/PKG_POLICY_TRANSFORM.pkb"
+      ],
+      "relatedColumns": [
+        "STG_POLICY.POLICY_STATUS",
+        "STG_POLICY.START_DATE",
+        "STG_POLICY.REQUESTED_START_DATE",
+        "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE"
+      ]
+    },
+    {
+      "questionNumber": 4,
+      "question": "POLICY_STATUS 如何影響 EFFECTIVE_DATE？",
+      "submittedColumn": "EFFECTIVE_DATE",
+      "missingTarget": false,
+      "retrievalAttempted": true,
+      "retrievalLimit": 8,
+      "retrievedChunkCount": 3,
+      "retrievedEvidence": [
+        {
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40
+        },
+        {
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36
+        },
+        {
+          "chunkId": "chunk-0a8bd2e26625855d0bc5b543",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33
+        }
+      ],
+      "verifiedSqlDependenciesIncluded": true,
+      "promptDependencyEdges": [
+        {
+          "source": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "target": "TGT_POLICY.EFFECTIVE_DATE",
+          "citationId": "S1",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "evidenceLine": 23
+        },
+        {
+          "source": "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+          "target": "TGT_POLICY.POLICY_STATUS",
+          "citationId": "S1",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "evidenceLine": 24
+        },
+        {
+          "source": "STG_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 23
+        },
+        {
+          "source": "STG_POLICY.START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 24
+        },
+        {
+          "source": "STG_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 25
+        },
+        {
+          "source": "STG_POLICY.REQUESTED_START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 27
+        },
+        {
+          "source": "STG_POLICY.START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 27
+        },
+        {
+          "source": "STG_POLICY.START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 30
+        },
+        {
+          "source": "STG_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 23
+        },
+        {
+          "source": "SRC_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY.POLICY_STATUS",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 27
+        },
+        {
+          "source": "SRC_POLICY.POLICY_START_DT",
+          "target": "STG_POLICY.START_DATE",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 21
+        },
+        {
+          "source": "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+          "target": "STG_POLICY.REQUESTED_START_DATE",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 23
+        },
+        {
+          "source": "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+          "target": "STG_POLICY.REQUESTED_START_DATE",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 24
+        }
+      ],
+      "ollamaAnswer": "根據提供的證據，POLICY_STATUS 對 EFFECTIVE_DATE 的影響途徑如下：\n\n1. **POLICY_STATUS 來自 SRC_POLICY**，透過 [S3] 中的 `SRC_POLICY.POLICY_STATUS -> STG_POLICY.POLICY_STATUS`，再透過 [S2] 中的 `STG_POLICY.POLICY_STATUS -> STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE`，影響到 `STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE`。\n\n2. `STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE` 進一步影響 `TGT_POLICY.EFFECTIVE_DATE`，透過 [S1] 中的 `STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE -> TGT_POLICY.EFFECTIVE_DATE`。\n\n### 總結：\n- **POLICY_STATUS** 會影響 `CALCULATED_EFFECTIVE_DATE` 的計算方式，進而影響 `EFFECTIVE_DATE`。\n- 這種影響是透過 PL/SQL 的條件邏輯（見 [S2] 中的 `CASE` 語句）實現的，根據 `POLICY_STATUS` 的不同值（如 'ACTIVE'、'PENDING' 等），`CALCULATED_EFFECTIVE_DATE` 會有不同的計算方式。",
+      "citedSourceIds": [
+        "S3",
+        "S2",
+        "S1"
+      ],
+      "invalidCitationIds": [],
+      "sources": [
+        {
+          "citationId": "S1",
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "matchedLines": [
+            {
+              "lineNumber": 23,
+              "code": "            t.EFFECTIVE_DATE = s.CALCULATED_EFFECTIVE_DATE,"
+            },
+            {
+              "lineNumber": 24,
+              "code": "            t.POLICY_STATUS = s.POLICY_STATUS,"
+            },
+            {
+              "lineNumber": 29,
+              "code": "            EFFECTIVE_DATE,"
+            }
+          ]
+        },
+        {
+          "citationId": "S2",
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "matchedLines": [
+            {
+              "lineNumber": 23,
+              "code": "                   WHEN s.POLICY_STATUS = 'ACTIVE'"
+            },
+            {
+              "lineNumber": 24,
+              "code": "                       THEN TO_DATE(TO_CHAR(s.START_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            },
+            {
+              "lineNumber": 25,
+              "code": "                   WHEN s.POLICY_STATUS = 'PENDING'"
+            },
+            {
+              "lineNumber": 27,
+              "code": "                           TO_CHAR(NVL(s.REQUESTED_START_DATE, s.START_DATE + 30), 'YYYY-MM-DD'),"
+            },
+            {
+              "lineNumber": 30,
+              "code": "                   ELSE TO_DATE(TO_CHAR(s.START_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            }
+          ]
+        },
+        {
+          "citationId": "S3",
+          "chunkId": "chunk-0a8bd2e26625855d0bc5b543",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "matchedLines": [
+            {
+              "lineNumber": 21,
+              "code": "               TO_DATE(TO_CHAR(p.POLICY_START_DT, 'YYYY-MM-DD'), 'YYYY-MM-DD'),"
+            },
+            {
+              "lineNumber": 23,
+              "code": "                   WHEN p.REQUESTED_EFFECTIVE_DT IS NOT NULL"
+            },
+            {
+              "lineNumber": 24,
+              "code": "                       THEN TO_DATE(TO_CHAR(p.REQUESTED_EFFECTIVE_DT, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            },
+            {
+              "lineNumber": 27,
+              "code": "               p.POLICY_STATUS,"
+            }
+          ]
+        }
+      ],
+      "sourcesMatchIndependentRetrieval": true,
+      "elapsedMs": 6397,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "classification": "partial",
+      "assessment": "說明 POLICY_STATUS 經 CASE 影響目標欄位，但沒有講清 ACTIVE、PENDING、其他狀態各自的日期規則及 NVL fallback，屬部分回答。",
+      "expectedAnswer": "ACTIVE 使用 START_DATE；PENDING 使用 NVL(REQUESTED_START_DATE, START_DATE + 30)；其他狀態使用 START_DATE。",
+      "expectedSourceFiles": [
+        "packages/PKG_POLICY_TRANSFORM.pkb"
+      ],
+      "relatedColumns": [
+        "STG_POLICY.POLICY_STATUS",
+        "STG_POLICY.START_DATE",
+        "STG_POLICY.REQUESTED_START_DATE",
+        "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE"
+      ]
+    },
+    {
+      "questionNumber": 5,
+      "question": "CUSTOMER_NAME 來自哪張來源表？",
+      "submittedColumn": "CUSTOMER_NAME",
+      "missingTarget": false,
+      "retrievalAttempted": true,
+      "retrievalLimit": 8,
+      "retrievedChunkCount": 3,
+      "retrievedEvidence": [
+        {
+          "chunkId": "chunk-0a8bd2e26625855d0bc5b543",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33
+        },
+        {
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40
+        },
+        {
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36
+        }
+      ],
+      "verifiedSqlDependenciesIncluded": true,
+      "promptDependencyEdges": [
+        {
+          "source": "SRC_CUSTOMER.CUSTOMER_NAME",
+          "target": "STG_POLICY.CUSTOMER_NAME",
+          "citationId": "S1",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 28
+        },
+        {
+          "source": "STG_POLICY_TRANSFORMED.CUSTOMER_NAME",
+          "target": "TGT_POLICY.CUSTOMER_NAME",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "evidenceLine": 25
+        },
+        {
+          "source": "STG_POLICY.CUSTOMER_NAME",
+          "target": "STG_POLICY_TRANSFORMED.CUSTOMER_NAME",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 33
+        }
+      ],
+      "ollamaAnswer": "根據提供的證據，`CUSTOMER_NAME` 來源可以追溯到以下兩個可能的來源表：\n\n1. **SRC_CUSTOMER.CUSTOMER_NAME**  \n   - 透過 [S1] 中的 SQL 顯示，`SRC_CUSTOMER.CUSTOMER_NAME` 會被用來填入 `STG_POLICY.CUSTOMER_NAME`，這表示 `CUSTOMER_NAME` 的原始資料來自 `SRC_CUSTOMER` 表。\n\n2. **STG_POLICY.CUSTOMER_NAME**  \n   - 在 [S3] 中，`STG_POLICY.CUSTOMER_NAME` 會被用來填入 `STG_POLICY_TRANSFORMED.CUSTOMER_NAME`，這表示 `CUSTOMER_NAME` 也可能來自 `STG_POLICY` 表，而 `STG_POLICY` 表的資料來自 `SRC_CUSTOMER` 表（如 [S1] 所述）。\n\n因此，**CUSTOMER_NAME 的最終來源是 SRC_CUSTOMER.CUSTOMER_NAME**，而 `STG_POLICY.CUSTOMER_NAME` 是中間轉換的階段資料，並非最終來源表。",
+      "citedSourceIds": [
+        "S1",
+        "S3"
+      ],
+      "invalidCitationIds": [],
+      "sources": [
+        {
+          "citationId": "S1",
+          "chunkId": "chunk-0a8bd2e26625855d0bc5b543",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "matchedLines": [
+            {
+              "lineNumber": 17,
+              "code": "            CUSTOMER_NAME,"
+            },
+            {
+              "lineNumber": 28,
+              "code": "               NVL(c.CUSTOMER_NAME, 'UNKNOWN CUSTOMER'),"
+            }
+          ]
+        },
+        {
+          "citationId": "S2",
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "matchedLines": [
+            {
+              "lineNumber": 17,
+              "code": "                   x.CUSTOMER_NAME,"
+            },
+            {
+              "lineNumber": 25,
+              "code": "            t.CUSTOMER_NAME = s.CUSTOMER_NAME,"
+            },
+            {
+              "lineNumber": 31,
+              "code": "            CUSTOMER_NAME,"
+            },
+            {
+              "lineNumber": 37,
+              "code": "            s.CUSTOMER_NAME,"
+            }
+          ]
+        },
+        {
+          "citationId": "S3",
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "matchedLines": [
+            {
+              "lineNumber": 18,
+              "code": "            CUSTOMER_NAME,"
+            },
+            {
+              "lineNumber": 33,
+              "code": "               NVL(s.CUSTOMER_NAME, 'UNKNOWN CUSTOMER'),"
+            }
+          ]
+        }
+      ],
+      "sourcesMatchIndependentRetrieval": true,
+      "elapsedMs": 5267,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "classification": "partial",
+      "assessment": "確認 SRC_CUSTOMER.CUSTOMER_NAME 是源頭，但未回答 JOIN 鍵及 NVL 空值替代規則；把中介欄位描述成另一個可能來源。",
+      "expectedAnswer": "來自 SRC_CUSTOMER.CUSTOMER_NAME，透過 SRC_POLICY.CUSTOMER_ID = SRC_CUSTOMER.CUSTOMER_ID JOIN 取得，空值以 NVL 補為 UNKNOWN CUSTOMER。",
+      "expectedSourceFiles": [
+        "packages/PKG_POLICY_EXTRACT.pkb"
+      ],
+      "relatedColumns": [
+        "SRC_POLICY.CUSTOMER_ID",
+        "SRC_CUSTOMER.CUSTOMER_ID",
+        "SRC_CUSTOMER.CUSTOMER_NAME",
+        "TGT_POLICY.CUSTOMER_NAME"
+      ]
+    },
+    {
+      "questionNumber": 6,
+      "question": "哪個 Procedure 負責將資料寫入 TGT_POLICY？",
+      "submittedColumn": null,
+      "missingTarget": true,
+      "retrievalAttempted": false,
+      "retrievalLimit": 8,
+      "retrievedChunkCount": 0,
+      "retrievedEvidence": [],
+      "verifiedSqlDependenciesIncluded": false,
+      "promptDependencyEdges": [],
+      "ollamaAnswer": "目前檢索證據不足。需要提供具體的 SQL Chunk 或程式碼片段，才能確認哪個 Procedure 負責將資料寫入 TGT_POLICY。請提供相關的 PL/SQL 程式碼或證據片段。",
+      "citedSourceIds": [],
+      "invalidCitationIds": [],
+      "sources": [
+        null
+      ],
+      "sourcesMatchIndependentRetrieval": true,
+      "elapsedMs": 1151,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "未提供 column，未檢索 PL/SQL 程式碼；回答不可視為有程式碼證據的血緣結論。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "classification": "manual_review",
+      "assessment": "依照正式輸入規則沒有提供 column，系統未檢索 SQL；模型表示證據不足。無法據此評判程序答案，列人工確認。",
+      "expectedAnswer": "PKG_POLICY_LOAD.LOAD_TARGET 使用 MERGE 寫入或更新 TGT_POLICY。",
+      "expectedSourceFiles": [
+        "packages/PKG_POLICY_LOAD.pkb"
+      ],
+      "relatedColumns": [
+        "STG_POLICY_TRANSFORMED.POLICY_NO",
+        "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "TGT_POLICY.POLICY_NO",
+        "TGT_POLICY.EFFECTIVE_DATE"
+      ]
+    },
+    {
+      "questionNumber": 7,
+      "question": "POLICY_START_DT 與 EFFECTIVE_DATE 是否一定相同？",
+      "submittedColumn": "EFFECTIVE_DATE",
+      "missingTarget": false,
+      "retrievalAttempted": true,
+      "retrievalLimit": 8,
+      "retrievedChunkCount": 3,
+      "retrievedEvidence": [
+        {
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40
+        },
+        {
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36
+        },
+        {
+          "chunkId": "chunk-0a8bd2e26625855d0bc5b543",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33
+        }
+      ],
+      "verifiedSqlDependenciesIncluded": true,
+      "promptDependencyEdges": [
+        {
+          "source": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "target": "TGT_POLICY.EFFECTIVE_DATE",
+          "citationId": "S1",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "evidenceLine": 23
+        },
+        {
+          "source": "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+          "target": "TGT_POLICY.POLICY_STATUS",
+          "citationId": "S1",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "evidenceLine": 24
+        },
+        {
+          "source": "STG_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 23
+        },
+        {
+          "source": "STG_POLICY.START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 24
+        },
+        {
+          "source": "STG_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 25
+        },
+        {
+          "source": "STG_POLICY.REQUESTED_START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 27
+        },
+        {
+          "source": "STG_POLICY.START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 27
+        },
+        {
+          "source": "STG_POLICY.START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 30
+        },
+        {
+          "source": "STG_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 23
+        },
+        {
+          "source": "SRC_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY.POLICY_STATUS",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 27
+        },
+        {
+          "source": "SRC_POLICY.POLICY_START_DT",
+          "target": "STG_POLICY.START_DATE",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 21
+        },
+        {
+          "source": "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+          "target": "STG_POLICY.REQUESTED_START_DATE",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 23
+        },
+        {
+          "source": "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+          "target": "STG_POLICY.REQUESTED_START_DATE",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 24
+        }
+      ],
+      "ollamaAnswer": "根據提供的證據，**POLICY_START_DT 與 EFFECTIVE_DATE 不一定相同**，其關係需透過多階段的轉換過程來確認。\n\n### 1. **SRC_POLICY.POLICY_START_DT → STG_POLICY.START_DATE**\n- 證據：`SRC_POLICY.POLICY_START_DT -> STG_POLICY.START_DATE [S3]`\n- 這表示 `SRC_POLICY.POLICY_START_DT` 被轉換為 `STG_POLICY.START_DATE`，但轉換過程為：\n  ```sql\n  TO_DATE(TO_CHAR(p.POLICY_START_DT, 'YYYY-MM-DD'), 'YYYY-MM-DD')\n  ```\n- 這表示 `STG_POLICY.START_DATE` 是 `SRC_POLICY.POLICY_START_DT` 的日期格式化結果，但並未直接等於 `SRC_POLICY.POLICY_START_DT`。\n\n### 2. **STG_POLICY.START_DATE → STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE**\n- 證據：`STG_POLICY.START_DATE -> STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE [S2]`\n- 在 `BUILD_TRANSFORMED_ROWS` 中，`STG_POLICY.START_DATE` 會根據 `POLICY_STATUS` 的值被進一步處理：\n  ```sql\n  CASE\n      WHEN s.POLICY_STATUS = 'ACTIVE'\n          THEN TO_DATE(TO_CHAR(s.START_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')\n      WHEN s.POLICY_STATUS = 'PENDING'\n          THEN TO_DATE(\n              TO_CHAR(NVL(s.REQUESTED_START_DATE, s.START_DATE + 30), 'YYYY-MM-DD'),\n              'YYYY-MM-DD'\n          )\n      ELSE TO_DATE(TO_CHAR(s.START_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')\n  END AS CALCULATED_EFFECTIVE_DATE\n  ```\n- 這表示 `CALCULATED_EFFECTIVE_DATE` 可能是 `START_DATE` 或 `REQUESTED_START_DATE` 的結果，視 `POLICY_STATUS` 而定。\n\n### 3. **STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE → TGT_POLICY.EFFECTIVE_DATE**\n- 證據：`STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE -> TGT_POLICY.EFFECTIVE_DATE [S1]`\n- 在 `LOAD_TARGET` 中，`CALCULATED_EFFECTIVE_DATE` 會直接賦值給 `EFFECTIVE_DATE`。\n\n### 結論：\n- `POLICY_START_DT` 會經過 `STG_POLICY.START_DATE` 轉換，再進一步影響 `CALCULATED_EFFECTIVE_DATE`，最終成為 `EFFECTIVE_DATE`。\n- 但 `CALCULATED_EFFECTIVE_DATE` 的值可能不是直接等於 `POLICY_START_DT`，而是根據 `POLICY_STATUS` 和 `REQUESTED_START_DATE` 的條件來決定。\n- 因此，**POLICY_START_DT 與 EFFECTIVE_DATE 不一定相同**，其關係取決於 `POLICY_STATUS` 和 `REQUESTED_START_DATE` 的值。\n\n### 註解：\n- 若要進一步確認 `POLICY_START_DT` 與 `EFFECTIVE_DATE` 的關係，需查看 `POLICY_STATUS` 和 `REQUESTED_START_DATE` 的具體值，以及 `CALCULATED_EFFECTIVE_DATE` 的計算邏輯。",
+      "citedSourceIds": [
+        "S3",
+        "S2",
+        "S1"
+      ],
+      "invalidCitationIds": [],
+      "sources": [
+        {
+          "citationId": "S1",
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "matchedLines": [
+            {
+              "lineNumber": 23,
+              "code": "            t.EFFECTIVE_DATE = s.CALCULATED_EFFECTIVE_DATE,"
+            },
+            {
+              "lineNumber": 24,
+              "code": "            t.POLICY_STATUS = s.POLICY_STATUS,"
+            },
+            {
+              "lineNumber": 29,
+              "code": "            EFFECTIVE_DATE,"
+            }
+          ]
+        },
+        {
+          "citationId": "S2",
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "matchedLines": [
+            {
+              "lineNumber": 23,
+              "code": "                   WHEN s.POLICY_STATUS = 'ACTIVE'"
+            },
+            {
+              "lineNumber": 24,
+              "code": "                       THEN TO_DATE(TO_CHAR(s.START_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            },
+            {
+              "lineNumber": 25,
+              "code": "                   WHEN s.POLICY_STATUS = 'PENDING'"
+            },
+            {
+              "lineNumber": 27,
+              "code": "                           TO_CHAR(NVL(s.REQUESTED_START_DATE, s.START_DATE + 30), 'YYYY-MM-DD'),"
+            },
+            {
+              "lineNumber": 30,
+              "code": "                   ELSE TO_DATE(TO_CHAR(s.START_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            }
+          ]
+        },
+        {
+          "citationId": "S3",
+          "chunkId": "chunk-0a8bd2e26625855d0bc5b543",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "matchedLines": [
+            {
+              "lineNumber": 21,
+              "code": "               TO_DATE(TO_CHAR(p.POLICY_START_DT, 'YYYY-MM-DD'), 'YYYY-MM-DD'),"
+            },
+            {
+              "lineNumber": 23,
+              "code": "                   WHEN p.REQUESTED_EFFECTIVE_DT IS NOT NULL"
+            },
+            {
+              "lineNumber": 24,
+              "code": "                       THEN TO_DATE(TO_CHAR(p.REQUESTED_EFFECTIVE_DT, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            },
+            {
+              "lineNumber": 27,
+              "code": "               p.POLICY_STATUS,"
+            }
+          ]
+        }
+      ],
+      "sourcesMatchIndependentRetrieval": true,
+      "elapsedMs": 15298,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "classification": "correct",
+      "assessment": "完整描述 SRC_POLICY.POLICY_START_DT 經 START_DATE、CASE/NVL 分支至 CALCULATED_EFFECTIVE_DATE 再到 EFFECTIVE_DATE，並正確回答不一定相同。",
+      "expectedAnswer": "不一定。PENDING 且 REQUESTED_START_DATE 有值時會採用該日期；若沒有，則採 START_DATE + 30 天。ACTIVE 與其他狀態才使用 START_DATE。",
+      "expectedSourceFiles": [
+        "packages/PKG_POLICY_TRANSFORM.pkb"
+      ],
+      "relatedColumns": [
+        "SRC_POLICY.POLICY_START_DT",
+        "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+        "SRC_POLICY.POLICY_STATUS",
+        "TGT_POLICY.EFFECTIVE_DATE"
+      ]
+    },
+    {
+      "questionNumber": 8,
+      "question": "哪些欄位需要透過 JOIN 取得？",
+      "submittedColumn": null,
+      "missingTarget": true,
+      "retrievalAttempted": false,
+      "retrievalLimit": 8,
+      "retrievedChunkCount": 0,
+      "retrievedEvidence": [],
+      "verifiedSqlDependenciesIncluded": false,
+      "promptDependencyEdges": [],
+      "ollamaAnswer": "目前檢索證據不足。\n\n要確認哪些欄位需要透過 JOIN 取得，需要以下資訊：\n\n1. **查詢欄位**：需要知道查詢中涉及的欄位名稱，才能判斷哪些欄位來自哪個表。\n2. **SQL Chunk 或程式碼證據**：需要具體的 SQL 語句或 PL/SQL 程式碼片段，才能分析 JOIN 的使用情況與欄位來源。\n\n請提供上述資訊後，我才能進一步協助分析。",
+      "citedSourceIds": [],
+      "invalidCitationIds": [],
+      "sources": [
+        null
+      ],
+      "sourcesMatchIndependentRetrieval": true,
+      "elapsedMs": 2183,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "未提供 column，未檢索 PL/SQL 程式碼；回答不可視為有程式碼證據的血緣結論。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "classification": "manual_review",
+      "assessment": "沒有明確欄位可擷取，未執行欄位 Retrieval；模型按證據不足處理，該題的 JOIN 答案無法評分。",
+      "expectedAnswer": "CUSTOMER_NAME 透過 SRC_CUSTOMER JOIN 取得；PRODUCT_TYPE 透過 SRC_PRODUCT JOIN 取得。",
+      "expectedSourceFiles": [
+        "packages/PKG_POLICY_EXTRACT.pkb"
+      ],
+      "relatedColumns": [
+        "SRC_POLICY.CUSTOMER_ID",
+        "SRC_CUSTOMER.CUSTOMER_NAME",
+        "SRC_POLICY.PRODUCT_CODE",
+        "SRC_PRODUCT.PRODUCT_TYPE"
+      ]
+    },
+    {
+      "questionNumber": 9,
+      "question": "哪些 Package 使用了 POLICY_START_DT？",
+      "submittedColumn": "POLICY_START_DT",
+      "missingTarget": false,
+      "retrievalAttempted": true,
+      "retrievalLimit": 8,
+      "retrievedChunkCount": 3,
+      "retrievedEvidence": [
+        {
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36
+        },
+        {
+          "chunkId": "chunk-0a8bd2e26625855d0bc5b543",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33
+        },
+        {
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40
+        }
+      ],
+      "verifiedSqlDependenciesIncluded": true,
+      "promptDependencyEdges": [
+        {
+          "source": "STG_POLICY.START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S1",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 24
+        },
+        {
+          "source": "STG_POLICY.START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S1",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 27
+        },
+        {
+          "source": "STG_POLICY.START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S1",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 30
+        },
+        {
+          "source": "STG_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S1",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 23
+        },
+        {
+          "source": "STG_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S1",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 25
+        },
+        {
+          "source": "STG_POLICY.REQUESTED_START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S1",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 27
+        },
+        {
+          "source": "STG_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+          "citationId": "S1",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 23
+        },
+        {
+          "source": "SRC_POLICY.POLICY_START_DT",
+          "target": "STG_POLICY.START_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 21
+        },
+        {
+          "source": "SRC_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY.POLICY_STATUS",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 27
+        },
+        {
+          "source": "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+          "target": "STG_POLICY.REQUESTED_START_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 23
+        },
+        {
+          "source": "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+          "target": "STG_POLICY.REQUESTED_START_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 24
+        },
+        {
+          "source": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "target": "TGT_POLICY.EFFECTIVE_DATE",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "evidenceLine": 23
+        },
+        {
+          "source": "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+          "target": "TGT_POLICY.POLICY_STATUS",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "evidenceLine": 24
+        }
+      ],
+      "ollamaAnswer": "目前檢索證據不足，無法直接確認哪些 Package 使用了 `POLICY_START_DT` 欄位。\n\n需要以下資訊才能確認：\n1. `POLICY_START_DT` 欄位在哪些 Package 中被使用（例如：作為輸入參數、變數、或在 SQL 中被引用）。\n2. `POLICY_START_DT` 欄位在哪些 SQL 語句中被使用（例如：SELECT、INSERT、UPDATE、DELETE）。\n\n目前的證據顯示 `POLICY_START_DT` 來自 `SRC_POLICY` 表，並被用來轉換到 `STG_POLICY.START_DATE`，但這並未直接顯示任何 Package 使用了 `POLICY_START_DT`。",
+      "citedSourceIds": [],
+      "invalidCitationIds": [],
+      "sources": [
+        {
+          "citationId": "S1",
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "matchedLines": [
+            {
+              "lineNumber": 23,
+              "code": "                   WHEN s.POLICY_STATUS = 'ACTIVE'"
+            },
+            {
+              "lineNumber": 24,
+              "code": "                       THEN TO_DATE(TO_CHAR(s.START_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            },
+            {
+              "lineNumber": 25,
+              "code": "                   WHEN s.POLICY_STATUS = 'PENDING'"
+            },
+            {
+              "lineNumber": 27,
+              "code": "                           TO_CHAR(NVL(s.REQUESTED_START_DATE, s.START_DATE + 30), 'YYYY-MM-DD'),"
+            },
+            {
+              "lineNumber": 30,
+              "code": "                   ELSE TO_DATE(TO_CHAR(s.START_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            }
+          ]
+        },
+        {
+          "citationId": "S2",
+          "chunkId": "chunk-0a8bd2e26625855d0bc5b543",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "matchedLines": [
+            {
+              "lineNumber": 21,
+              "code": "               TO_DATE(TO_CHAR(p.POLICY_START_DT, 'YYYY-MM-DD'), 'YYYY-MM-DD'),"
+            },
+            {
+              "lineNumber": 23,
+              "code": "                   WHEN p.REQUESTED_EFFECTIVE_DT IS NOT NULL"
+            },
+            {
+              "lineNumber": 24,
+              "code": "                       THEN TO_DATE(TO_CHAR(p.REQUESTED_EFFECTIVE_DT, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            },
+            {
+              "lineNumber": 27,
+              "code": "               p.POLICY_STATUS,"
+            }
+          ]
+        },
+        {
+          "citationId": "S3",
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "matchedLines": [
+            {
+              "lineNumber": 23,
+              "code": "            t.EFFECTIVE_DATE = s.CALCULATED_EFFECTIVE_DATE,"
+            },
+            {
+              "lineNumber": 24,
+              "code": "            t.POLICY_STATUS = s.POLICY_STATUS,"
+            }
+          ]
+        }
+      ],
+      "sourcesMatchIndependentRetrieval": true,
+      "elapsedMs": 3861,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "classification": "partial",
+      "assessment": "指出 POLICY_START_DT 從 SRC_POLICY 轉到 START_DATE，這段關係正確；但沒有指出 PKG_POLICY_EXTRACT.LOAD_SOURCE_TO_STAGE 是直接使用者，也沒有答出後續 Package 只使用中介欄位，因此僅部分回答。",
+      "expectedAnswer": "只有 PKG_POLICY_EXTRACT 直接讀取 SRC_POLICY.POLICY_START_DT；後續 Package 使用中介欄 START_DATE。",
+      "expectedSourceFiles": [
+        "packages/PKG_POLICY_EXTRACT.pkb",
+        "packages/PKG_POLICY_TRANSFORM.pkb",
+        "packages/PKG_POLICY_LOAD.pkb"
+      ],
+      "relatedColumns": [
+        "SRC_POLICY.POLICY_START_DT",
+        "STG_POLICY.START_DATE",
+        "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE"
+      ]
+    },
+    {
+      "questionNumber": 10,
+      "question": "哪些程式碼證明 EFFECTIVE_DATE 的資料來源？",
+      "submittedColumn": "EFFECTIVE_DATE",
+      "missingTarget": false,
+      "retrievalAttempted": true,
+      "retrievalLimit": 8,
+      "retrievedChunkCount": 3,
+      "retrievedEvidence": [
+        {
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40
+        },
+        {
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36
+        },
+        {
+          "chunkId": "chunk-0a8bd2e26625855d0bc5b543",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33
+        }
+      ],
+      "verifiedSqlDependenciesIncluded": true,
+      "promptDependencyEdges": [
+        {
+          "source": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "target": "TGT_POLICY.EFFECTIVE_DATE",
+          "citationId": "S1",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "evidenceLine": 23
+        },
+        {
+          "source": "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+          "target": "TGT_POLICY.POLICY_STATUS",
+          "citationId": "S1",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "evidenceLine": 24
+        },
+        {
+          "source": "STG_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 23
+        },
+        {
+          "source": "STG_POLICY.START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 24
+        },
+        {
+          "source": "STG_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 25
+        },
+        {
+          "source": "STG_POLICY.REQUESTED_START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 27
+        },
+        {
+          "source": "STG_POLICY.START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 27
+        },
+        {
+          "source": "STG_POLICY.START_DATE",
+          "target": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 30
+        },
+        {
+          "source": "STG_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+          "citationId": "S2",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "evidenceLine": 23
+        },
+        {
+          "source": "SRC_POLICY.POLICY_STATUS",
+          "target": "STG_POLICY.POLICY_STATUS",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 27
+        },
+        {
+          "source": "SRC_POLICY.POLICY_START_DT",
+          "target": "STG_POLICY.START_DATE",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 21
+        },
+        {
+          "source": "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+          "target": "STG_POLICY.REQUESTED_START_DATE",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 23
+        },
+        {
+          "source": "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+          "target": "STG_POLICY.REQUESTED_START_DATE",
+          "citationId": "S3",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "evidenceLine": 24
+        }
+      ],
+      "ollamaAnswer": "根據提供的證據，可以明確證明 `TGT_POLICY.EFFECTIVE_DATE` 的資料來源是 `STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE`，這一點由以下證據支持：\n\n- [S1] `STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE -> TGT_POLICY.EFFECTIVE_DATE`  \n  這表明在 `PKG_POLICY_LOAD` 包的 `LOAD_TARGET` 程式中，`TGT_POLICY.EFFECTIVE_DATE` 是透過 `STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE` 來更新的。\n\n進一步追溯 `STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE` 的資料來源，可以看到：\n\n- [S2] `STG_POLICY.START_DATE -> STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE`  \n- [S2] `STG_POLICY.REQUESTED_START_DATE -> STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE`  \n- [S2] `STG_POLICY.POLICY_STATUS -> STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE`  \n\n這些依賴關係表明 `STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE` 的值由 `STG_POLICY.START_DATE`、`STG_POLICY.REQUESTED_START_DATE` 和 `STG_POLICY.POLICY_STATUS` 計算得出。而 `STG_POLICY` 的資料來源則由 [S3] 中的 `SRC_POLICY` 提供，包含 `START_DATE`、`REQUESTED_START_DATE` 和 `POLICY_STATUS` 等欄位。\n\n因此，`TGT_POLICY.EFFECTIVE_DATE` 的資料來源可以追溯到 `SRC_POLICY` 中的 `START_DATE`、`REQUESTED_START_DATE` 和 `POLICY_STATUS`，並透過 `STG_POLICY` 和 `STG_POLICY_TRANSFORMED` 的計算邏輯最終傳遞到 `TGT_POLICY`。\n\n總結：  \n`TGT_POLICY.EFFECTIVE_DATE` 的資料來源是 `STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE`，而 `STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE` 由 `STG_POLICY.START_DATE`、`STG_POLICY.REQUESTED_START_DATE` 和 `STG_POLICY.POLICY_STATUS` 計算得出。這些欄位最終來自 `SRC_POLICY`。",
+      "citedSourceIds": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "invalidCitationIds": [],
+      "sources": [
+        {
+          "citationId": "S1",
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "matchedLines": [
+            {
+              "lineNumber": 23,
+              "code": "            t.EFFECTIVE_DATE = s.CALCULATED_EFFECTIVE_DATE,"
+            },
+            {
+              "lineNumber": 24,
+              "code": "            t.POLICY_STATUS = s.POLICY_STATUS,"
+            },
+            {
+              "lineNumber": 29,
+              "code": "            EFFECTIVE_DATE,"
+            }
+          ]
+        },
+        {
+          "citationId": "S2",
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "matchedLines": [
+            {
+              "lineNumber": 23,
+              "code": "                   WHEN s.POLICY_STATUS = 'ACTIVE'"
+            },
+            {
+              "lineNumber": 24,
+              "code": "                       THEN TO_DATE(TO_CHAR(s.START_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            },
+            {
+              "lineNumber": 25,
+              "code": "                   WHEN s.POLICY_STATUS = 'PENDING'"
+            },
+            {
+              "lineNumber": 27,
+              "code": "                           TO_CHAR(NVL(s.REQUESTED_START_DATE, s.START_DATE + 30), 'YYYY-MM-DD'),"
+            },
+            {
+              "lineNumber": 30,
+              "code": "                   ELSE TO_DATE(TO_CHAR(s.START_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            }
+          ]
+        },
+        {
+          "citationId": "S3",
+          "chunkId": "chunk-0a8bd2e26625855d0bc5b543",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "matchedLines": [
+            {
+              "lineNumber": 21,
+              "code": "               TO_DATE(TO_CHAR(p.POLICY_START_DT, 'YYYY-MM-DD'), 'YYYY-MM-DD'),"
+            },
+            {
+              "lineNumber": 23,
+              "code": "                   WHEN p.REQUESTED_EFFECTIVE_DT IS NOT NULL"
+            },
+            {
+              "lineNumber": 24,
+              "code": "                       THEN TO_DATE(TO_CHAR(p.REQUESTED_EFFECTIVE_DT, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            },
+            {
+              "lineNumber": 27,
+              "code": "               p.POLICY_STATUS,"
+            }
+          ]
+        }
+      ],
+      "sourcesMatchIndependentRetrieval": true,
+      "elapsedMs": 10775,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "classification": "incorrect",
+      "assessment": "呈現 Load、Transform、Extract 的依賴邊，但明確把 SRC_POLICY.START_DATE、SRC_POLICY.REQUESTED_START_DATE 當成來源欄位；實際來源名稱為 POLICY_START_DT 與 REQUESTED_EFFECTIVE_DT，核心欄位血緣說錯。",
+      "expectedAnswer": "Extract Body 將 POLICY_START_DT 投影至 START_DATE；Transform Body 以 CASE/NVL 產生 CALCULATED_EFFECTIVE_DATE；Load Body 在 MERGE 將該欄寫入 EFFECTIVE_DATE。",
+      "expectedSourceFiles": [
+        "packages/PKG_POLICY_EXTRACT.pkb",
+        "packages/PKG_POLICY_TRANSFORM.pkb",
+        "packages/PKG_POLICY_LOAD.pkb"
+      ],
+      "relatedColumns": [
+        "SRC_POLICY.POLICY_START_DT",
+        "STG_POLICY.START_DATE",
+        "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "TGT_POLICY.EFFECTIVE_DATE"
+      ]
+    },
+    {
+      "questionNumber": 11,
+      "question": "SRC_POLICY_ARCHIVE.POLICY_START_DT 是 EFFECTIVE_DATE 的來源嗎？",
+      "submittedColumn": "SRC_POLICY_ARCHIVE.POLICY_START_DT",
+      "missingTarget": false,
+      "retrievalAttempted": true,
+      "retrievalLimit": 8,
+      "retrievedChunkCount": 0,
+      "retrievedEvidence": [],
+      "verifiedSqlDependenciesIncluded": false,
+      "promptDependencyEdges": [],
+      "ollamaAnswer": "目前檢索證據不足。要確認 SRC_POLICY_ARCHIVE.POLICY_START_DT 是否為 EFFECTIVE_DATE 的來源，需要以下資訊：\n\n1. 明確的 SQL Chunk 或 PL/SQL 程式碼片段，顯示(EFFECTIVE_DATE) 的賦值或計算邏輯。\n2. 顯示 SRC_POLICY_ARCHIVE.POLICY_START_DT 與 EFFECTIVE_DATE 之間的欄位依賴關係。\n\n請提供相關的 SQL 或 PL/SQL 程式碼，以便進一步確認。",
+      "citedSourceIds": [],
+      "invalidCitationIds": [],
+      "sources": [
+        null
+      ],
+      "sourcesMatchIndependentRetrieval": true,
+      "elapsedMs": 2230,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "指定欄位沒有找到匹配 Chunk，模型只能回覆證據不足。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "classification": "insufficient_evidence",
+      "assessment": "Archive 欄位沒有命中依賴證據；模型明確表示證據不足，沒有將 Archive 認定為來源。負向誤判檢查通過，但沒有足夠證據作正向「不是來源」證明。",
+      "expectedAnswer": "不是。它是刻意設置的相似名稱干擾欄位；三個 Package 均未讀取 SRC_POLICY_ARCHIVE。",
+      "expectedSourceFiles": [
+        "database/01_create_tables.sql",
+        "database/02_insert_mock_data.sql",
+        "packages/PKG_POLICY_EXTRACT.pkb",
+        "packages/PKG_POLICY_TRANSFORM.pkb",
+        "packages/PKG_POLICY_LOAD.pkb"
+      ],
+      "relatedColumns": [
+        "SRC_POLICY_ARCHIVE.POLICY_START_DT",
+        "SRC_POLICY.POLICY_START_DT",
+        "TGT_POLICY.EFFECTIVE_DATE"
+      ]
+    },
+    {
+      "questionNumber": 12,
+      "question": "三個 Package 的 Procedure 呼叫順序為何？",
+      "submittedColumn": null,
+      "missingTarget": true,
+      "retrievalAttempted": false,
+      "retrievalLimit": 8,
+      "retrievedChunkCount": 0,
+      "retrievedEvidence": [],
+      "verifiedSqlDependenciesIncluded": false,
+      "promptDependencyEdges": [],
+      "ollamaAnswer": "目前檢索證據不足。\n\n需要以下資訊才能確認三個 Package 的 Procedure 呼叫順序：\n\n1. 三個 Package 的名稱（例如：PKG1、PKG2、PKG3）。\n2. 每個 Package 中的 Procedure 名稱（例如：PKG1.PROC1、PKG2.PROC2）。\n3. 這些 Procedure 在 PL/SQL 原始檔中的呼叫關係（例如：PKG1.PROC1 呼叫 PKG2.PROC2，PKG2.PROC2 呼叫 PKG3.PROC3）。\n\n若能提供上述資訊，即可根據證據分析 Procedure 的呼叫順序。",
+      "citedSourceIds": [],
+      "invalidCitationIds": [],
+      "sources": [
+        null
+      ],
+      "sourcesMatchIndependentRetrieval": true,
+      "elapsedMs": 2626,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "未提供 column，未檢索 PL/SQL 程式碼；回答不可視為有程式碼證據的血緣結論。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "classification": "manual_review",
+      "assessment": "未提供 column，沒有檢索 Procedure 呼叫程式碼；模型表示證據不足，需人工確認而不判錯。",
+      "expectedAnswer": "PKG_POLICY_LOAD.RUN_FULL_LOAD 呼叫 PKG_POLICY_TRANSFORM.RUN_TRANSFORM；後者呼叫 PKG_POLICY_EXTRACT.RUN_EXTRACT，再依序執行各自的資料處理 Procedure。",
+      "expectedSourceFiles": [
+        "packages/PKG_POLICY_EXTRACT.pkb",
+        "packages/PKG_POLICY_TRANSFORM.pkb",
+        "packages/PKG_POLICY_LOAD.pkb"
+      ],
+      "relatedColumns": [
+        "STG_POLICY",
+        "STG_POLICY_TRANSFORMED",
+        "TGT_POLICY"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "question": "TGT_POLICY.EFFECTIVE_DATE 的原始來源欄位是什麼？",
+    "expected_answer": "主要日期來源是 SRC_POLICY.POLICY_START_DT；PENDING 保單還會優先使用 SRC_POLICY.REQUESTED_EFFECTIVE_DT，且分支條件依賴 SRC_POLICY.POLICY_STATUS。",
+    "expected_source_files": ["packages/PKG_POLICY_EXTRACT.pkb", "packages/PKG_POLICY_TRANSFORM.pkb", "packages/PKG_POLICY_LOAD.pkb"],
+    "related_columns": ["SRC_POLICY.POLICY_START_DT", "SRC_POLICY.REQUESTED_EFFECTIVE_DT", "SRC_POLICY.POLICY_STATUS", "TGT_POLICY.EFFECTIVE_DATE"]
+  },
+  {
+    "question": "EFFECTIVE_DATE 經過哪些 Package？",
+    "expected_answer": "依序經過 PKG_POLICY_EXTRACT、PKG_POLICY_TRANSFORM、PKG_POLICY_LOAD。",
+    "expected_source_files": ["packages/PKG_POLICY_EXTRACT.pkb", "packages/PKG_POLICY_TRANSFORM.pkb", "packages/PKG_POLICY_LOAD.pkb"],
+    "related_columns": ["STG_POLICY.START_DATE", "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE", "TGT_POLICY.EFFECTIVE_DATE"]
+  },
+  {
+    "question": "EFFECTIVE_DATE 是否經過 CASE WHEN？",
+    "expected_answer": "是。PKG_POLICY_TRANSFORM.BUILD_TRANSFORMED_ROWS 依 POLICY_STATUS 分成 ACTIVE、PENDING 和其他狀態。",
+    "expected_source_files": ["packages/PKG_POLICY_TRANSFORM.pkb"],
+    "related_columns": ["STG_POLICY.POLICY_STATUS", "STG_POLICY.START_DATE", "STG_POLICY.REQUESTED_START_DATE", "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE"]
+  },
+  {
+    "question": "POLICY_STATUS 如何影響 EFFECTIVE_DATE？",
+    "expected_answer": "ACTIVE 使用 START_DATE；PENDING 使用 NVL(REQUESTED_START_DATE, START_DATE + 30)；其他狀態使用 START_DATE。",
+    "expected_source_files": ["packages/PKG_POLICY_TRANSFORM.pkb"],
+    "related_columns": ["STG_POLICY.POLICY_STATUS", "STG_POLICY.START_DATE", "STG_POLICY.REQUESTED_START_DATE", "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE"]
+  },
+  {
+    "question": "CUSTOMER_NAME 來自哪張來源表？",
+    "expected_answer": "來自 SRC_CUSTOMER.CUSTOMER_NAME，透過 SRC_POLICY.CUSTOMER_ID = SRC_CUSTOMER.CUSTOMER_ID JOIN 取得，空值以 NVL 補為 UNKNOWN CUSTOMER。",
+    "expected_source_files": ["packages/PKG_POLICY_EXTRACT.pkb"],
+    "related_columns": ["SRC_POLICY.CUSTOMER_ID", "SRC_CUSTOMER.CUSTOMER_ID", "SRC_CUSTOMER.CUSTOMER_NAME", "TGT_POLICY.CUSTOMER_NAME"]
+  },
+  {
+    "question": "哪個 Procedure 負責將資料寫入 TGT_POLICY？",
+    "expected_answer": "PKG_POLICY_LOAD.LOAD_TARGET 使用 MERGE 寫入或更新 TGT_POLICY。",
+    "expected_source_files": ["packages/PKG_POLICY_LOAD.pkb"],
+    "related_columns": ["STG_POLICY_TRANSFORMED.POLICY_NO", "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE", "TGT_POLICY.POLICY_NO", "TGT_POLICY.EFFECTIVE_DATE"]
+  },
+  {
+    "question": "POLICY_START_DT 與 EFFECTIVE_DATE 是否一定相同？",
+    "expected_answer": "不一定。PENDING 且 REQUESTED_START_DATE 有值時會採用該日期；若沒有，則採 START_DATE + 30 天。ACTIVE 與其他狀態才使用 START_DATE。",
+    "expected_source_files": ["packages/PKG_POLICY_TRANSFORM.pkb"],
+    "related_columns": ["SRC_POLICY.POLICY_START_DT", "SRC_POLICY.REQUESTED_EFFECTIVE_DT", "SRC_POLICY.POLICY_STATUS", "TGT_POLICY.EFFECTIVE_DATE"]
+  },
+  {
+    "question": "哪些欄位需要透過 JOIN 取得？",
+    "expected_answer": "CUSTOMER_NAME 透過 SRC_CUSTOMER JOIN 取得；PRODUCT_TYPE 透過 SRC_PRODUCT JOIN 取得。",
+    "expected_source_files": ["packages/PKG_POLICY_EXTRACT.pkb"],
+    "related_columns": ["SRC_POLICY.CUSTOMER_ID", "SRC_CUSTOMER.CUSTOMER_NAME", "SRC_POLICY.PRODUCT_CODE", "SRC_PRODUCT.PRODUCT_TYPE"]
+  },
+  {
+    "question": "哪些 Package 使用了 POLICY_START_DT？",
+    "expected_answer": "只有 PKG_POLICY_EXTRACT 直接讀取 SRC_POLICY.POLICY_START_DT；後續 Package 使用中介欄 START_DATE。",
+    "expected_source_files": ["packages/PKG_POLICY_EXTRACT.pkb", "packages/PKG_POLICY_TRANSFORM.pkb", "packages/PKG_POLICY_LOAD.pkb"],
+    "related_columns": ["SRC_POLICY.POLICY_START_DT", "STG_POLICY.START_DATE", "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE"]
+  },
+  {
+    "question": "哪些程式碼證明 EFFECTIVE_DATE 的資料來源？",
+    "expected_answer": "Extract Body 將 POLICY_START_DT 投影至 START_DATE；Transform Body 以 CASE/NVL 產生 CALCULATED_EFFECTIVE_DATE；Load Body 在 MERGE 將該欄寫入 EFFECTIVE_DATE。",
+    "expected_source_files": ["packages/PKG_POLICY_EXTRACT.pkb", "packages/PKG_POLICY_TRANSFORM.pkb", "packages/PKG_POLICY_LOAD.pkb"],
+    "related_columns": ["SRC_POLICY.POLICY_START_DT", "STG_POLICY.START_DATE", "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE", "TGT_POLICY.EFFECTIVE_DATE"]
+  },
+  {
+    "question": "SRC_POLICY_ARCHIVE.POLICY_START_DT 是 EFFECTIVE_DATE 的來源嗎？",
+    "expected_answer": "不是。它是刻意設置的相似名稱干擾欄位；三個 Package 均未讀取 SRC_POLICY_ARCHIVE。",
+    "expected_source_files": ["database/01_create_tables.sql", "database/02_insert_mock_data.sql", "packages/PKG_POLICY_EXTRACT.pkb", "packages/PKG_POLICY_TRANSFORM.pkb", "packages/PKG_POLICY_LOAD.pkb"],
+    "related_columns": ["SRC_POLICY_ARCHIVE.POLICY_START_DT", "SRC_POLICY.POLICY_START_DT", "TGT_POLICY.EFFECTIVE_DATE"]
+  },
+  {
+    "question": "三個 Package 的 Procedure 呼叫順序為何？",
+    "expected_answer": "PKG_POLICY_LOAD.RUN_FULL_LOAD 呼叫 PKG_POLICY_TRANSFORM.RUN_TRANSFORM；後者呼叫 PKG_POLICY_EXTRACT.RUN_EXTRACT，再依序執行各自的資料處理 Procedure。",
+    "expected_source_files": ["packages/PKG_POLICY_EXTRACT.pkb", "packages/PKG_POLICY_TRANSFORM.pkb", "packages/PKG_POLICY_LOAD.pkb"],
+    "related_columns": ["STG_POLICY", "STG_POLICY_TRANSFORMED", "TGT_POLICY"]
+  }
+]

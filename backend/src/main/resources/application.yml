@@ -1,0 +1,55 @@
+lineage:
+  packages-directory: ${LINEAGE_PACKAGES_PATH:${LINEAGE_PACKAGES_DIR:}}
+  chunking:
+    max-lines: ${LINEAGE_CHUNK_MAX_LINES:120}
+  packages-scan:
+    maximum-files: ${LINEAGE_PACKAGES_MAX_FILES:10000}
+    maximum-file-bytes: ${LINEAGE_PACKAGES_MAX_FILE_BYTES:16777216}
+    maximum-total-bytes: ${LINEAGE_PACKAGES_MAX_TOTAL_BYTES:268435456}
+  dependency:
+    maximum-depth: ${LINEAGE_DEPENDENCY_MAXIMUM_DEPTH:8}
+  assistant:
+    provider: ${LINEAGE_ASSISTANT_PROVIDER:none}
+    log-prompt: ${LINEAGE_ASSISTANT_LOG_PROMPT:false}
+    retrieval-limit: ${LINEAGE_ASSISTANT_RETRIEVAL_LIMIT:8}
+    call-graph:
+      maximum-depth: ${LINEAGE_ASSISTANT_CALL_GRAPH_MAX_DEPTH:4}
+      maximum-edges: ${LINEAGE_ASSISTANT_CALL_GRAPH_MAX_EDGES:12}
+    ollama:
+      think: ${OLLAMA_THINK:false}
+    copilot:
+      cli-url: ${COPILOT_CLI_URL:http://localhost:4321}
+      chat:
+        model: ${COPILOT_CHAT_MODEL:}
+      timeout-seconds: ${COPILOT_TIMEOUT_SECONDS:60}
+
+spring:
+  ai:
+    model:
+      embedding: none
+      image: none
+      audio:
+        speech: none
+        transcription: none
+      moderation: none
+    openai:
+      api-key: ${OPENAI_API_KEY:}
+      base-url: ${OPENAI_BASE_URL:https://api.openai.com}
+      chat:
+        options:
+          model: ${OPENAI_CHAT_MODEL:gpt-5-mini}
+    google:
+      genai:
+        api-key: ${GEMINI_API_KEY:}
+        base-url: ${GEMINI_BASE_URL:https://generativelanguage.googleapis.com}
+        chat:
+          model: ${GEMINI_CHAT_MODEL:gemini-2.5-flash}
+    ollama:
+      base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
+      init:
+        pull-model-strategy: never
+      chat:
+        model: ${OLLAMA_CHAT_MODEL:qwen3:8b}
+
+server:
+  port: ${SERVER_PORT:8080}

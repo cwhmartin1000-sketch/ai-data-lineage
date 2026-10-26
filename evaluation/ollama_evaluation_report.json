@@ -1,0 +1,785 @@
+{
+  "evaluation": "Local Ollama Q&A evaluation using the production Spring Boot retrieval and assistant API",
+  "generatedAt": "2026-10-23T19:33:41.2849562+08:00",
+  "provider": {
+    "name": "ollama",
+    "model": "qwen3:8b",
+    "endpoint": "http://localhost:8080/api/assistant/ask",
+    "providerReadyBeforeAndAfter": true
+  },
+  "executionPolicy": {
+    "localOnly": true,
+    "cloudLlmProvidersCalled": [],
+    "apiKeyRecorded": false,
+    "questionCount": 12,
+    "requestInputs": "Each model request contained only the question and, when explicit in question text, the selected column. expected_answer and expected_source_files were loaded only after all responses were collected for post-hoc scoring.",
+    "missingTargetPolicy": "No column was sent when a field could not be clearly extracted from question text; these cases are marked missing_target and need human review, not scored wrong.",
+    "groundTruthUsedForModelInput": false,
+    "evaluationGroundTruthFiles": [
+      "evaluation/test_questions.json",
+      "evaluation/lineage_ground_truth.json"
+    ]
+  },
+  "overallStatistics": {
+    "total": 12,
+    "successfulResponses": 12,
+    "failedResponses": 0,
+    "missingTarget": 3,
+    "totalElapsedMs": 46888,
+    "averageElapsedMs": 3907.0,
+    "correctnessCounts": {
+      "部分正確": 5,
+      "證據不足": 1,
+      "錯誤": 1,
+      "正確": 2,
+      "需要人工確認": 3
+    }
+  },
+  "focusChecks": {
+    "tracedToSrcPolicy": false,
+    "srcPolicyTraceAssessment": "回答 Q1 與 Q10 只到中介欄位；Q9 顯示 Extract 有 POLICY_START_DT，但未完整說明下游 START_DATE 路徑。",
+    "caseWhenCorrectlyExplained": true,
+    "caseWhenAssessment": "Q3/Q4 正確說明 ACTIVE、PENDING 與其他狀態分支；Q3 也辨識 EFFECTIVE_DATE 是間接承接計算欄的 CASE 規則。",
+    "archiveDecoyMisattributed": true,
+    "archiveDecoyAssessment": "Q11 明確聲稱 SRC_POLICY_ARCHIVE.POLICY_START_DT 是來源，與檢索到的 SRC_POLICY Extract 程式碼不符。"
+  },
+  "gradingNotes": [
+    "正確/部分正確/錯誤依回答內容、檢索來源及 expected_answer/expected_source_files 事後比對。",
+    "證據不足表示模型保留不確定性，但檢索證據不足以核對完整答案。",
+    "需要人工確認用於 missing_target 題目；因沒有提供 column，正式流程沒有檢索相關 Chunk。"
+  ],
+  "results": [
+    {
+      "questionNumber": 1,
+      "question": "TGT_POLICY.EFFECTIVE_DATE 的原始來源欄位是什麼？",
+      "submittedColumn": "TGT_POLICY.EFFECTIVE_DATE",
+      "missing_target": false,
+      "answer": "根據證據，TGT_POLICY.EFFECTIVE_DATE 的原始來源欄位是 STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE。此欄位在 [S1] 中被用於更新 TGT_POLICY.EFFECTIVE_DATE。\n\n而 STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE 的計算邏輯在 [S2] 中有說明，它根據 STG_POLICY 的 POLICY_STATUS 和 START_DATE 等欄位計算得出。因此，TGT_POLICY.EFFECTIVE_DATE 的最終來源可以追溯到 STG_POLICY 的相關欄位，但具體的計算邏輯在 [S2] 中。",
+      "sources": [
+        {
+          "citationId": "S1",
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "matchedLines": [
+            {
+              "lineNumber": 23,
+              "code": "            t.EFFECTIVE_DATE = s.CALCULATED_EFFECTIVE_DATE,"
+            },
+            {
+              "lineNumber": 29,
+              "code": "            EFFECTIVE_DATE,"
+            }
+          ]
+        },
+        {
+          "citationId": "S2",
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "matchedLines": [
+            {
+              "lineNumber": 16,
+              "code": "            CALCULATED_EFFECTIVE_DATE,"
+            },
+            {
+              "lineNumber": 31,
+              "code": "               END AS CALCULATED_EFFECTIVE_DATE,"
+            }
+          ]
+        }
+      ],
+      "retrievedSourceFiles": [
+        "PKG_POLICY_LOAD.pkb",
+        "PKG_POLICY_TRANSFORM.pkb"
+      ],
+      "expectedSourceFiles": [
+        "packages/PKG_POLICY_EXTRACT.pkb",
+        "packages/PKG_POLICY_TRANSFORM.pkb",
+        "packages/PKG_POLICY_LOAD.pkb"
+      ],
+      "retrievedExpectedSourceFiles": [
+        "PKG_POLICY_LOAD.pkb",
+        "PKG_POLICY_TRANSFORM.pkb"
+      ],
+      "missingExpectedSourceFiles": [
+        "PKG_POLICY_EXTRACT.pkb"
+      ],
+      "expectedAnswer": "主要日期來源是 SRC_POLICY.POLICY_START_DT；PENDING 保單還會優先使用 SRC_POLICY.REQUESTED_EFFECTIVE_DT，且分支條件依賴 SRC_POLICY.POLICY_STATUS。",
+      "elapsedMs": 3305,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "correctness": "部分正確",
+      "assessment": "指出直接中介來源與 Transform 的計算，但沒有追溯到 SRC_POLICY.POLICY_START_DT、REQUESTED_EFFECTIVE_DT 及來源狀態欄位。",
+      "flags": [
+        "未追溯至 SRC_POLICY"
+      ]
+    },
+    {
+      "questionNumber": 2,
+      "question": "EFFECTIVE_DATE 經過哪些 Package？",
+      "submittedColumn": "EFFECTIVE_DATE",
+      "missing_target": false,
+      "answer": "根據提供的證據，`EFFECTIVE_DATE` 經過的 Package 有：\n\n1. **PKG_POLICY_TRANSFORM**：在 `BUILD_TRANSFORMED_ROWS` Procedure 中，`CALCULATED_EFFECTIVE_DATE` 是透過 `CASE` 語句計算得出，並存入 `STG_POLICY_TRANSFORMED` 表的 `CALCULATED_EFFECTIVE_DATE` 欄位。此欄位後續被 `PKG_POLICY_LOAD` 的 `LOAD_TARGET` Procedure 使用，作為 `EFFECTIVE_DATE` 的來源。\n\n2. **PKG_POLICY_LOAD**：在 `LOAD_TARGET` Procedure 中，`EFFECTIVE_DATE` 是從 `STG_POLICY_TRANSFORMED` 表的 `CALCULATED_EFFECTIVE_DATE` 欄位取得，並更新至目標表 `TGT_POLICY` 的 `EFFECTIVE_DATE` 欄位。\n\n因此，`EFFECTIVE_DATE` 經過的 Package 為 `PKG_POLICY_TRANSFORM` 和 `PKG_POLICY_LOAD`。",
+      "sources": [
+        {
+          "citationId": "S1",
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "matchedLines": [
+            {
+              "lineNumber": 23,
+              "code": "            t.EFFECTIVE_DATE = s.CALCULATED_EFFECTIVE_DATE,"
+            },
+            {
+              "lineNumber": 29,
+              "code": "            EFFECTIVE_DATE,"
+            }
+          ]
+        },
+        {
+          "citationId": "S2",
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "matchedLines": [
+            {
+              "lineNumber": 16,
+              "code": "            CALCULATED_EFFECTIVE_DATE,"
+            },
+            {
+              "lineNumber": 31,
+              "code": "               END AS CALCULATED_EFFECTIVE_DATE,"
+            }
+          ]
+        }
+      ],
+      "retrievedSourceFiles": [
+        "PKG_POLICY_LOAD.pkb",
+        "PKG_POLICY_TRANSFORM.pkb"
+      ],
+      "expectedSourceFiles": [
+        "packages/PKG_POLICY_EXTRACT.pkb",
+        "packages/PKG_POLICY_TRANSFORM.pkb",
+        "packages/PKG_POLICY_LOAD.pkb"
+      ],
+      "retrievedExpectedSourceFiles": [
+        "PKG_POLICY_LOAD.pkb",
+        "PKG_POLICY_TRANSFORM.pkb"
+      ],
+      "missingExpectedSourceFiles": [
+        "PKG_POLICY_EXTRACT.pkb"
+      ],
+      "expectedAnswer": "依序經過 PKG_POLICY_EXTRACT、PKG_POLICY_TRANSFORM、PKG_POLICY_LOAD。",
+      "elapsedMs": 4439,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "correctness": "部分正確",
+      "assessment": "正確指出 Transform 與 Load，但漏掉 Extract，因此跨 Package 路徑不完整。",
+      "flags": [
+        "漏列 PKG_POLICY_EXTRACT"
+      ]
+    },
+    {
+      "questionNumber": 3,
+      "question": "EFFECTIVE_DATE 是否經過 CASE WHEN？",
+      "submittedColumn": "EFFECTIVE_DATE",
+      "missing_target": false,
+      "answer": "根據提供的證據，**EFFECTIVE_DATE** 並未直接經過 `CASE WHEN` 處理。以下是分析：\n\n1. **在 `LOAD_TARGET` 裡**：\n   - `EFFECTIVE_DATE` 是直接從 `s.CALCULATED_EFFECTIVE_DATE` 賦值，沒有使用 `CASE WHEN` 進行條件判斷。\n   - 這表示 `EFFECTIVE_DATE` 的值來自 `CALCULATED_EFFECTIVE_DATE`，而 `CALCULATED_EFFECTIVE_DATE` 是在 `BUILD_TRANSFORMED_ROWS` 中計算的。\n\n2. **在 `BUILD_TRANSFORMED_ROWS` 中**：\n   - `CALCULATED_EFFECTIVE_DATE` 是透過 `CASE WHEN` 計算的，根據 `s.POLICY_STATUS` 的不同值，會有不同的計算方式。\n   - 但 `CALCULATED_EFFECTIVE_DATE` 是一個欄位，並不是直接用在 `EFFECTIVE_DATE` 上，而是作為 `EFFECTIVE_DATE` 的來源。\n\n**結論**：  \n`EFFECTIVE_DATE` 並未直接經過 `CASE WHEN` 處理，而是間接透過 `CALCULATED_EFFECTIVE_DATE` 繼承了 `CASE WHEN` 的邏輯。若要確認 `EFFECTIVE_DATE` 是否經過 `CASE WHEN`，需進一步查看 `CALCULATED_EFFECTIVE_DATE` 的使用方式，或確認 `CALCULATED_EFFECTIVE, DATE` 是否在其他地方被修改。",
+      "sources": [
+        {
+          "citationId": "S1",
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "matchedLines": [
+            {
+              "lineNumber": 23,
+              "code": "            t.EFFECTIVE_DATE = s.CALCULATED_EFFECTIVE_DATE,"
+            },
+            {
+              "lineNumber": 29,
+              "code": "            EFFECTIVE_DATE,"
+            }
+          ]
+        },
+        {
+          "citationId": "S2",
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "matchedLines": [
+            {
+              "lineNumber": 16,
+              "code": "            CALCULATED_EFFECTIVE_DATE,"
+            },
+            {
+              "lineNumber": 31,
+              "code": "               END AS CALCULATED_EFFECTIVE_DATE,"
+            }
+          ]
+        }
+      ],
+      "retrievedSourceFiles": [
+        "PKG_POLICY_LOAD.pkb",
+        "PKG_POLICY_TRANSFORM.pkb"
+      ],
+      "expectedSourceFiles": [
+        "packages/PKG_POLICY_TRANSFORM.pkb"
+      ],
+      "retrievedExpectedSourceFiles": [
+        "PKG_POLICY_TRANSFORM.pkb"
+      ],
+      "missingExpectedSourceFiles": [],
+      "expectedAnswer": "是。PKG_POLICY_TRANSFORM.BUILD_TRANSFORMED_ROWS 依 POLICY_STATUS 分成 ACTIVE、PENDING 和其他狀態。",
+      "elapsedMs": 6375,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "correctness": "正確",
+      "assessment": "正確說明目標欄位透過 CALCULATED_EFFECTIVE_DATE 間接受 CASE WHEN 規則影響，並列出 ACTIVE、PENDING 與其他狀態。",
+      "flags": [
+        "CASE WHEN 說明正確"
+      ]
+    },
+    {
+      "questionNumber": 4,
+      "question": "POLICY_STATUS 如何影響 EFFECTIVE_DATE？",
+      "submittedColumn": "EFFECTIVE_DATE",
+      "missing_target": false,
+      "answer": "根據提供的證據，POLICY_STATUS 會影響 EFFECTIVE_DATE 的計算方式，但這種影響是透過 CALCULATED_EFFECTIVE_DATE 這個欄位間接實現的，而不是直接影響 EFFECTIVE_DATE。\n\n具體說明如下：\n\n1. **POLICY_STATUS 的影響**：\n   - 在 [S2] 中，`CALCULATED_EFFECTIVE_DATE` 的計算會根據 `POLICY_STATUS` 的不同值進行區分：\n     - 如果 `POLICY_STATUS = 'ACTIVE'`，則使用 `s.START_DATE`。\n     - 如果 `POLICY_STATUS = 'PENDING'`，則使用 `s.REQUESTED_START_DATE` 或 `s.START_DATE + 30`（若 `s.REQUESTED_START_DATE` 為 NULL）。\n     - 其他情況則使用 `s.START_DATE`。\n   - 這表示 `POLICY_STATUS` 會影響 `CALCULATED_EFFECTIVE_DATE` 的計算，而 `CALCULATED_EFFECTIVE_DATE` 會被用來更新 `EFFECTIVE_DATE`。\n\n2. **EFFECTIVE_DATE 的更新**：\n   - 在 [S1] 中，`EFFECTIVE_DATE` 會被設為 `s.CALCULATED_EFFECTIVE_DATE`，這表明 `EFFECTIVE_DATE` 的值是來自 `CALCULATED_EFFECTIVE_DATE`，而 `CALCULATED_EFFECTIVE_DATE` 的計算已經受到 `POLICY_STATUS` 的影響。\n\n**總結**：\n- `POLICY_STATUS` 會影響 `CALCULATED_EFFECTIVE_DATE` 的計算方式，進而間接影響 `EFFECTIVE_DATE` 的值。\n- `EFFECTIVE_DATE` 的值直接來自 `CALCULATED_EFFECTIVE_DATE`，因此 `POLICY_STATUS` 會間接影響 `EFFECTIVE_DATE`。",
+      "sources": [
+        {
+          "citationId": "S1",
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "matchedLines": [
+            {
+              "lineNumber": 23,
+              "code": "            t.EFFECTIVE_DATE = s.CALCULATED_EFFECTIVE_DATE,"
+            },
+            {
+              "lineNumber": 29,
+              "code": "            EFFECTIVE_DATE,"
+            }
+          ]
+        },
+        {
+          "citationId": "S2",
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "matchedLines": [
+            {
+              "lineNumber": 16,
+              "code": "            CALCULATED_EFFECTIVE_DATE,"
+            },
+            {
+              "lineNumber": 31,
+              "code": "               END AS CALCULATED_EFFECTIVE_DATE,"
+            }
+          ]
+        }
+      ],
+      "retrievedSourceFiles": [
+        "PKG_POLICY_LOAD.pkb",
+        "PKG_POLICY_TRANSFORM.pkb"
+      ],
+      "expectedSourceFiles": [
+        "packages/PKG_POLICY_TRANSFORM.pkb"
+      ],
+      "retrievedExpectedSourceFiles": [
+        "PKG_POLICY_TRANSFORM.pkb"
+      ],
+      "missingExpectedSourceFiles": [],
+      "expectedAnswer": "ACTIVE 使用 START_DATE；PENDING 使用 NVL(REQUESTED_START_DATE, START_DATE + 30)；其他狀態使用 START_DATE。",
+      "elapsedMs": 7590,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "correctness": "正確",
+      "assessment": "正確說明 ACTIVE/其他狀態使用 START_DATE，PENDING 使用 REQUESTED_START_DATE，空值時回退至 START_DATE + 30。",
+      "flags": [
+        "CASE WHEN 說明正確"
+      ]
+    },
+    {
+      "questionNumber": 5,
+      "question": "CUSTOMER_NAME 來自哪張來源表？",
+      "submittedColumn": "CUSTOMER_NAME",
+      "missing_target": false,
+      "answer": "根據證據，CUSTOMER_NAME 來自 STG_POLICY_TRANSFORMED 表，而 STG_POLICY_TRANSFORMED 表的資料來源是 STG_POLICY 表，STG_POLICY 表的資料來源是 SRC_POLICY、SRC_CUSTOMER 和 SRC_PRODUCT 表。\n\n具體說明如下：\n\n1. **CUSTOMER_NAME 來源**：\n   - 在 [S1] 中，LOAD_TARGET 進行 MERGE 操作時，使用了 STG_POLICY_TRANSFORMED 表的 CUSTOMER_NAME 欄位，這表示 CUSTOMER_NAME 來自 STG_POLICY_TRANSFORMED 表。\n\n2. **STG_POLICY_TRANSFORMED 的資料來源**：\n   - 在 [S3] 中，BUILD_TRANSFORMED_ROWS 會從 STG_POLICY 表中提取資料，並插入到 STG_POLICY_TRANSFORMED 表中，這表示 STG_POLICY_TRANSFORMED 的 CUSTOMER_NAME 來自 STG_POLICY 表。\n\n3. **STG_POLICY 的資料來源**：\n   - 在 [S2] 中，LOAD_SOURCE_TO_STAGE 會從 SRC_POLICY 表中提取資料，並與 SRC_CUSTOMER 和 SRC_PRODUCT 表進行 JOIN，最終插入到 STG_POLICY 表中，這表示 STG_POLICY 表的 CUSTOMER_NAME 來自 SRC_CUSTOMER 表。\n\n因此，CUSTOMER_NAME 最終來自 SRC_CUSTOMER 表。",
+      "sources": [
+        {
+          "citationId": "S1",
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "matchedLines": [
+            {
+              "lineNumber": 17,
+              "code": "                   x.CUSTOMER_NAME,"
+            },
+            {
+              "lineNumber": 25,
+              "code": "            t.CUSTOMER_NAME = s.CUSTOMER_NAME,"
+            },
+            {
+              "lineNumber": 31,
+              "code": "            CUSTOMER_NAME,"
+            },
+            {
+              "lineNumber": 37,
+              "code": "            s.CUSTOMER_NAME,"
+            }
+          ]
+        },
+        {
+          "citationId": "S2",
+          "chunkId": "chunk-0a8bd2e26625855d0bc5b543",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "matchedLines": [
+            {
+              "lineNumber": 17,
+              "code": "            CUSTOMER_NAME,"
+            },
+            {
+              "lineNumber": 28,
+              "code": "               NVL(c.CUSTOMER_NAME, 'UNKNOWN CUSTOMER'),"
+            }
+          ]
+        },
+        {
+          "citationId": "S3",
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "matchedLines": [
+            {
+              "lineNumber": 18,
+              "code": "            CUSTOMER_NAME,"
+            },
+            {
+              "lineNumber": 33,
+              "code": "               NVL(s.CUSTOMER_NAME, 'UNKNOWN CUSTOMER'),"
+            }
+          ]
+        }
+      ],
+      "retrievedSourceFiles": [
+        "PKG_POLICY_LOAD.pkb",
+        "PKG_POLICY_EXTRACT.pkb",
+        "PKG_POLICY_TRANSFORM.pkb"
+      ],
+      "expectedSourceFiles": [
+        "packages/PKG_POLICY_EXTRACT.pkb"
+      ],
+      "retrievedExpectedSourceFiles": [
+        "PKG_POLICY_EXTRACT.pkb"
+      ],
+      "missingExpectedSourceFiles": [],
+      "expectedAnswer": "來自 SRC_CUSTOMER.CUSTOMER_NAME，透過 SRC_POLICY.CUSTOMER_ID = SRC_CUSTOMER.CUSTOMER_ID JOIN 取得，空值以 NVL 補為 UNKNOWN CUSTOMER。",
+      "elapsedMs": 5865,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "correctness": "部分正確",
+      "assessment": "正確追溯到 SRC_CUSTOMER 並描述 Extract/Transform/Load 路徑，但沒有提到 CUSTOMER_NAME 空值以 NVL 補 UNKNOWN CUSTOMER。",
+      "flags": [
+        "漏列 NVL 空值規則"
+      ]
+    },
+    {
+      "questionNumber": 6,
+      "question": "哪個 Procedure 負責將資料寫入 TGT_POLICY？",
+      "submittedColumn": null,
+      "missing_target": true,
+      "answer": "目前檢索證據不足。需要提供與 TGT_POLICY 相關的程式碼片段或 Procedure 名稱，才能確認哪個 Procedure 負責將資料寫入 TGT_POLICY。",
+      "sources": [],
+      "retrievedSourceFiles": [],
+      "expectedSourceFiles": [
+        "packages/PKG_POLICY_LOAD.pkb"
+      ],
+      "retrievedExpectedSourceFiles": [],
+      "missingExpectedSourceFiles": [
+        "PKG_POLICY_LOAD.pkb"
+      ],
+      "expectedAnswer": "PKG_POLICY_LOAD.LOAD_TARGET 使用 MERGE 寫入或更新 TGT_POLICY。",
+      "elapsedMs": 898,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "未提供 column，未檢索 PL/SQL 程式碼；回答不可視為有程式碼證據的血緣結論。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "correctness": "需要人工確認",
+      "assessment": "問題未指定欄位，依規則沒有提供 column；API 未執行檢索並回報證據不足，不能據此判錯。",
+      "flags": [
+        "missing_target"
+      ]
+    },
+    {
+      "questionNumber": 7,
+      "question": "POLICY_START_DT 與 EFFECTIVE_DATE 是否一定相同？",
+      "submittedColumn": "EFFECTIVE_DATE",
+      "missing_target": false,
+      "answer": "根據提供的證據，POLICY_START_DT 與 EFFECTIVE_DATE 是否一定相同，無法直接確認。原因如下：\n\n1. **EFFECTIVE_DATE 的來源**：在 [S1] 中，EFFECTIVE_DATE 是從 `CALCULATED_EFFECTIVE_DATE` 來源，而 `CALCULATED_EFFECTIVE_DATE` 的計算邏輯在 [S2] 中定義。因此，EFFECTIVE_DATE 的值是根據 `CALCULATED_EFFECTIVE_DATE` 來設定的，但沒有明確說明 `CALCULATED_EFFECTIVE_DATE` 是否等同於 `POLICY_START_DT`。\n\n2. **POLICY_START_DT 未提及**：在提供的證據中，並未出現 `POLICY_START_DT` 這個欄位，因此無法確認 `POLICY_START_DT` 是否與 `EFFECTIVE_DATE` 有關聯。\n\n**結論**：目前檢索證據不足，無法確認 POLICY_START_DT 與 EFFECTIVE_DATE 是否一定相同。需要更多關於 `POLICY_START_DT` 的定義或與 `EFFECTIVE_DATE` 的關聯資訊才能進一步確認。",
+      "sources": [
+        {
+          "citationId": "S1",
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "matchedLines": [
+            {
+              "lineNumber": 23,
+              "code": "            t.EFFECTIVE_DATE = s.CALCULATED_EFFECTIVE_DATE,"
+            },
+            {
+              "lineNumber": 29,
+              "code": "            EFFECTIVE_DATE,"
+            }
+          ]
+        },
+        {
+          "citationId": "S2",
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "matchedLines": [
+            {
+              "lineNumber": 16,
+              "code": "            CALCULATED_EFFECTIVE_DATE,"
+            },
+            {
+              "lineNumber": 31,
+              "code": "               END AS CALCULATED_EFFECTIVE_DATE,"
+            }
+          ]
+        }
+      ],
+      "retrievedSourceFiles": [
+        "PKG_POLICY_LOAD.pkb",
+        "PKG_POLICY_TRANSFORM.pkb"
+      ],
+      "expectedSourceFiles": [
+        "packages/PKG_POLICY_TRANSFORM.pkb"
+      ],
+      "retrievedExpectedSourceFiles": [
+        "PKG_POLICY_TRANSFORM.pkb"
+      ],
+      "missingExpectedSourceFiles": [],
+      "expectedAnswer": "不一定。PENDING 且 REQUESTED_START_DATE 有值時會採用該日期；若沒有，則採 START_DATE + 30 天。ACTIVE 與其他狀態才使用 START_DATE。",
+      "elapsedMs": 4871,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "correctness": "證據不足",
+      "assessment": "回答有保留不確定性，但本題以 EFFECTIVE_DATE 搜尋只取得 Load/Transform 證據，沒有 Extract 的 POLICY_START_DT 投影，無法判定完整原始來源。",
+      "flags": [
+        "缺少 Extract 上游證據"
+      ]
+    },
+    {
+      "questionNumber": 8,
+      "question": "哪些欄位需要透過 JOIN 取得？",
+      "submittedColumn": null,
+      "missing_target": true,
+      "answer": "目前檢索證據不足。請提供查詢欄位或相關的 PL/SQL 程式碼片段，以便確認哪些欄位需要透過 JOIN 取得。",
+      "sources": [],
+      "retrievedSourceFiles": [],
+      "expectedSourceFiles": [
+        "packages/PKG_POLICY_EXTRACT.pkb"
+      ],
+      "retrievedExpectedSourceFiles": [],
+      "missingExpectedSourceFiles": [
+        "PKG_POLICY_EXTRACT.pkb"
+      ],
+      "expectedAnswer": "CUSTOMER_NAME 透過 SRC_CUSTOMER JOIN 取得；PRODUCT_TYPE 透過 SRC_PRODUCT JOIN 取得。",
+      "elapsedMs": 802,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "未提供 column，未檢索 PL/SQL 程式碼；回答不可視為有程式碼證據的血緣結論。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "correctness": "需要人工確認",
+      "assessment": "問題未指定欄位，依規則沒有提供 column；API 未執行檢索，因此 JOIN 欄位答案未被評估。",
+      "flags": [
+        "missing_target"
+      ]
+    },
+    {
+      "questionNumber": 9,
+      "question": "哪些 Package 使用了 POLICY_START_DT？",
+      "submittedColumn": "POLICY_START_DT",
+      "missing_target": false,
+      "answer": "目前檢索證據不足。\n\n要確認哪些 Package 使用了 `POLICY_START_DT`，需要以下資訊：\n\n1. `POLICY_START_DT` 出現在哪些 Package 的宣告或實作中（例如：`DECLARE` 或 `PROCEDURE` 等區塊）。\n2. `POLICY_START_DT` 是否作為輸入參數、變數、或欄位被使用。\n3. 有關 Package 的完整原始碼或相關宣告區塊。\n\n目前提供的證據 [S1] 只顯示 `POLICY_START_DT` 被用在 `LOAD_SOURCE_TO_STAGE` Procedure 中，但未說明這個欄位是來自哪個 Package 的宣告或作為參數傳入。因此，無法確認哪個 Package 使用了 `POLICY_START_DT`。",
+      "sources": [
+        {
+          "citationId": "S1",
+          "chunkId": "chunk-0a8bd2e26625855d0bc5b543",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "matchedLines": [
+            {
+              "lineNumber": 21,
+              "code": "               TO_DATE(TO_CHAR(p.POLICY_START_DT, 'YYYY-MM-DD'), 'YYYY-MM-DD'),"
+            }
+          ]
+        }
+      ],
+      "retrievedSourceFiles": [
+        "PKG_POLICY_EXTRACT.pkb"
+      ],
+      "expectedSourceFiles": [
+        "packages/PKG_POLICY_EXTRACT.pkb",
+        "packages/PKG_POLICY_TRANSFORM.pkb",
+        "packages/PKG_POLICY_LOAD.pkb"
+      ],
+      "retrievedExpectedSourceFiles": [
+        "PKG_POLICY_EXTRACT.pkb"
+      ],
+      "missingExpectedSourceFiles": [
+        "PKG_POLICY_TRANSFORM.pkb",
+        "PKG_POLICY_LOAD.pkb"
+      ],
+      "expectedAnswer": "只有 PKG_POLICY_EXTRACT 直接讀取 SRC_POLICY.POLICY_START_DT；後續 Package 使用中介欄 START_DATE。",
+      "elapsedMs": 3233,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "correctness": "部分正確",
+      "assessment": "證據來源指向 Extract 的 LOAD_SOURCE_TO_STAGE，且回覆辨識出 POLICY_START_DT 使用點，但沒有明確回答只有 Extract 直接讀取、下游改用 START_DATE。",
+      "flags": [
+        "下游欄位重新命名未追清"
+      ]
+    },
+    {
+      "questionNumber": 10,
+      "question": "哪些程式碼證明 EFFECTIVE_DATE 的資料來源？",
+      "submittedColumn": "EFFECTIVE_DATE",
+      "missing_target": false,
+      "answer": "根據提供的證據，可以確認 `EFFECTIVE_DATE` 的資料來源如下：\n\n1. **[S1]** 中的 `MERGE INTO` 陳述式顯示，`EFFECTIVE_DATE` 的值來自 `STG_POLICY_TRANSFORMED` 表的 `CALCULATED_EFFECTIVE_DATE` 欄位。這表明 `EFFECTIVE_DATE` 的資料來源是 `CALCULATED_EFFECTIVE_DATE`。\n\n2. **[S2]** 中的 `INSERT INTO` 陳述式顯示，`CALCULATED_EFFECTIVE_DATE` 是透過 `CASE` 語句計算得出的，根據 `s.POLICY_STATUS` 的不同值，使用 `TO_DATE` 函數將 `START_DATE` 或 `REQUESTED_START_DATE` 轉換為日期格式。因此，`CALCULATED_EFFECTIVE_DATE` 的資料來源是 `START_DATE` 或 `REQUESTED_START_DATE`，具體取決於 `s.POLICY_STATUS` 的值。\n\n總結：  \n`EFFECTIVE_DATE` 的資料來源是 `STG_POLICY_TRANSFORMED` 表的 `CALCULATED_EFFECTIVE_DATE`，而 `CALCULATED_EFFECTIVE_DATE` 是根據 `s.POLICY_STATUS` 的值計算得出，最終資料來源是 `START_DATE` 或 `REQUESTED_START_DATE`。",
+      "sources": [
+        {
+          "citationId": "S1",
+          "chunkId": "chunk-a76fb0bd1d6c976d124a0007",
+          "packageName": "PKG_POLICY_LOAD",
+          "procedureName": "LOAD_TARGET",
+          "fileName": "PKG_POLICY_LOAD.pkb",
+          "startLine": 10,
+          "endLine": 40,
+          "matchedLines": [
+            {
+              "lineNumber": 23,
+              "code": "            t.EFFECTIVE_DATE = s.CALCULATED_EFFECTIVE_DATE,"
+            },
+            {
+              "lineNumber": 29,
+              "code": "            EFFECTIVE_DATE,"
+            }
+          ]
+        },
+        {
+          "citationId": "S2",
+          "chunkId": "chunk-7a45ebeefdc59d3fe74e18d8",
+          "packageName": "PKG_POLICY_TRANSFORM",
+          "procedureName": "BUILD_TRANSFORMED_ROWS",
+          "fileName": "PKG_POLICY_TRANSFORM.pkb",
+          "startLine": 10,
+          "endLine": 36,
+          "matchedLines": [
+            {
+              "lineNumber": 16,
+              "code": "            CALCULATED_EFFECTIVE_DATE,"
+            },
+            {
+              "lineNumber": 31,
+              "code": "               END AS CALCULATED_EFFECTIVE_DATE,"
+            }
+          ]
+        }
+      ],
+      "retrievedSourceFiles": [
+        "PKG_POLICY_LOAD.pkb",
+        "PKG_POLICY_TRANSFORM.pkb"
+      ],
+      "expectedSourceFiles": [
+        "packages/PKG_POLICY_EXTRACT.pkb",
+        "packages/PKG_POLICY_TRANSFORM.pkb",
+        "packages/PKG_POLICY_LOAD.pkb"
+      ],
+      "retrievedExpectedSourceFiles": [
+        "PKG_POLICY_LOAD.pkb",
+        "PKG_POLICY_TRANSFORM.pkb"
+      ],
+      "missingExpectedSourceFiles": [
+        "PKG_POLICY_EXTRACT.pkb"
+      ],
+      "expectedAnswer": "Extract Body 將 POLICY_START_DT 投影至 START_DATE；Transform Body 以 CASE/NVL 產生 CALCULATED_EFFECTIVE_DATE；Load Body 在 MERGE 將該欄寫入 EFFECTIVE_DATE。",
+      "elapsedMs": 5823,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "correctness": "部分正確",
+      "assessment": "正確描述 Load 的 MERGE 及 Transform 的 CASE 日期計算，但沒有 Extract 將 POLICY_START_DT 投影成 START_DATE 的證據。",
+      "flags": [
+        "未追溯至 SRC_POLICY"
+      ]
+    },
+    {
+      "questionNumber": 11,
+      "question": "SRC_POLICY_ARCHIVE.POLICY_START_DT 是 EFFECTIVE_DATE 的來源嗎？",
+      "submittedColumn": "SRC_POLICY_ARCHIVE.POLICY_START_DT",
+      "missing_target": false,
+      "answer": "根據提供的證據 [S1]，SRC_POLICY_ARCHIVE.POLICY_START_DT 是 EFFECTIVE_DATE 的來源。在 PL/SQL 程式碼中，POLICY_START_DT 被用來轉換並存入 STG_POLICY 的 START_DATE 欄位，而 START_DATE 可能與 EFFECTIVE_DATE 有關聯。然而，證據中並未明確指出 START_DATE 或其他欄位直接對應到 EFFECTIVE_DATE，因此無法確定 POLICY_START_DT 是否直接作為 EFFECTIVE_DATE 的來源。需要進一步確認 EFFECTIVE_DATE 的定義或來源欄位。",
+      "sources": [
+        {
+          "citationId": "S1",
+          "chunkId": "chunk-0a8bd2e26625855d0bc5b543",
+          "packageName": "PKG_POLICY_EXTRACT",
+          "procedureName": "LOAD_SOURCE_TO_STAGE",
+          "fileName": "PKG_POLICY_EXTRACT.pkb",
+          "startLine": 8,
+          "endLine": 33,
+          "matchedLines": [
+            {
+              "lineNumber": 21,
+              "code": "               TO_DATE(TO_CHAR(p.POLICY_START_DT, 'YYYY-MM-DD'), 'YYYY-MM-DD'),"
+            }
+          ]
+        }
+      ],
+      "retrievedSourceFiles": [
+        "PKG_POLICY_EXTRACT.pkb"
+      ],
+      "expectedSourceFiles": [
+        "database/01_create_tables.sql",
+        "database/02_insert_mock_data.sql",
+        "packages/PKG_POLICY_EXTRACT.pkb",
+        "packages/PKG_POLICY_TRANSFORM.pkb",
+        "packages/PKG_POLICY_LOAD.pkb"
+      ],
+      "retrievedExpectedSourceFiles": [
+        "PKG_POLICY_EXTRACT.pkb"
+      ],
+      "missingExpectedSourceFiles": [
+        "01_create_tables.sql",
+        "02_insert_mock_data.sql",
+        "PKG_POLICY_TRANSFORM.pkb",
+        "PKG_POLICY_LOAD.pkb"
+      ],
+      "expectedAnswer": "不是。它是刻意設置的相似名稱干擾欄位；三個 Package 均未讀取 SRC_POLICY_ARCHIVE。",
+      "elapsedMs": 2670,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "correctness": "錯誤",
+      "assessment": "回答把 SRC_POLICY_ARCHIVE.POLICY_START_DT 判為來源，但唯一檢索證據是 PKG_POLICY_EXTRACT，實際程式讀取的是 SRC_POLICY；回覆與證據矛盾且錯把相似名稱當成同一來源。",
+      "flags": [
+        "錯誤歸因 SRC_POLICY_ARCHIVE",
+        "相似欄位誤判",
+        "缺少排除干擾欄位的證據"
+      ]
+    },
+    {
+      "questionNumber": 12,
+      "question": "三個 Package 的 Procedure 呼叫順序為何？",
+      "submittedColumn": null,
+      "missing_target": true,
+      "answer": "目前檢索證據不足。需要提供具体的 Package 原始檔中的程式碼或呼叫順序資訊，才能確認三個 Package 的 Procedure 呼叫順序。請提供相關的程式碼片段或更詳細的資訊。",
+      "sources": [],
+      "retrievedSourceFiles": [],
+      "expectedSourceFiles": [
+        "packages/PKG_POLICY_EXTRACT.pkb",
+        "packages/PKG_POLICY_TRANSFORM.pkb",
+        "packages/PKG_POLICY_LOAD.pkb"
+      ],
+      "retrievedExpectedSourceFiles": [],
+      "missingExpectedSourceFiles": [
+        "PKG_POLICY_EXTRACT.pkb",
+        "PKG_POLICY_TRANSFORM.pkb",
+        "PKG_POLICY_LOAD.pkb"
+      ],
+      "expectedAnswer": "PKG_POLICY_LOAD.RUN_FULL_LOAD 呼叫 PKG_POLICY_TRANSFORM.RUN_TRANSFORM；後者呼叫 PKG_POLICY_EXTRACT.RUN_EXTRACT，再依序執行各自的資料處理 Procedure。",
+      "elapsedMs": 1017,
+      "error": null,
+      "limitations": [
+        "檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。",
+        "未提供 column，未檢索 PL/SQL 程式碼；回答不可視為有程式碼證據的血緣結論。",
+        "請以回應中的 sources 作為檔案與行號依據；模型回答是根據檢索證據生成，仍需人工核對。"
+      ],
+      "correctness": "需要人工確認",
+      "assessment": "問題未指定欄位，依規則沒有提供 column；API 未檢索 Procedure 呼叫程式碼，不能據此判錯。",
+      "flags": [
+        "missing_target"
+      ]
+    }
+  ]
+}

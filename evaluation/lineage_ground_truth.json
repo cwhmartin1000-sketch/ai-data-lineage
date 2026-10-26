@@ -1,0 +1,106 @@
+{
+  "project": "AI Data Transformation Assistant - fictional policy migration demo",
+  "target_table": "TGT_POLICY",
+  "target_column": "EFFECTIVE_DATE",
+  "source_tables": ["SRC_POLICY"],
+  "source_columns": [
+    "SRC_POLICY.POLICY_START_DT",
+    "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+    "SRC_POLICY.POLICY_STATUS"
+  ],
+  "transformation_rules": [
+    {
+      "condition": "POLICY_STATUS = 'ACTIVE'",
+      "rule": "Use STG_POLICY.START_DATE, extracted from SRC_POLICY.POLICY_START_DT; normalize through TO_DATE(TO_CHAR(date, 'YYYY-MM-DD'), 'YYYY-MM-DD')."
+    },
+    {
+      "condition": "POLICY_STATUS = 'PENDING'",
+      "rule": "Use STG_POLICY.REQUESTED_START_DATE (from SRC_POLICY.REQUESTED_EFFECTIVE_DT) when non-null; otherwise use STG_POLICY.START_DATE + 30 days (from SRC_POLICY.POLICY_START_DT). Normalize through TO_DATE/TO_CHAR."
+    },
+    {
+      "condition": "Any other status (currently LAPSED)",
+      "rule": "Use STG_POLICY.START_DATE, extracted from SRC_POLICY.POLICY_START_DT; normalize through TO_DATE/TO_CHAR."
+    },
+    {
+      "note": "POLICY_STATUS is a conditional dependency. EFFECTIVE_DATE is not always equal to POLICY_START_DT. SRC_POLICY_ARCHIVE.POLICY_START_DT is a deliberate decoy and has no lineage to the target."
+    }
+  ],
+  "involved_packages": [
+    "PKG_POLICY_EXTRACT",
+    "PKG_POLICY_TRANSFORM",
+    "PKG_POLICY_LOAD"
+  ],
+  "involved_procedures": [
+    "PKG_POLICY_EXTRACT.RUN_EXTRACT",
+    "PKG_POLICY_EXTRACT.LOAD_SOURCE_TO_STAGE",
+    "PKG_POLICY_TRANSFORM.RUN_TRANSFORM",
+    "PKG_POLICY_TRANSFORM.BUILD_TRANSFORMED_ROWS",
+    "PKG_POLICY_LOAD.RUN_FULL_LOAD",
+    "PKG_POLICY_LOAD.LOAD_TARGET"
+  ],
+  "lineage_steps": [
+    {
+      "from": "SRC_POLICY.POLICY_START_DT",
+      "to": "STG_POLICY.START_DATE",
+      "operation": "PKG_POLICY_EXTRACT.LOAD_SOURCE_TO_STAGE INSERT ... SELECT; date normalization",
+      "condition": "All extracted policies"
+    },
+    {
+      "from": "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+      "to": "STG_POLICY.REQUESTED_START_DATE",
+      "operation": "PKG_POLICY_EXTRACT.LOAD_SOURCE_TO_STAGE INSERT ... SELECT; conditional date normalization",
+      "condition": "Copied when non-null; otherwise NULL"
+    },
+    {
+      "from": "STG_POLICY.START_DATE, STG_POLICY.REQUESTED_START_DATE, STG_POLICY.POLICY_STATUS",
+      "to": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+      "operation": "PKG_POLICY_TRANSFORM.BUILD_TRANSFORMED_ROWS CASE WHEN with NVL fallback and date normalization",
+      "condition": "ACTIVE and other statuses use START_DATE; PENDING uses NVL(REQUESTED_START_DATE, START_DATE + 30)"
+    },
+    {
+      "from": "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+      "to": "TGT_POLICY.EFFECTIVE_DATE",
+      "operation": "PKG_POLICY_LOAD.LOAD_TARGET MERGE",
+      "condition": "Matched rows update; unmatched rows insert"
+    }
+  ],
+  "evidence_files": [
+    "packages/PKG_POLICY_EXTRACT.pkb",
+    "packages/PKG_POLICY_TRANSFORM.pkb",
+    "packages/PKG_POLICY_LOAD.pkb",
+    "database/01_create_tables.sql",
+    "database/02_insert_mock_data.sql"
+  ],
+  "additional_target_columns": [
+    {
+      "target_column": "POLICY_NO",
+      "source_columns": ["SRC_POLICY.POLICY_ID"],
+      "intermediate_columns": ["STG_POLICY.POLICY_NO", "STG_POLICY_TRANSFORMED.POLICY_NO"],
+      "rule": "Direct value projection; renamed from POLICY_ID to POLICY_NO."
+    },
+    {
+      "target_column": "POLICY_STATUS",
+      "source_columns": ["SRC_POLICY.POLICY_STATUS"],
+      "intermediate_columns": ["STG_POLICY.POLICY_STATUS", "STG_POLICY_TRANSFORMED.POLICY_STATUS"],
+      "rule": "Direct value projection. Also controls the EFFECTIVE_DATE CASE expression."
+    },
+    {
+      "target_column": "CUSTOMER_NAME",
+      "source_columns": ["SRC_CUSTOMER.CUSTOMER_NAME"],
+      "intermediate_columns": ["STG_POLICY.CUSTOMER_NAME", "STG_POLICY_TRANSFORMED.CUSTOMER_NAME"],
+      "rule": "Obtained through SRC_POLICY.CUSTOMER_ID = SRC_CUSTOMER.CUSTOMER_ID JOIN; NVL substitutes UNKNOWN CUSTOMER."
+    },
+    {
+      "target_column": "PRODUCT_TYPE",
+      "source_columns": ["SRC_PRODUCT.PRODUCT_TYPE"],
+      "intermediate_columns": ["STG_POLICY.PRODUCT_TYPE", "STG_POLICY_TRANSFORMED.PRODUCT_TYPE"],
+      "rule": "Obtained through SRC_POLICY.PRODUCT_CODE = SRC_PRODUCT.PRODUCT_CODE JOIN; NVL substitutes UNKNOWN PRODUCT."
+    }
+  ],
+  "decoy_fields": [
+    {
+      "column": "SRC_POLICY_ARCHIVE.POLICY_START_DT",
+      "relationship": "Similar name only; no package reads this table and it is not an EFFECTIVE_DATE source."
+    }
+  ]
+}

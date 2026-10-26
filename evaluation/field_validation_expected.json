@@ -1,0 +1,410 @@
+{
+  "evaluation": "field_validation_fixture_ground_truth",
+  "version": 1,
+  "fixtureDirectory": "evaluation/field_validation_fixture",
+  "authoredBeforeSystemEvaluation": true,
+  "derivedFrom": "人工逐行檢視本目錄內的虛構 PCK 原始碼；未使用 Assistant、Retrieval、Evaluation expected_answer 或 lineage_ground_truth",
+  "targetFields": [
+    {
+      "difficulty": "simple",
+      "targetTable": "TGT_AGREEMENT",
+      "targetColumn": "CONTRACT_KEY",
+      "targetIdentifier": "TGT_AGREEMENT.CONTRACT_KEY",
+      "usage": "儲存被發佈的契約識別碼；LOAD_SOURCE_ROWS 從 RAW_AGREEMENT 複製至 STG_AGREEMENT，BUILD_RESULT_ROWS 再複製至 STG_AGREEMENT_READY，MERGE_TARGET_ROWS 寫入目標表。",
+      "originalSources": [
+        "RAW_AGREEMENT.CONTRACT_KEY"
+      ],
+      "intermediaryFields": [
+        "STG_AGREEMENT.CONTRACT_KEY",
+        "STG_AGREEMENT_READY.CONTRACT_KEY"
+      ],
+      "dataFlow": [
+        "RAW_AGREEMENT.CONTRACT_KEY -> STG_AGREEMENT.CONTRACT_KEY",
+        "STG_AGREEMENT.CONTRACT_KEY -> STG_AGREEMENT_READY.CONTRACT_KEY",
+        "STG_AGREEMENT_READY.CONTRACT_KEY -> TGT_AGREEMENT.CONTRACT_KEY"
+      ],
+      "validationRules": [
+        "來源擷取 SQL 未對 CONTRACT_KEY 使用轉換函數；原值依投影順序映射。",
+        "CHECK_STAGED_ROWS 會檢查 CONTRACT_KEY IS NULL 並設定 CHECK_RESULT=REJECT_KEY；此檢核不改寫 CONTRACT_KEY 本身。",
+        "資料是否被排除於最終載入：本 fixture 中未看到依 CONTRACT_KEY 檢核結果過濾或排除契約的 SQL，不能推斷有排除。"
+      ],
+      "evidence": [
+        {
+          "fileName": "PKG_CONTRACT_INTAKE.pck",
+          "procedureName": "LOAD_SOURCE_ROWS",
+          "procedureStartLine": 12,
+          "procedureEndLine": 34,
+          "supports": "來源欄位到第一個中介欄位的直接映射",
+          "codeLines": [
+            {
+              "lineNumber": 14,
+              "code": "        INSERT INTO STG_AGREEMENT ("
+            },
+            {
+              "lineNumber": 15,
+              "code": "            CONTRACT_KEY,"
+            },
+            {
+              "lineNumber": 24,
+              "code": "        SELECT a.CONTRACT_KEY,"
+            },
+            {
+              "lineNumber": 32,
+              "code": "          FROM RAW_AGREEMENT a"
+            }
+          ]
+        },
+        {
+          "fileName": "PKG_CONTRACT_RULES.pck",
+          "procedureName": "BUILD_RESULT_ROWS",
+          "procedureStartLine": 14,
+          "procedureEndLine": 38,
+          "supports": "中介欄位至轉換結果欄位映射",
+          "codeLines": [
+            {
+              "lineNumber": 16,
+              "code": "        INSERT INTO STG_AGREEMENT_READY ("
+            },
+            {
+              "lineNumber": 17,
+              "code": "            CONTRACT_KEY,"
+            },
+            {
+              "lineNumber": 21,
+              "code": "        SELECT s.CONTRACT_KEY,"
+            },
+            {
+              "lineNumber": 37,
+              "code": "          FROM STG_AGREEMENT s;"
+            }
+          ]
+        },
+        {
+          "fileName": "PKG_CONTRACT_PUBLISH.pck",
+          "procedureName": "MERGE_TARGET_ROWS",
+          "procedureStartLine": 13,
+          "procedureEndLine": 33,
+          "supports": "結果中介欄位到目標欄位的 MERGE 映射",
+          "codeLines": [
+            {
+              "lineNumber": 15,
+              "code": "        MERGE INTO TGT_AGREEMENT t"
+            },
+            {
+              "lineNumber": 17,
+              "code": "            SELECT CONTRACT_KEY, PARTY_LABEL, CALCULATED_BEGIN_ON"
+            },
+            {
+              "lineNumber": 23,
+              "code": "            t.COVERAGE_BEGIN_DATE = s.CALCULATED_BEGIN_ON"
+            },
+            {
+              "lineNumber": 25,
+              "code": "            CONTRACT_KEY,"
+            },
+            {
+              "lineNumber": 29,
+              "code": "            s.CONTRACT_KEY,"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "difficulty": "medium",
+      "targetTable": "TGT_AGREEMENT",
+      "targetColumn": "PARTY_LABEL",
+      "targetIdentifier": "TGT_AGREEMENT.PARTY_LABEL",
+      "usage": "儲存用於目標契約資料的 Party 顯示名稱；Extract 從 RAW_PARTY 透過 PARTY_KEY JOIN 取得 PARTY_NAME，缺值以 UNKNOWN PARTY 取代；轉換時再以 UNNAMED PARTY 作第二層 NVL 預設。",
+      "originalSources": [
+        "RAW_PARTY.PARTY_NAME",
+        "RAW_AGREEMENT.PARTY_KEY",
+        "RAW_PARTY.PARTY_KEY"
+      ],
+      "intermediaryFields": [
+        "STG_AGREEMENT.PARTY_LABEL",
+        "STG_AGREEMENT_READY.PARTY_LABEL"
+      ],
+      "dataFlow": [
+        "RAW_PARTY.PARTY_NAME -> STG_AGREEMENT.PARTY_LABEL via NVL(..., UNKNOWN PARTY) and LEFT JOIN",
+        "STG_AGREEMENT.PARTY_LABEL -> STG_AGREEMENT_READY.PARTY_LABEL via NVL(..., UNNAMED PARTY)",
+        "STG_AGREEMENT_READY.PARTY_LABEL -> TGT_AGREEMENT.PARTY_LABEL"
+      ],
+      "validationRules": [
+        "Extract 以 LEFT JOIN RAW_PARTY p ON p.PARTY_KEY = a.PARTY_KEY。",
+        "若 PARTY_NAME 為 NULL，Extract 的 NVL 預設為 UNKNOWN PARTY。",
+        "轉換階段若中介 PARTY_LABEL 為 NULL，NVL 預設為 UNNAMED PARTY。",
+        "沒有對 Party 名稱做 IF/CASE 驗證或排除。"
+      ],
+      "evidence": [
+        {
+          "fileName": "PKG_CONTRACT_INTAKE.pck",
+          "procedureName": "LOAD_SOURCE_ROWS",
+          "procedureStartLine": 12,
+          "procedureEndLine": 34,
+          "supports": "LEFT JOIN 以及第一層 NVL",
+          "codeLines": [
+            {
+              "lineNumber": 17,
+              "code": "            PARTY_LABEL,"
+            },
+            {
+              "lineNumber": 26,
+              "code": "               NVL(p.PARTY_NAME, 'UNKNOWN PARTY'),"
+            },
+            {
+              "lineNumber": 32,
+              "code": "          FROM RAW_AGREEMENT a"
+            },
+            {
+              "lineNumber": 33,
+              "code": "          LEFT JOIN RAW_PARTY p ON p.PARTY_KEY = a.PARTY_KEY;"
+            }
+          ]
+        },
+        {
+          "fileName": "PKG_CONTRACT_RULES.pck",
+          "procedureName": "BUILD_RESULT_ROWS",
+          "procedureStartLine": 14,
+          "procedureEndLine": 38,
+          "supports": "第二層 NVL 與結果欄位投影",
+          "codeLines": [
+            {
+              "lineNumber": 18,
+              "code": "            PARTY_LABEL,"
+            },
+            {
+              "lineNumber": 22,
+              "code": "               NVL(s.PARTY_LABEL, 'UNNAMED PARTY'),"
+            }
+          ]
+        },
+        {
+          "fileName": "PKG_CONTRACT_PUBLISH.pck",
+          "procedureName": "MERGE_TARGET_ROWS",
+          "procedureStartLine": 13,
+          "procedureEndLine": 33,
+          "supports": "中介 Party label 寫入目標欄位",
+          "codeLines": [
+            {
+              "lineNumber": 22,
+              "code": "            t.PARTY_LABEL = s.PARTY_LABEL,"
+            },
+            {
+              "lineNumber": 26,
+              "code": "            PARTY_LABEL,"
+            },
+            {
+              "lineNumber": 30,
+              "code": "            s.PARTY_LABEL,"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "difficulty": "complex",
+      "targetTable": "TGT_AGREEMENT",
+      "targetColumn": "COVERAGE_BEGIN_DATE",
+      "targetIdentifier": "TGT_AGREEMENT.COVERAGE_BEGIN_DATE",
+      "usage": "目標契約資料的 Coverage Begin 日期欄位。RAW_AGREEMENT 的來源日期、申請日期及狀態先進入 STG_AGREEMENT；CHECK_STAGED_ROWS 依 IF/ELSIF 條件更新 CHECK_RESULT；BUILD_RESULT_ROWS 再按狀態與檢核結果以 CASE 產生 CALCULATED_BEGIN_ON；MERGE_TARGET_ROWS 寫入目標。",
+      "originalSources": [
+        "RAW_AGREEMENT.COVERAGE_BEGIN_ON",
+        "RAW_AGREEMENT.REQUESTED_BEGIN_ON",
+        "RAW_AGREEMENT.CONTRACT_STATE"
+      ],
+      "conditionalSources": [
+        "STG_AGREEMENT.CHECK_RESULT，由 PKG_CONTRACT_SCREEN.CHECK_STAGED_ROWS 依 CONTRACT_KEY、SOURCE_BEGIN_ON、CONTRACT_STATE 及日期是否晚於 TRUNC(SYSDATE) 的 IF/ELSIF/ELSE 檢核設定"
+      ],
+      "intermediaryFields": [
+        "STG_AGREEMENT.SOURCE_BEGIN_ON",
+        "STG_AGREEMENT.REQUESTED_BEGIN_ON",
+        "STG_AGREEMENT.CONTRACT_STATE",
+        "STG_AGREEMENT.CHECK_RESULT",
+        "STG_AGREEMENT_READY.CALCULATED_BEGIN_ON"
+      ],
+      "dataFlow": [
+        "RAW_AGREEMENT.COVERAGE_BEGIN_ON -> STG_AGREEMENT.SOURCE_BEGIN_ON",
+        "RAW_AGREEMENT.REQUESTED_BEGIN_ON -> STG_AGREEMENT.REQUESTED_BEGIN_ON",
+        "RAW_AGREEMENT.CONTRACT_STATE -> STG_AGREEMENT.CONTRACT_STATE",
+        "STG_AGREEMENT.CHECK_RESULT / CONTRACT_STATE / SOURCE_BEGIN_ON / REQUESTED_BEGIN_ON -> STG_AGREEMENT_READY.CALCULATED_BEGIN_ON via CASE and date conversion",
+        "STG_AGREEMENT_READY.CALCULATED_BEGIN_ON -> TGT_AGREEMENT.COVERAGE_BEGIN_DATE via MERGE"
+      ],
+      "validationRules": [
+        "IF CONTRACT_KEY IS NULL：CHECK_RESULT 保留既有非 NULL 值，否則設為 REJECT_KEY。",
+        "ELSIF SOURCE_BEGIN_ON IS NULL：CHECK_RESULT 預設為 REJECT_BEGIN_DATE。",
+        "ELSIF CONTRACT_STATE NOT IN (ACTIVE, PENDING)：CHECK_RESULT 預設為 REVIEW_STATE。",
+        "ELSIF SOURCE_BEGIN_ON > TRUNC(SYSDATE)：CHECK_RESULT 預設為 FUTURE_BEGIN。",
+        "ELSE：CHECK_RESULT 預設為 READY。",
+        "Transform CASE：ACTIVE 且 READY 使用 SOURCE_BEGIN_ON；PENDING 且 READY 使用 NVL(REQUESTED_BEGIN_ON, SOURCE_BEGIN_ON + 15)；CHECK_RESULT 非 READY 時結果為 NULL；其餘分支使用 SOURCE_BEGIN_ON。所有日期分支經 TO_CHAR/TO_DATE 格式化。",
+        "PCK 中未見以 CHECK_RESULT 明確 WHERE 排除資料；CASE 對非 READY 設為 NULL，不能稱為刪除/排除資料。"
+      ],
+      "evidence": [
+        {
+          "fileName": "PKG_CONTRACT_INTAKE.pck",
+          "procedureName": "LOAD_SOURCE_ROWS",
+          "procedureStartLine": 12,
+          "procedureEndLine": 34,
+          "supports": "來源日期與狀態映射至中介資料",
+          "codeLines": [
+            {
+              "lineNumber": 18,
+              "code": "            CONTRACT_STATE,"
+            },
+            {
+              "lineNumber": 19,
+              "code": "            SOURCE_BEGIN_ON,"
+            },
+            {
+              "lineNumber": 20,
+              "code": "            REQUESTED_BEGIN_ON,"
+            },
+            {
+              "lineNumber": 27,
+              "code": "               a.CONTRACT_STATE,"
+            },
+            {
+              "lineNumber": 28,
+              "code": "               a.COVERAGE_BEGIN_ON,"
+            },
+            {
+              "lineNumber": 29,
+              "code": "               a.REQUESTED_BEGIN_ON,"
+            }
+          ]
+        },
+        {
+          "fileName": "PKG_CONTRACT_SCREEN.pck",
+          "procedureName": "CHECK_STAGED_ROWS",
+          "procedureStartLine": 12,
+          "procedureEndLine": 40,
+          "supports": "狀態、NULL、未來日期檢核與 CHECK_RESULT 預設值",
+          "codeLines": [
+            {
+              "lineNumber": 18,
+              "code": "            IF r.CONTRACT_KEY IS NULL THEN"
+            },
+            {
+              "lineNumber": 20,
+              "code": "                   SET CHECK_RESULT = NVL(s.CHECK_RESULT, 'REJECT_KEY')"
+            },
+            {
+              "lineNumber": 22,
+              "code": "            ELSIF r.SOURCE_BEGIN_ON IS NULL THEN"
+            },
+            {
+              "lineNumber": 24,
+              "code": "                   SET CHECK_RESULT = NVL(s.CHECK_RESULT, 'REJECT_BEGIN_DATE')"
+            },
+            {
+              "lineNumber": 26,
+              "code": "            ELSIF r.CONTRACT_STATE NOT IN ('ACTIVE', 'PENDING') THEN"
+            },
+            {
+              "lineNumber": 28,
+              "code": "                   SET CHECK_RESULT = NVL(s.CHECK_RESULT, 'REVIEW_STATE')"
+            },
+            {
+              "lineNumber": 30,
+              "code": "            ELSIF r.SOURCE_BEGIN_ON > TRUNC(SYSDATE) THEN"
+            },
+            {
+              "lineNumber": 32,
+              "code": "                   SET CHECK_RESULT = NVL(s.CHECK_RESULT, 'FUTURE_BEGIN')"
+            },
+            {
+              "lineNumber": 34,
+              "code": "            ELSE"
+            },
+            {
+              "lineNumber": 36,
+              "code": "                   SET CHECK_RESULT = NVL(s.CHECK_RESULT, 'READY')"
+            },
+            {
+              "lineNumber": 38,
+              "code": "            END IF;"
+            }
+          ]
+        },
+        {
+          "fileName": "PKG_CONTRACT_RULES.pck",
+          "procedureName": "BUILD_RESULT_ROWS",
+          "procedureStartLine": 14,
+          "procedureEndLine": 38,
+          "supports": "CASE 分支、狀態/檢核依賴、NVL 回退與日期轉換",
+          "codeLines": [
+            {
+              "lineNumber": 23,
+              "code": "               CASE"
+            },
+            {
+              "lineNumber": 24,
+              "code": "                   WHEN s.CONTRACT_STATE = 'ACTIVE'"
+            },
+            {
+              "lineNumber": 25,
+              "code": "                        AND s.CHECK_RESULT = 'READY'"
+            },
+            {
+              "lineNumber": 26,
+              "code": "                       THEN TO_DATE(TO_CHAR(s.SOURCE_BEGIN_ON, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            },
+            {
+              "lineNumber": 27,
+              "code": "                   WHEN s.CONTRACT_STATE = 'PENDING'"
+            },
+            {
+              "lineNumber": 28,
+              "code": "                        AND s.CHECK_RESULT = 'READY'"
+            },
+            {
+              "lineNumber": 30,
+              "code": "                           TO_CHAR(NVL(s.REQUESTED_BEGIN_ON, s.SOURCE_BEGIN_ON + 15), 'YYYY-MM-DD'),"
+            },
+            {
+              "lineNumber": 33,
+              "code": "                   WHEN s.CHECK_RESULT <> 'READY'"
+            },
+            {
+              "lineNumber": 34,
+              "code": "                       THEN CAST(NULL AS DATE)"
+            },
+            {
+              "lineNumber": 35,
+              "code": "                   ELSE TO_DATE(TO_CHAR(s.SOURCE_BEGIN_ON, 'YYYY-MM-DD'), 'YYYY-MM-DD')"
+            },
+            {
+              "lineNumber": 37,
+              "code": "          FROM STG_AGREEMENT s;"
+            }
+          ]
+        },
+        {
+          "fileName": "PKG_CONTRACT_PUBLISH.pck",
+          "procedureName": "MERGE_TARGET_ROWS",
+          "procedureStartLine": 13,
+          "procedureEndLine": 33,
+          "supports": "計算欄位映射至最終目標欄位",
+          "codeLines": [
+            {
+              "lineNumber": 15,
+              "code": "        MERGE INTO TGT_AGREEMENT t"
+            },
+            {
+              "lineNumber": 23,
+              "code": "            t.COVERAGE_BEGIN_DATE = s.CALCULATED_BEGIN_ON"
+            },
+            {
+              "lineNumber": 27,
+              "code": "            COVERAGE_BEGIN_DATE"
+            },
+            {
+              "lineNumber": 31,
+              "code": "            s.CALCULATED_BEGIN_ON"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

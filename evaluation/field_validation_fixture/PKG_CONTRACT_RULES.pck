@@ -1,0 +1,40 @@
+CREATE OR REPLACE PACKAGE PKG_CONTRACT_RULES AS
+    PROCEDURE RUN_TRANSFORM;
+    PROCEDURE BUILD_RESULT_ROWS;
+END PKG_CONTRACT_RULES;
+/
+CREATE OR REPLACE PACKAGE BODY PKG_CONTRACT_RULES AS
+    PROCEDURE RUN_TRANSFORM IS
+    BEGIN
+        PKG_CONTRACT_INTAKE.RUN_EXTRACT;
+        PKG_CONTRACT_SCREEN.RUN_SCREENING;
+        BUILD_RESULT_ROWS;
+    END RUN_TRANSFORM;
+
+    PROCEDURE BUILD_RESULT_ROWS IS
+    BEGIN
+        INSERT INTO STG_AGREEMENT_READY (
+            CONTRACT_KEY,
+            PARTY_LABEL,
+            CALCULATED_BEGIN_ON
+        )
+        SELECT s.CONTRACT_KEY,
+               NVL(s.PARTY_LABEL, 'UNNAMED PARTY'),
+               CASE
+                   WHEN s.CONTRACT_STATE = 'ACTIVE'
+                        AND s.CHECK_RESULT = 'READY'
+                       THEN TO_DATE(TO_CHAR(s.SOURCE_BEGIN_ON, 'YYYY-MM-DD'), 'YYYY-MM-DD')
+                   WHEN s.CONTRACT_STATE = 'PENDING'
+                        AND s.CHECK_RESULT = 'READY'
+                       THEN TO_DATE(
+                           TO_CHAR(NVL(s.REQUESTED_BEGIN_ON, s.SOURCE_BEGIN_ON + 15), 'YYYY-MM-DD'),
+                           'YYYY-MM-DD'
+                       )
+                   WHEN s.CHECK_RESULT <> 'READY'
+                       THEN CAST(NULL AS DATE)
+                   ELSE TO_DATE(TO_CHAR(s.SOURCE_BEGIN_ON, 'YYYY-MM-DD'), 'YYYY-MM-DD')
+               END
+          FROM STG_AGREEMENT s;
+    END BUILD_RESULT_ROWS;
+END PKG_CONTRACT_RULES;
+/

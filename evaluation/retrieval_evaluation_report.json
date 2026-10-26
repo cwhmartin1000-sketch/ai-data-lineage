@@ -1,0 +1,1177 @@
+{
+  "evaluation" : "offline_chunk_retrieval_from_question_text",
+  "llm_api_calls" : 0,
+  "ground_truth_used_for_retrieval_query" : false,
+  "minimum_package_file_recall" : 0.9,
+  "questions" : [ {
+    "question" : "TGT_POLICY.EFFECTIVE_DATE 的原始來源欄位是什麼？",
+    "retrieval_query" : "TGT_POLICY.EFFECTIVE_DATE",
+    "missing_target" : false,
+    "retrieved_evidence" : [ {
+      "fileName" : "PKG_POLICY_LOAD.pkb",
+      "packageName" : "PKG_POLICY_LOAD",
+      "procedureName" : "LOAD_TARGET",
+      "startLine" : 10,
+      "endLine" : 40,
+      "chunkId" : "chunk-a76fb0bd1d6c976d124a0007",
+      "dependencyEdges" : [ {
+        "target" : "TGT_POLICY.EFFECTIVE_DATE",
+        "source" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "packageName" : "PKG_POLICY_LOAD",
+        "procedureName" : "LOAD_TARGET",
+        "fileName" : "PKG_POLICY_LOAD.pkb",
+        "startLine" : 10,
+        "endLine" : 40,
+        "evidenceLine" : 23
+      }, {
+        "target" : "TGT_POLICY.POLICY_STATUS",
+        "source" : "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_LOAD",
+        "procedureName" : "LOAD_TARGET",
+        "fileName" : "PKG_POLICY_LOAD.pkb",
+        "startLine" : 10,
+        "endLine" : 40,
+        "evidenceLine" : 24
+      } ]
+    }, {
+      "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+      "packageName" : "PKG_POLICY_TRANSFORM",
+      "procedureName" : "BUILD_TRANSFORMED_ROWS",
+      "startLine" : 10,
+      "endLine" : 36,
+      "chunkId" : "chunk-7a45ebeefdc59d3fe74e18d8",
+      "dependencyEdges" : [ {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 23
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 24
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 25
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.REQUESTED_START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 27
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 27
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 30
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+        "source" : "STG_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 23
+      } ]
+    }, {
+      "fileName" : "PKG_POLICY_EXTRACT.pkb",
+      "packageName" : "PKG_POLICY_EXTRACT",
+      "procedureName" : "LOAD_SOURCE_TO_STAGE",
+      "startLine" : 8,
+      "endLine" : 33,
+      "chunkId" : "chunk-0a8bd2e26625855d0bc5b543",
+      "dependencyEdges" : [ {
+        "target" : "STG_POLICY.POLICY_STATUS",
+        "source" : "SRC_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 27
+      }, {
+        "target" : "STG_POLICY.START_DATE",
+        "source" : "SRC_POLICY.POLICY_START_DT",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 21
+      }, {
+        "target" : "STG_POLICY.REQUESTED_START_DATE",
+        "source" : "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 23
+      }, {
+        "target" : "STG_POLICY.REQUESTED_START_DATE",
+        "source" : "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 24
+      } ]
+    } ],
+    "status" : "scored",
+    "expected_answer" : "主要日期來源是 SRC_POLICY.POLICY_START_DT；PENDING 保單還會優先使用 SRC_POLICY.REQUESTED_EFFECTIVE_DT，且分支條件依賴 SRC_POLICY.POLICY_STATUS。",
+    "package_file_recall" : 1.0,
+    "expected_package_files" : [ "PKG_POLICY_EXTRACT.pkb", "PKG_POLICY_TRANSFORM.pkb", "PKG_POLICY_LOAD.pkb" ],
+    "found_expected_package_files" : [ "PKG_POLICY_EXTRACT.pkb", "PKG_POLICY_TRANSFORM.pkb", "PKG_POLICY_LOAD.pkb" ],
+    "missing_expected_package_files" : [ ],
+    "unexpected_retrieved_package_files" : [ ]
+  }, {
+    "question" : "EFFECTIVE_DATE 經過哪些 Package？",
+    "retrieval_query" : "EFFECTIVE_DATE",
+    "missing_target" : false,
+    "retrieved_evidence" : [ {
+      "fileName" : "PKG_POLICY_LOAD.pkb",
+      "packageName" : "PKG_POLICY_LOAD",
+      "procedureName" : "LOAD_TARGET",
+      "startLine" : 10,
+      "endLine" : 40,
+      "chunkId" : "chunk-a76fb0bd1d6c976d124a0007",
+      "dependencyEdges" : [ {
+        "target" : "TGT_POLICY.EFFECTIVE_DATE",
+        "source" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "packageName" : "PKG_POLICY_LOAD",
+        "procedureName" : "LOAD_TARGET",
+        "fileName" : "PKG_POLICY_LOAD.pkb",
+        "startLine" : 10,
+        "endLine" : 40,
+        "evidenceLine" : 23
+      }, {
+        "target" : "TGT_POLICY.POLICY_STATUS",
+        "source" : "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_LOAD",
+        "procedureName" : "LOAD_TARGET",
+        "fileName" : "PKG_POLICY_LOAD.pkb",
+        "startLine" : 10,
+        "endLine" : 40,
+        "evidenceLine" : 24
+      } ]
+    }, {
+      "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+      "packageName" : "PKG_POLICY_TRANSFORM",
+      "procedureName" : "BUILD_TRANSFORMED_ROWS",
+      "startLine" : 10,
+      "endLine" : 36,
+      "chunkId" : "chunk-7a45ebeefdc59d3fe74e18d8",
+      "dependencyEdges" : [ {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 23
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 24
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 25
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.REQUESTED_START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 27
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 27
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 30
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+        "source" : "STG_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 23
+      } ]
+    }, {
+      "fileName" : "PKG_POLICY_EXTRACT.pkb",
+      "packageName" : "PKG_POLICY_EXTRACT",
+      "procedureName" : "LOAD_SOURCE_TO_STAGE",
+      "startLine" : 8,
+      "endLine" : 33,
+      "chunkId" : "chunk-0a8bd2e26625855d0bc5b543",
+      "dependencyEdges" : [ {
+        "target" : "STG_POLICY.POLICY_STATUS",
+        "source" : "SRC_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 27
+      }, {
+        "target" : "STG_POLICY.START_DATE",
+        "source" : "SRC_POLICY.POLICY_START_DT",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 21
+      }, {
+        "target" : "STG_POLICY.REQUESTED_START_DATE",
+        "source" : "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 23
+      }, {
+        "target" : "STG_POLICY.REQUESTED_START_DATE",
+        "source" : "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 24
+      } ]
+    } ],
+    "status" : "scored",
+    "expected_answer" : "依序經過 PKG_POLICY_EXTRACT、PKG_POLICY_TRANSFORM、PKG_POLICY_LOAD。",
+    "package_file_recall" : 1.0,
+    "expected_package_files" : [ "PKG_POLICY_EXTRACT.pkb", "PKG_POLICY_TRANSFORM.pkb", "PKG_POLICY_LOAD.pkb" ],
+    "found_expected_package_files" : [ "PKG_POLICY_EXTRACT.pkb", "PKG_POLICY_TRANSFORM.pkb", "PKG_POLICY_LOAD.pkb" ],
+    "missing_expected_package_files" : [ ],
+    "unexpected_retrieved_package_files" : [ ]
+  }, {
+    "question" : "EFFECTIVE_DATE 是否經過 CASE WHEN？",
+    "retrieval_query" : "EFFECTIVE_DATE",
+    "missing_target" : false,
+    "retrieved_evidence" : [ {
+      "fileName" : "PKG_POLICY_LOAD.pkb",
+      "packageName" : "PKG_POLICY_LOAD",
+      "procedureName" : "LOAD_TARGET",
+      "startLine" : 10,
+      "endLine" : 40,
+      "chunkId" : "chunk-a76fb0bd1d6c976d124a0007",
+      "dependencyEdges" : [ {
+        "target" : "TGT_POLICY.EFFECTIVE_DATE",
+        "source" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "packageName" : "PKG_POLICY_LOAD",
+        "procedureName" : "LOAD_TARGET",
+        "fileName" : "PKG_POLICY_LOAD.pkb",
+        "startLine" : 10,
+        "endLine" : 40,
+        "evidenceLine" : 23
+      }, {
+        "target" : "TGT_POLICY.POLICY_STATUS",
+        "source" : "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_LOAD",
+        "procedureName" : "LOAD_TARGET",
+        "fileName" : "PKG_POLICY_LOAD.pkb",
+        "startLine" : 10,
+        "endLine" : 40,
+        "evidenceLine" : 24
+      } ]
+    }, {
+      "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+      "packageName" : "PKG_POLICY_TRANSFORM",
+      "procedureName" : "BUILD_TRANSFORMED_ROWS",
+      "startLine" : 10,
+      "endLine" : 36,
+      "chunkId" : "chunk-7a45ebeefdc59d3fe74e18d8",
+      "dependencyEdges" : [ {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 23
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 24
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 25
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.REQUESTED_START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 27
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 27
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 30
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+        "source" : "STG_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 23
+      } ]
+    }, {
+      "fileName" : "PKG_POLICY_EXTRACT.pkb",
+      "packageName" : "PKG_POLICY_EXTRACT",
+      "procedureName" : "LOAD_SOURCE_TO_STAGE",
+      "startLine" : 8,
+      "endLine" : 33,
+      "chunkId" : "chunk-0a8bd2e26625855d0bc5b543",
+      "dependencyEdges" : [ {
+        "target" : "STG_POLICY.POLICY_STATUS",
+        "source" : "SRC_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 27
+      }, {
+        "target" : "STG_POLICY.START_DATE",
+        "source" : "SRC_POLICY.POLICY_START_DT",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 21
+      }, {
+        "target" : "STG_POLICY.REQUESTED_START_DATE",
+        "source" : "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 23
+      }, {
+        "target" : "STG_POLICY.REQUESTED_START_DATE",
+        "source" : "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 24
+      } ]
+    } ],
+    "status" : "scored",
+    "expected_answer" : "是。PKG_POLICY_TRANSFORM.BUILD_TRANSFORMED_ROWS 依 POLICY_STATUS 分成 ACTIVE、PENDING 和其他狀態。",
+    "package_file_recall" : 1.0,
+    "expected_package_files" : [ "PKG_POLICY_TRANSFORM.pkb" ],
+    "found_expected_package_files" : [ "PKG_POLICY_TRANSFORM.pkb" ],
+    "missing_expected_package_files" : [ ],
+    "unexpected_retrieved_package_files" : [ "PKG_POLICY_LOAD.pkb", "PKG_POLICY_EXTRACT.pkb" ]
+  }, {
+    "question" : "POLICY_STATUS 如何影響 EFFECTIVE_DATE？",
+    "retrieval_query" : "EFFECTIVE_DATE",
+    "missing_target" : false,
+    "retrieved_evidence" : [ {
+      "fileName" : "PKG_POLICY_LOAD.pkb",
+      "packageName" : "PKG_POLICY_LOAD",
+      "procedureName" : "LOAD_TARGET",
+      "startLine" : 10,
+      "endLine" : 40,
+      "chunkId" : "chunk-a76fb0bd1d6c976d124a0007",
+      "dependencyEdges" : [ {
+        "target" : "TGT_POLICY.EFFECTIVE_DATE",
+        "source" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "packageName" : "PKG_POLICY_LOAD",
+        "procedureName" : "LOAD_TARGET",
+        "fileName" : "PKG_POLICY_LOAD.pkb",
+        "startLine" : 10,
+        "endLine" : 40,
+        "evidenceLine" : 23
+      }, {
+        "target" : "TGT_POLICY.POLICY_STATUS",
+        "source" : "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_LOAD",
+        "procedureName" : "LOAD_TARGET",
+        "fileName" : "PKG_POLICY_LOAD.pkb",
+        "startLine" : 10,
+        "endLine" : 40,
+        "evidenceLine" : 24
+      } ]
+    }, {
+      "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+      "packageName" : "PKG_POLICY_TRANSFORM",
+      "procedureName" : "BUILD_TRANSFORMED_ROWS",
+      "startLine" : 10,
+      "endLine" : 36,
+      "chunkId" : "chunk-7a45ebeefdc59d3fe74e18d8",
+      "dependencyEdges" : [ {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 23
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 24
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 25
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.REQUESTED_START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 27
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 27
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 30
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+        "source" : "STG_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 23
+      } ]
+    }, {
+      "fileName" : "PKG_POLICY_EXTRACT.pkb",
+      "packageName" : "PKG_POLICY_EXTRACT",
+      "procedureName" : "LOAD_SOURCE_TO_STAGE",
+      "startLine" : 8,
+      "endLine" : 33,
+      "chunkId" : "chunk-0a8bd2e26625855d0bc5b543",
+      "dependencyEdges" : [ {
+        "target" : "STG_POLICY.POLICY_STATUS",
+        "source" : "SRC_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 27
+      }, {
+        "target" : "STG_POLICY.START_DATE",
+        "source" : "SRC_POLICY.POLICY_START_DT",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 21
+      }, {
+        "target" : "STG_POLICY.REQUESTED_START_DATE",
+        "source" : "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 23
+      }, {
+        "target" : "STG_POLICY.REQUESTED_START_DATE",
+        "source" : "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 24
+      } ]
+    } ],
+    "status" : "scored",
+    "expected_answer" : "ACTIVE 使用 START_DATE；PENDING 使用 NVL(REQUESTED_START_DATE, START_DATE + 30)；其他狀態使用 START_DATE。",
+    "package_file_recall" : 1.0,
+    "expected_package_files" : [ "PKG_POLICY_TRANSFORM.pkb" ],
+    "found_expected_package_files" : [ "PKG_POLICY_TRANSFORM.pkb" ],
+    "missing_expected_package_files" : [ ],
+    "unexpected_retrieved_package_files" : [ "PKG_POLICY_LOAD.pkb", "PKG_POLICY_EXTRACT.pkb" ]
+  }, {
+    "question" : "CUSTOMER_NAME 來自哪張來源表？",
+    "retrieval_query" : "CUSTOMER_NAME",
+    "missing_target" : false,
+    "retrieved_evidence" : [ {
+      "fileName" : "PKG_POLICY_EXTRACT.pkb",
+      "packageName" : "PKG_POLICY_EXTRACT",
+      "procedureName" : "LOAD_SOURCE_TO_STAGE",
+      "startLine" : 8,
+      "endLine" : 33,
+      "chunkId" : "chunk-0a8bd2e26625855d0bc5b543",
+      "dependencyEdges" : [ {
+        "target" : "STG_POLICY.CUSTOMER_NAME",
+        "source" : "SRC_CUSTOMER.CUSTOMER_NAME",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 28
+      } ]
+    }, {
+      "fileName" : "PKG_POLICY_LOAD.pkb",
+      "packageName" : "PKG_POLICY_LOAD",
+      "procedureName" : "LOAD_TARGET",
+      "startLine" : 10,
+      "endLine" : 40,
+      "chunkId" : "chunk-a76fb0bd1d6c976d124a0007",
+      "dependencyEdges" : [ {
+        "target" : "TGT_POLICY.CUSTOMER_NAME",
+        "source" : "STG_POLICY_TRANSFORMED.CUSTOMER_NAME",
+        "packageName" : "PKG_POLICY_LOAD",
+        "procedureName" : "LOAD_TARGET",
+        "fileName" : "PKG_POLICY_LOAD.pkb",
+        "startLine" : 10,
+        "endLine" : 40,
+        "evidenceLine" : 25
+      } ]
+    }, {
+      "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+      "packageName" : "PKG_POLICY_TRANSFORM",
+      "procedureName" : "BUILD_TRANSFORMED_ROWS",
+      "startLine" : 10,
+      "endLine" : 36,
+      "chunkId" : "chunk-7a45ebeefdc59d3fe74e18d8",
+      "dependencyEdges" : [ {
+        "target" : "STG_POLICY_TRANSFORMED.CUSTOMER_NAME",
+        "source" : "STG_POLICY.CUSTOMER_NAME",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 33
+      } ]
+    } ],
+    "status" : "scored",
+    "expected_answer" : "來自 SRC_CUSTOMER.CUSTOMER_NAME，透過 SRC_POLICY.CUSTOMER_ID = SRC_CUSTOMER.CUSTOMER_ID JOIN 取得，空值以 NVL 補為 UNKNOWN CUSTOMER。",
+    "package_file_recall" : 1.0,
+    "expected_package_files" : [ "PKG_POLICY_EXTRACT.pkb" ],
+    "found_expected_package_files" : [ "PKG_POLICY_EXTRACT.pkb" ],
+    "missing_expected_package_files" : [ ],
+    "unexpected_retrieved_package_files" : [ "PKG_POLICY_LOAD.pkb", "PKG_POLICY_TRANSFORM.pkb" ]
+  }, {
+    "question" : "哪個 Procedure 負責將資料寫入 TGT_POLICY？",
+    "status" : "missing_target",
+    "missing_target" : true,
+    "evaluation_note" : "No unambiguous column identifier appears in the question text; no retrieval was attempted.",
+    "retrieved_evidence" : [ ]
+  }, {
+    "question" : "POLICY_START_DT 與 EFFECTIVE_DATE 是否一定相同？",
+    "retrieval_query" : "EFFECTIVE_DATE",
+    "missing_target" : false,
+    "retrieved_evidence" : [ {
+      "fileName" : "PKG_POLICY_LOAD.pkb",
+      "packageName" : "PKG_POLICY_LOAD",
+      "procedureName" : "LOAD_TARGET",
+      "startLine" : 10,
+      "endLine" : 40,
+      "chunkId" : "chunk-a76fb0bd1d6c976d124a0007",
+      "dependencyEdges" : [ {
+        "target" : "TGT_POLICY.EFFECTIVE_DATE",
+        "source" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "packageName" : "PKG_POLICY_LOAD",
+        "procedureName" : "LOAD_TARGET",
+        "fileName" : "PKG_POLICY_LOAD.pkb",
+        "startLine" : 10,
+        "endLine" : 40,
+        "evidenceLine" : 23
+      }, {
+        "target" : "TGT_POLICY.POLICY_STATUS",
+        "source" : "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_LOAD",
+        "procedureName" : "LOAD_TARGET",
+        "fileName" : "PKG_POLICY_LOAD.pkb",
+        "startLine" : 10,
+        "endLine" : 40,
+        "evidenceLine" : 24
+      } ]
+    }, {
+      "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+      "packageName" : "PKG_POLICY_TRANSFORM",
+      "procedureName" : "BUILD_TRANSFORMED_ROWS",
+      "startLine" : 10,
+      "endLine" : 36,
+      "chunkId" : "chunk-7a45ebeefdc59d3fe74e18d8",
+      "dependencyEdges" : [ {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 23
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 24
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 25
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.REQUESTED_START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 27
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 27
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 30
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+        "source" : "STG_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 23
+      } ]
+    }, {
+      "fileName" : "PKG_POLICY_EXTRACT.pkb",
+      "packageName" : "PKG_POLICY_EXTRACT",
+      "procedureName" : "LOAD_SOURCE_TO_STAGE",
+      "startLine" : 8,
+      "endLine" : 33,
+      "chunkId" : "chunk-0a8bd2e26625855d0bc5b543",
+      "dependencyEdges" : [ {
+        "target" : "STG_POLICY.POLICY_STATUS",
+        "source" : "SRC_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 27
+      }, {
+        "target" : "STG_POLICY.START_DATE",
+        "source" : "SRC_POLICY.POLICY_START_DT",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 21
+      }, {
+        "target" : "STG_POLICY.REQUESTED_START_DATE",
+        "source" : "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 23
+      }, {
+        "target" : "STG_POLICY.REQUESTED_START_DATE",
+        "source" : "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 24
+      } ]
+    } ],
+    "status" : "scored",
+    "expected_answer" : "不一定。PENDING 且 REQUESTED_START_DATE 有值時會採用該日期；若沒有，則採 START_DATE + 30 天。ACTIVE 與其他狀態才使用 START_DATE。",
+    "package_file_recall" : 1.0,
+    "expected_package_files" : [ "PKG_POLICY_TRANSFORM.pkb" ],
+    "found_expected_package_files" : [ "PKG_POLICY_TRANSFORM.pkb" ],
+    "missing_expected_package_files" : [ ],
+    "unexpected_retrieved_package_files" : [ "PKG_POLICY_LOAD.pkb", "PKG_POLICY_EXTRACT.pkb" ]
+  }, {
+    "question" : "哪些欄位需要透過 JOIN 取得？",
+    "status" : "missing_target",
+    "missing_target" : true,
+    "evaluation_note" : "No unambiguous column identifier appears in the question text; no retrieval was attempted.",
+    "retrieved_evidence" : [ ]
+  }, {
+    "question" : "哪些 Package 使用了 POLICY_START_DT？",
+    "retrieval_query" : "POLICY_START_DT",
+    "missing_target" : false,
+    "retrieved_evidence" : [ {
+      "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+      "packageName" : "PKG_POLICY_TRANSFORM",
+      "procedureName" : "BUILD_TRANSFORMED_ROWS",
+      "startLine" : 10,
+      "endLine" : 36,
+      "chunkId" : "chunk-7a45ebeefdc59d3fe74e18d8",
+      "dependencyEdges" : [ {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 24
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 27
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 30
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 23
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 25
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.REQUESTED_START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 27
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+        "source" : "STG_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 23
+      } ]
+    }, {
+      "fileName" : "PKG_POLICY_EXTRACT.pkb",
+      "packageName" : "PKG_POLICY_EXTRACT",
+      "procedureName" : "LOAD_SOURCE_TO_STAGE",
+      "startLine" : 8,
+      "endLine" : 33,
+      "chunkId" : "chunk-0a8bd2e26625855d0bc5b543",
+      "dependencyEdges" : [ {
+        "target" : "STG_POLICY.START_DATE",
+        "source" : "SRC_POLICY.POLICY_START_DT",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 21
+      }, {
+        "target" : "STG_POLICY.POLICY_STATUS",
+        "source" : "SRC_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 27
+      }, {
+        "target" : "STG_POLICY.REQUESTED_START_DATE",
+        "source" : "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 23
+      }, {
+        "target" : "STG_POLICY.REQUESTED_START_DATE",
+        "source" : "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 24
+      } ]
+    }, {
+      "fileName" : "PKG_POLICY_LOAD.pkb",
+      "packageName" : "PKG_POLICY_LOAD",
+      "procedureName" : "LOAD_TARGET",
+      "startLine" : 10,
+      "endLine" : 40,
+      "chunkId" : "chunk-a76fb0bd1d6c976d124a0007",
+      "dependencyEdges" : [ {
+        "target" : "TGT_POLICY.EFFECTIVE_DATE",
+        "source" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "packageName" : "PKG_POLICY_LOAD",
+        "procedureName" : "LOAD_TARGET",
+        "fileName" : "PKG_POLICY_LOAD.pkb",
+        "startLine" : 10,
+        "endLine" : 40,
+        "evidenceLine" : 23
+      }, {
+        "target" : "TGT_POLICY.POLICY_STATUS",
+        "source" : "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_LOAD",
+        "procedureName" : "LOAD_TARGET",
+        "fileName" : "PKG_POLICY_LOAD.pkb",
+        "startLine" : 10,
+        "endLine" : 40,
+        "evidenceLine" : 24
+      } ]
+    } ],
+    "status" : "scored",
+    "expected_answer" : "只有 PKG_POLICY_EXTRACT 直接讀取 SRC_POLICY.POLICY_START_DT；後續 Package 使用中介欄 START_DATE。",
+    "package_file_recall" : 1.0,
+    "expected_package_files" : [ "PKG_POLICY_EXTRACT.pkb", "PKG_POLICY_TRANSFORM.pkb", "PKG_POLICY_LOAD.pkb" ],
+    "found_expected_package_files" : [ "PKG_POLICY_EXTRACT.pkb", "PKG_POLICY_TRANSFORM.pkb", "PKG_POLICY_LOAD.pkb" ],
+    "missing_expected_package_files" : [ ],
+    "unexpected_retrieved_package_files" : [ ]
+  }, {
+    "question" : "哪些程式碼證明 EFFECTIVE_DATE 的資料來源？",
+    "retrieval_query" : "EFFECTIVE_DATE",
+    "missing_target" : false,
+    "retrieved_evidence" : [ {
+      "fileName" : "PKG_POLICY_LOAD.pkb",
+      "packageName" : "PKG_POLICY_LOAD",
+      "procedureName" : "LOAD_TARGET",
+      "startLine" : 10,
+      "endLine" : 40,
+      "chunkId" : "chunk-a76fb0bd1d6c976d124a0007",
+      "dependencyEdges" : [ {
+        "target" : "TGT_POLICY.EFFECTIVE_DATE",
+        "source" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "packageName" : "PKG_POLICY_LOAD",
+        "procedureName" : "LOAD_TARGET",
+        "fileName" : "PKG_POLICY_LOAD.pkb",
+        "startLine" : 10,
+        "endLine" : 40,
+        "evidenceLine" : 23
+      }, {
+        "target" : "TGT_POLICY.POLICY_STATUS",
+        "source" : "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_LOAD",
+        "procedureName" : "LOAD_TARGET",
+        "fileName" : "PKG_POLICY_LOAD.pkb",
+        "startLine" : 10,
+        "endLine" : 40,
+        "evidenceLine" : 24
+      } ]
+    }, {
+      "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+      "packageName" : "PKG_POLICY_TRANSFORM",
+      "procedureName" : "BUILD_TRANSFORMED_ROWS",
+      "startLine" : 10,
+      "endLine" : 36,
+      "chunkId" : "chunk-7a45ebeefdc59d3fe74e18d8",
+      "dependencyEdges" : [ {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 23
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 24
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 25
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.REQUESTED_START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 27
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 27
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.CALCULATED_EFFECTIVE_DATE",
+        "source" : "STG_POLICY.START_DATE",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 30
+      }, {
+        "target" : "STG_POLICY_TRANSFORMED.POLICY_STATUS",
+        "source" : "STG_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_TRANSFORM",
+        "procedureName" : "BUILD_TRANSFORMED_ROWS",
+        "fileName" : "PKG_POLICY_TRANSFORM.pkb",
+        "startLine" : 10,
+        "endLine" : 36,
+        "evidenceLine" : 23
+      } ]
+    }, {
+      "fileName" : "PKG_POLICY_EXTRACT.pkb",
+      "packageName" : "PKG_POLICY_EXTRACT",
+      "procedureName" : "LOAD_SOURCE_TO_STAGE",
+      "startLine" : 8,
+      "endLine" : 33,
+      "chunkId" : "chunk-0a8bd2e26625855d0bc5b543",
+      "dependencyEdges" : [ {
+        "target" : "STG_POLICY.POLICY_STATUS",
+        "source" : "SRC_POLICY.POLICY_STATUS",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 27
+      }, {
+        "target" : "STG_POLICY.START_DATE",
+        "source" : "SRC_POLICY.POLICY_START_DT",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 21
+      }, {
+        "target" : "STG_POLICY.REQUESTED_START_DATE",
+        "source" : "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 23
+      }, {
+        "target" : "STG_POLICY.REQUESTED_START_DATE",
+        "source" : "SRC_POLICY.REQUESTED_EFFECTIVE_DT",
+        "packageName" : "PKG_POLICY_EXTRACT",
+        "procedureName" : "LOAD_SOURCE_TO_STAGE",
+        "fileName" : "PKG_POLICY_EXTRACT.pkb",
+        "startLine" : 8,
+        "endLine" : 33,
+        "evidenceLine" : 24
+      } ]
+    } ],
+    "status" : "scored",
+    "expected_answer" : "Extract Body 將 POLICY_START_DT 投影至 START_DATE；Transform Body 以 CASE/NVL 產生 CALCULATED_EFFECTIVE_DATE；Load Body 在 MERGE 將該欄寫入 EFFECTIVE_DATE。",
+    "package_file_recall" : 1.0,
+    "expected_package_files" : [ "PKG_POLICY_EXTRACT.pkb", "PKG_POLICY_TRANSFORM.pkb", "PKG_POLICY_LOAD.pkb" ],
+    "found_expected_package_files" : [ "PKG_POLICY_EXTRACT.pkb", "PKG_POLICY_TRANSFORM.pkb", "PKG_POLICY_LOAD.pkb" ],
+    "missing_expected_package_files" : [ ],
+    "unexpected_retrieved_package_files" : [ ]
+  }, {
+    "question" : "SRC_POLICY_ARCHIVE.POLICY_START_DT 是 EFFECTIVE_DATE 的來源嗎？",
+    "retrieval_query" : "SRC_POLICY_ARCHIVE.POLICY_START_DT",
+    "missing_target" : false,
+    "retrieved_evidence" : [ ],
+    "status" : "correct_no_dependency_match",
+    "false_positive" : false,
+    "expected_answer" : "不是。它是刻意設置的相似名稱干擾欄位；三個 Package 均未讀取 SRC_POLICY_ARCHIVE。",
+    "evaluation_note" : "Qualified archive lookup is checked as a negative decoy; it is excluded from positive package recall."
+  }, {
+    "question" : "三個 Package 的 Procedure 呼叫順序為何？",
+    "status" : "missing_target",
+    "missing_target" : true,
+    "evaluation_note" : "No unambiguous column identifier appears in the question text; no retrieval was attempted.",
+    "retrieved_evidence" : [ ]
+  } ],
+  "question_count" : 12,
+  "scored_positive_questions" : 8,
+  "expected_package_file_count" : 16,
+  "found_expected_package_file_count" : 16,
+  "micro_package_file_recall" : 1.0,
+  "macro_question_recall" : 1.0,
+  "archive_decoy_checks" : 1,
+  "archive_decoy_false_positives" : 0,
+  "passed" : true
+}

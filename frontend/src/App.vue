@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
-import { analyzeField, askAssistant, getChunk, getProvider } from './api'
+import { askAssistant, getChunk, getProvider } from './api'
 import MarkdownAnswer from './components/MarkdownAnswer.vue'
 import ProviderStatus from './components/ProviderStatus.vue'
 import SidebarPanel from './components/SidebarPanel.vue'
@@ -18,7 +18,6 @@ const activeId = ref<string | null>(conversations.value[0]?.id ?? null)
 const activeConversation = computed(() => conversations.value.find((item) => item.id === activeId.value) ?? null)
 const messages = computed(() => activeConversation.value?.messages ?? [])
 
-const analysisMode = ref('field')
 const question = ref('')
 const column = ref('')
 const busy = ref(false)
@@ -93,8 +92,7 @@ function pickSuggestion(item: (typeof suggestions)[number]) {
 
 async function submitQuestion() {
   const text = question.value.trim()
-  if (!text || busy.value || (analysisMode.value === 'field' && !column.value.trim())) return
-  const fieldMode = analysisMode.value === 'field'
+  if (!text || busy.value) return
 
   const active = activeConversation.value ?? createConversation(text)
   const userMessage: ConversationMessage = {
@@ -112,7 +110,7 @@ async function submitQuestion() {
   await scrollMessagesToBottom()
 
   try {
-    const response = await (fieldMode ? analyzeField : askAssistant)(text, userMessage.column ?? '')
+    const response = await askAssistant(text, userMessage.column ?? '')
     assistantMessage.content = response.answer
     assistantMessage.sources = response.sources
     assistantMessage.limitations = response.limitations
@@ -243,7 +241,7 @@ watch(activeId, () => void scrollMessagesToBottom())
                     </div>
                     <div v-if="message.pending" class="thinking-card" aria-live="polite">
                       <span class="thinking-dots"><i></i><i></i><i></i></span>
-                      <span>正在檢索程式碼並分析；欄位規格可能需要分批處理…</span>
+                      <span>正在檢索程式碼並整理來源…</span>
                     </div>
                     <div v-else class="answer-card" :class="{ 'answer-card--error': message.error }">
                       <MarkdownAnswer :content="message.content" />
@@ -287,17 +285,11 @@ watch(activeId, () => void scrollMessagesToBottom())
           <div class="composer-area">
             <form class="composer" @submit.prevent="submitQuestion">
               <div class="composer-context">
-                <label class="analysis-mode-label">分析方式
-                  <select v-model="analysisMode" :disabled="busy" aria-label="分析方式">
-                    <option value="field">欄位規格：情境、條件與檢核 SQL</option>
-                    <option value="question">一般問答</option>
-                  </select>
-                </label>
                 <label class="column-field">
                   <span class="column-field-icon">⌗</span>
-                  <span class="sr-only">欄位名稱</span>
-                  <input v-model="column" type="text" :placeholder="analysisMode === 'field' ? '欄位名稱（必填，例如 PODT.POLICY_NO）' : '欄位名稱（選填）'" :required="analysisMode === 'field'" autocomplete="off" />
-                  <span class="optional-label">{{ analysisMode === 'field' ? '必填' : '選填' }}</span>
+                  <span class="sr-only">可選欄位名稱</span>
+                  <input v-model="column" type="text" placeholder="欄位名稱（選填，例如 EFFECTIVE_DATE）" autocomplete="off" />
+                  <span class="optional-label">選填</span>
                 </label>
                 <span class="context-hint"><span class="context-dot"></span> 以原始 PL/SQL 作為回答證據</span>
               </div>
@@ -311,8 +303,8 @@ watch(activeId, () => void scrollMessagesToBottom())
                   @keydown="onComposerKeydown"
                 ></textarea>
                 <div class="composer-bottom">
-                  <div class="composer-tools"><span class="composer-secure">◈ <span>依後端設定的來源分析</span></span><span class="tool-separator"></span><span class="keyboard-hint">⌘ Enter 傳送</span></div>
-                  <button class="send-button" type="submit" :disabled="!question.trim() || busy || (analysisMode === 'field' && !column.trim())" aria-label="傳送問題">
+                  <div class="composer-tools"><span class="composer-secure">◈ <span>虛構測試資料</span></span><span class="tool-separator"></span><span class="keyboard-hint">⌘ Enter 傳送</span></div>
+                  <button class="send-button" type="submit" :disabled="!question.trim() || busy" aria-label="傳送問題">
                     <span v-if="busy" class="send-spinner"></span><span v-else>↑</span>
                   </button>
                 </div>

@@ -7,10 +7,6 @@ lineage:
     maximum-files: ${LINEAGE_PACKAGES_MAX_FILES:20000}
     maximum-file-bytes: ${LINEAGE_PACKAGES_MAX_FILE_BYTES:16777216}
     maximum-total-bytes: ${LINEAGE_PACKAGES_MAX_TOTAL_BYTES:268435456}
-  field-analysis:
-    max-input-chars: ${LINEAGE_FIELD_ANALYSIS_MAX_INPUT_CHARS:24000}
-    max-batches: ${LINEAGE_FIELD_ANALYSIS_MAX_BATCHES:8}
-    max-summary-chars: ${LINEAGE_FIELD_ANALYSIS_MAX_SUMMARY_CHARS:16000}
   dependency:
     maximum-depth: ${LINEAGE_DEPENDENCY_MAXIMUM_DEPTH:8}
   assistant:

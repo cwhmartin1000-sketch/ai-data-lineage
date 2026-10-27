@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice(assignableTypes = {LineageAssistantController.class, FieldAnalysisController.class})
+@RestControllerAdvice(assignableTypes = LineageAssistantController.class)
 public class AssistantExceptionHandler {
 
     @ExceptionHandler(AssistantModelUnavailableException.class)

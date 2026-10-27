@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { analyzeField, askAssistant, getChunk, getProvider } from './api'
+import { askAssistant, getChunk, getProvider } from './api'
 
 afterEach(() => vi.unstubAllGlobals())
 
@@ -38,15 +38,4 @@ describe('lineage API client', () => {
 
     await expect(getProvider()).rejects.toThrow('請設定 GEMINI_API_KEY')
   })
-})
-
-it('posts field specification requests separately from general questions', async () => {
-  const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify({
-    answer: '情境總結與條件明細', sources: [], limitations: [],
-  }), { status: 200 }))
-  vi.stubGlobal('fetch', fetchMock)
-  await analyzeField('列出檢核條件', ' PODT.CODE ')
-  expect(fetchMock).toHaveBeenCalledWith('/api/assistant/analyze-field', expect.objectContaining({
-    method: 'POST', body: JSON.stringify({ question: '列出檢核條件', column: 'PODT.CODE' }),
-  }))
 })

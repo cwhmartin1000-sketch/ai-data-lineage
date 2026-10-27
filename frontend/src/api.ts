@@ -53,10 +53,3 @@ export function askAssistant(question: string, column: string): Promise<AskRespo
 export function getChunk(chunkId: string): Promise<PolicyChunk> {
   return request<PolicyChunk>(`/api/chunks/${encodeURIComponent(chunkId)}`)
 }
-
-export function analyzeField(question: string, column: string): Promise<AskResponse> {
-  return request<AskResponse>('/api/assistant/analyze-field', {
-    method: 'POST',
-    body: JSON.stringify({ question, column: column.trim() }),
-  })
-}

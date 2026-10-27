@@ -51,6 +51,17 @@ public class CopilotLineageAssistantModel implements LineageAssistantModel {
     @Override
     public String answer(String question, String column, List<ChunkRetrievalResult> evidence,
                           List<ProcedureCallEdge> procedureCalls) {
+        return complete(AbstractChatClientLineageAssistantModel.SYSTEM_INSTRUCTIONS,
+                AbstractChatClientLineageAssistantModel.formatUserPrompt(question, column, evidence, procedureCalls));
+    }
+
+    @Override
+    public String summarizeFieldAnalysis(String column, String notes) {
+        return complete(AbstractChatClientLineageAssistantModel.SUMMARY_INSTRUCTIONS,
+                "欄位：" + column + "\n待彙整草稿：\n" + notes);
+    }
+
+    private String complete(String systemInstructions, String prompt) {
         long deadline = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(timeoutMillis);
         ensureConnected(deadline);
         String sessionId = "lineage-" + UUID.randomUUID();
@@ -72,10 +83,8 @@ public class CopilotLineageAssistantModel implements LineageAssistantModel {
                             PermissionRequestResult.reject("Tools are disabled for this assistant.")))
                     .setSystemMessage(new SystemMessageConfig()
                             .setMode(SystemMessageMode.REPLACE)
-                            .setContent(AbstractChatClientLineageAssistantModel.SYSTEM_INSTRUCTIONS));
+                            .setContent(systemInstructions));
             session = client.createSession(sessionConfig).get(remainingMillis(deadline), TimeUnit.MILLISECONDS);
-            String prompt = AbstractChatClientLineageAssistantModel.formatUserPrompt(
-                    question, column, evidence, procedureCalls);
             AssistantPromptLogger.logIfEnabled(promptLoggingEnabled, "CopilotLineageAssistantModel", prompt);
             long remainingMillis = remainingMillis(deadline);
             AssistantMessageEvent response = session.sendAndWait(

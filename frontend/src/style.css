@@ -136,3 +136,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   .message-list { padding: 21px 14px 27px; }.message-row { gap: 8px; margin-bottom: 20px; }.avatar { flex-basis: 26px; width: 26px; height: 26px; }.user-message-wrap { max-width: 84%; }.composer-area { padding: 10px 10px 8px; }.context-hint { display: none; }.column-field input { width: calc(100vw - 130px); max-width: 260px; }.composer-disclaimer { font-size: 7px; }
   .evidence-panel { min-height: 420px; flex: 0 0 470px; border-top: 1px solid #e6ebf0; }.evidence-placeholder { min-height: 390px; }.code-viewer { max-height: 340px; }.evidence-footer { flex-basis: 32px; }
 }
+
+/* Field specification workflow keeps the existing evidence inspector. */
+.composer-context { flex-wrap: wrap; }
+.analysis-mode-label { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #67645d; }
+.analysis-mode-label select { max-width: 100%; border: 1px solid #dedbd3; background: #fff; border-radius: 7px; padding: 6px 8px; color: #393b34; }
+.answer-card table { display: block; max-width: 100%; overflow-x: auto; }
+.answer-card th, .answer-card td { min-width: 120px; vertical-align: top; }

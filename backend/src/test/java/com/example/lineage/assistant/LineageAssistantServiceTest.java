@@ -89,4 +89,21 @@ class LineageAssistantServiceTest {
         assertThat(response.limitations()).anyMatch(text -> text.contains("未提供 column"));
         verify(retrieval, org.mockito.Mockito.never()).search(org.mockito.ArgumentMatchers.anyString(), org.mockito.ArgumentMatchers.anyInt());
     }
+    @Test
+    void warnsWhenRetrievedEvidenceContainsReplacementCharacters() {
+        ChunkRetrievalService retrieval = mock(ChunkRetrievalService.class);
+        ChunkRetrievalResult chunk = new ChunkRetrievalResult(
+                "damaged", "PKG_DEMO", "CALCULATE", "damaged.pck", 1, 1, 10.0,
+                List.of(), "SELECT '客\ufffd' AS OUTPUT_DATE FROM DUAL");
+        when(retrieval.search("OUTPUT_DATE", 8)).thenReturn(List.of(chunk));
+        LineageAssistantService service = new LineageAssistantService(retrieval,
+                (question, column, evidence) -> "需核對來源");
+
+        AskResponse response = service.ask(new AskRequest("欄位用途？", "OUTPUT_DATE"));
+
+        assertThat(response.sources()).hasSize(1);
+        assertThat(response.limitations()).anySatisfy(text ->
+                assertThat(text).contains("替代字元", "核對原始檔案"));
+    }
+
 }

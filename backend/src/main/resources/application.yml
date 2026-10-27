@@ -3,7 +3,8 @@ lineage:
   chunking:
     max-lines: ${LINEAGE_CHUNK_MAX_LINES:120}
   packages-scan:
-    maximum-files: ${LINEAGE_PACKAGES_MAX_FILES:10000}
+    replace-invalid-characters: ${LINEAGE_PACKAGES_REPLACE_INVALID_CHARACTERS:true}
+    maximum-files: ${LINEAGE_PACKAGES_MAX_FILES:20000}
     maximum-file-bytes: ${LINEAGE_PACKAGES_MAX_FILE_BYTES:16777216}
     maximum-total-bytes: ${LINEAGE_PACKAGES_MAX_TOTAL_BYTES:268435456}
   dependency:

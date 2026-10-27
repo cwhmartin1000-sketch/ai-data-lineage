@@ -111,7 +111,7 @@ mvn spring-boot:run
 
 啟動成功後，先用 `GET http://localhost:8080/api/chunks` 確認有載入 Chunk，再用 `GET http://localhost:8080/api/retrieval/search?query=TABLE.COLUMN&limit=5` 檢查欄位檢索結果。Provider 設為 `none` 時，Chunk 與 Retrieval API 可測；`POST /api/assistant/ask` 不會呼叫模型，會回報 Provider 未設定。
 
-掃描會遞迴處理 `.pck`、`.pkb`、`.pks`、`.sql`，副檔名不分大小寫。程式只讀取來源，並在啟動日誌輸出 Package 根目錄、檔案／Chunk 數、失敗數與耗時；不會把完整 PCK 寫入一般日誌。單一檔案讀取或解析失敗會列入失敗統計，其他檔案仍會繼續處理。預設上限為 10,000 個檔案、單檔 16 MB、總計 256 MB。若根目錄不存在或不可讀，後端會明確啟動失敗，不會靜默改用模擬資料。Chunking 在啟動時建立記憶體快照；新增或更新 PCK 後，需停止並重新啟動後端才會重新載入。
+掃描會遞迴處理 `.pck`、`.pkb`、`.pks`、`.sql`，副檔名不分大小寫。來源檔可混用 UTF-8（含／不含 BOM）及繁體中文 Windows ANSI（MS950／CP950，Big5 系列）。每檔優先嚴格解碼 UTF-8，無 BOM 且 UTF-8 解碼失敗時再嘗試 MS950；兩者皆失敗會記錄檔案失敗並繼續掃描，不會以替代字元掩蓋錯誤。此處 ANSI 指繁體中文 Windows 字碼頁，並非任意語系編碼；自動判斷也無法辨別同時合法的 UTF-8／MS950 位元組序列，此時優先採用 UTF-8。UTF-8 BOM 會移除，原有換行及行號保持不變。程式只讀取來源，並在啟動日誌輸出 Package 根目錄、檔案／Chunk 數、失敗數與耗時；不會把完整 PCK 寫入一般日誌。單一檔案讀取或解析失敗會列入失敗統計，其他檔案仍會繼續處理。預設上限為 10,000 個檔案、單檔 16 MB、總計 256 MB。若根目錄不存在或不可讀，後端會明確啟動失敗，不會靜默改用模擬資料。Chunking 在啟動時建立記憶體快照；新增或更新 PCK 後，需停止並重新啟動後端才會重新載入。
 
 確認檢索結果後，若要使用問答，才設定 `LINEAGE_ASSISTANT_PROVIDER` 與相應模型設定。公司 PCK 會連同問題及檢索片段送給所選 Provider；未經公司核准前，不要選擇 OpenAI、Gemini 或 GitHub Copilot 等雲端 Provider。使用 Ollama 時也要確認 `OLLAMA_BASE_URL` 指向公司核准的本機或內部端點。公司程式碼驗證期間請保持 `LINEAGE_ASSISTANT_LOG_PROMPT=false`，避免將完整程式碼印入日誌。
 

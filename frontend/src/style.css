@@ -143,3 +143,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .analysis-mode-label select { max-width: 100%; border: 1px solid #dedbd3; background: #fff; border-radius: 7px; padding: 6px 8px; color: #393b34; }
 .answer-card table { display: block; max-width: 100%; overflow-x: auto; }
 .answer-card th, .answer-card td { min-width: 120px; vertical-align: top; }
+
+.conversation-select { display: flex; align-items: center; flex: 1; min-width: 0; height: 100%; padding: 0; color: inherit; border: 0; background: transparent; text-align: left; }
+.conversation-delete { display: grid; flex: 0 0 32px; width: 32px; height: 32px; place-items: center; margin-left: 4px; padding: 0; color: #95a3b6; border: 0; border-radius: 5px; background: transparent; }
+.conversation-delete:hover, .conversation-delete:focus-visible { color: #ffc0b7; background: rgba(229, 99, 85, .14); }

@@ -10,6 +10,7 @@ defineProps<{
 const emit = defineEmits<{
   newConversation: []
   selectConversation: [id: string]
+  deleteConversation: [id: string]
   close: []
 }>()
 
@@ -60,20 +61,34 @@ function navigateTo(sectionId: string) {
       <span class="history-total">{{ conversations.length }}</span>
     </div>
     <div class="conversation-list" v-if="conversations.length">
-      <button
+      <div
         v-for="conversation in conversations"
         :key="conversation.id"
         class="conversation-item"
         :class="{ 'conversation-item--active': conversation.id === activeId }"
-        @click="emit('selectConversation', conversation.id); emit('close')"
       >
-        <span class="conversation-icon">◷</span>
-        <span class="conversation-copy">
-          <span class="conversation-title">{{ conversation.title }}</span>
-          <span class="conversation-date">{{ dateLabel(conversation.updatedAt) }}</span>
-        </span>
-        <span class="conversation-menu">···</span>
-      </button>
+        <button
+          class="conversation-select"
+          :aria-current="conversation.id === activeId ? 'true' : undefined"
+          @click="emit('selectConversation', conversation.id); emit('close')"
+        >
+          <span class="conversation-icon">◷</span>
+          <span class="conversation-copy">
+            <span class="conversation-title">{{ conversation.title }}</span>
+            <span class="conversation-date">{{ dateLabel(conversation.updatedAt) }}</span>
+          </span>
+        </button>
+        <button
+          class="conversation-delete"
+          :aria-label="'刪除對話：' + conversation.title"
+          :title="'刪除對話：' + conversation.title"
+          @click="emit('deleteConversation', conversation.id)"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7" />
+          </svg>
+        </button>
+      </div>
     </div>
     <div class="history-empty" v-else>
       <span class="history-empty-icon">✧</span>

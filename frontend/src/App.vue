@@ -73,6 +73,22 @@ function selectConversation(id: string) {
   sourceError.value = ''
 }
 
+function deleteConversation(id: string) {
+  if (!conversations.value.some((item) => item.id === id)) return
+  conversations.value = conversations.value.filter((item) => item.id !== id)
+  if (activeId.value === id) {
+    const next = conversations.value[0]
+    if (next) {
+      selectConversation(next.id)
+      question.value = ''
+      column.value = ''
+    } else {
+      newConversation()
+    }
+  }
+  saveConversations()
+}
+
 function createConversation(title: string): Conversation {
   const conversation: Conversation = {
     id: crypto.randomUUID(),
@@ -184,6 +200,7 @@ watch(activeId, () => void scrollMessagesToBottom())
       :mobile-open="mobileSidebarOpen"
       @new-conversation="newConversation"
       @select-conversation="selectConversation"
+      @delete-conversation="deleteConversation"
       @close="mobileSidebarOpen = false"
     />
 

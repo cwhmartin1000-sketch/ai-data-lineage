@@ -292,3 +292,43 @@ npm run build
 ```
 
 目前前端以 Vite 開發伺服器提供，尚未設定 Spring Boot 靜態檔案整合或正式部署流程。
+
+## 欄位規格分析：情境、檢核條件與資料檢核 SQL 草稿
+
+前端預設選擇「欄位規格：情境、條件與檢核 SQL」，輸入必填欄位及想聚焦的問題後送出；原本「一般問答」仍使用 `/api/assistant/ask`。欄位規格分析使用獨立 API：
+
+```http
+POST /api/assistant/analyze-field
+Content-Type: application/json
+
+{
+  "column": "TGT_POLICY.EFFECTIVE_DATE",
+  "question": "逐情境整理欄位用途、外層及內層檢核條件、來源值與沿用或改寫方式，附原始碼行號，並整理可確認的資料檢核 SQL 草稿。"
+}
+```
+
+### 分析內容
+
+- 情境總結：何時、如何取得／沿用／計算、由誰寫入何處；保留不同分支，連回明細來源。
+- 規則明細表：欄位、使用方式、原始條件與中文解釋、來源值與轉換、寫入位置、Package／Procedure／行號／原始碼、程式效果與待確認項目。
+- 條件包含外層 IF／ELSIF／ELSE、CASE、WHERE／JOIN、NVL 及相關被呼叫程序；區分觸發條件、資料篩選與欄位合法性檢核。
+- 整筆 record、cursor、參數與讀寫程序也納入候選脈絡。若 record 型別、caller 實參／callee 形參、欄位映射或寫回鏈缺乏證據，必須標示待確認，不能僅憑整筆複製就宣稱沿用或完整血緣。
+- 資料檢核 SQL 只產生有證據支持的唯讀 SELECT 草稿，不自動執行。不能把來源 WHERE 直接當作目標表的全域限制、以少數賦值推論完整允許值，或臆造 JOIN key。
+
+### 證據收集與範圍
+
+此流程不套用一般問答的 Top K=8，而是盤點已載入語料中的欄位識別字命中，以及既有 Dependency Analyzer 可追到的 Chunk。`TABLE.COLUMN` 的字面欄位候選仍可能包含其他表同名欄位或註解；這些是供核對的候選，不是已驗證血緣。接著有界展開兩層直接呼叫關係，最多 256 條邊，加入 caller／callee 完整 Routine 及所在檔案未歸屬區段，以保留條件和 record 宣告。未具名／未解析程序、overload、動態 SQL、其他型別的間接引用仍可能漏查，本版不是完整 Oracle 語意分析器。
+
+同一檔案同一 Routine 的所有 Chunk 一起分批，過長的完整區段會明確列為未分析，不裁掉 IF/ELSE 或 SQL 中間部分。每批獨立呼叫 Provider，完成後再以另一個模型請求整理情境總結；所有逐批明細仍保留。來源和呼叫代號會映射成整份報告一致的 `[S#]`／`[C#]`，不存在的代號會標為無效引用。這只驗證代號存在，不保證模型敘述或行號主張已被形式化驗證。
+
+API 保留 `answer`／`sources`／`limitations`，另提供 `coverage` 與 `batches`。`coverage` 列出掃描／讀取／失敗檔案數、字面命中／候選／已分析／未分析 Chunk 數、成功／失敗批數及彙整是否包含全部批次草稿。未載入語料及未支援語法仍須核對，即使所有候選都分析完，狀態仍為 `DRAFT`。批次 Provider 失敗時保留其他成功明細及來源；Provider 未設定時回 503。沒有證據或所有完整區段都超過預算時不呼叫模型。
+
+### 模型輸入預算
+
+```powershell
+$env:LINEAGE_FIELD_ANALYSIS_MAX_INPUT_CHARS = "24000"
+$env:LINEAGE_FIELD_ANALYSIS_MAX_BATCHES = "8"
+$env:LINEAGE_FIELD_ANALYSIS_MAX_SUMMARY_CHARS = "16000"
+```
+
+以上為預設值。每批預算包含 system instructions、使用者問題、帶行號原碼及呼叫／依賴資訊；是字元限制，不是 tokenizer 精確 token 限制。最多 8 個明細請求加 1 次總結請求，會比一般問答花更多模型時間／用量。中間草稿若超過彙整預算，整批不放入總結並明確列出，原明細仍保留。欄位總結由模型草稿再整理，不能視為人工核實結果；正式使用前需以核准的模型和真實 PCK 做逐項驗收。

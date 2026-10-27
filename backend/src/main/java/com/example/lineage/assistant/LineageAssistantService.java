@@ -84,6 +84,9 @@ public class LineageAssistantService {
         String answer = model.answer(request.question().trim(), column, evidence, procedureCalls);
 
         List<String> limitations = new ArrayList<>();
+        if (evidence.stream().anyMatch(chunk -> chunk.content().indexOf('\ufffd') >= 0)) {
+            limitations.add("檢索證據含有替代字元（�），部分原始文字可能無法正確解碼；請核對原始檔案，尤其是條件字串與識別字。");
+        }
         limitations.add("檢索目前只支援欄位名稱或 TABLE.COLUMN 的識別字比對，不支援自然語言語意檢索。");
         if (column == null) {
             limitations.add("未提供 column，未檢索 PL/SQL 程式碼；回答不可視為有程式碼證據的血緣結論。");

@@ -10,6 +10,8 @@ public record PackageScanStatistics(
         int chunkCount,
         int failedFiles,
         long elapsedMillis,
-        List<String> errorSummary
+        List<String> errorSummary,
+        int replacementDecodedFiles,
+        List<String> warningSummary
 ) {
 }

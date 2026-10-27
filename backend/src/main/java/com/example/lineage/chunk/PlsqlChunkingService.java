@@ -58,18 +58,20 @@ public class PlsqlChunkingService {
     private final int maximumFiles;
     private final long maximumFileBytes;
     private final long maximumTotalBytes;
+    private final boolean replaceInvalidCharacters;
     private volatile ScanSnapshot scanSnapshot;
 
     @Autowired
     public PlsqlChunkingService(
             @Value("${lineage.packages-directory:}") String packagesDirectory,
             @Value("${lineage.chunking.max-lines:120}") int maxProcedureLines,
-            @Value("${lineage.packages-scan.maximum-files:10000}") int maximumFiles,
+            @Value("${lineage.packages-scan.maximum-files:20000}") int maximumFiles,
             @Value("${lineage.packages-scan.maximum-file-bytes:16777216}") long maximumFileBytes,
-            @Value("${lineage.packages-scan.maximum-total-bytes:268435456}") long maximumTotalBytes
+            @Value("${lineage.packages-scan.maximum-total-bytes:268435456}") long maximumTotalBytes,
+            @Value("${lineage.packages-scan.replace-invalid-characters:true}") boolean replaceInvalidCharacters
     ) {
         this(resolvePackagesDirectory(packagesDirectory), maxProcedureLines, maximumFiles, maximumFileBytes,
-                maximumTotalBytes);
+                maximumTotalBytes, replaceInvalidCharacters);
     }
 
     public PlsqlChunkingService(String packagesDirectory, int maxProcedureLines) {
@@ -77,11 +79,16 @@ public class PlsqlChunkingService {
     }
 
     PlsqlChunkingService(Path packagesDirectory, int maxProcedureLines) {
-        this(packagesDirectory, maxProcedureLines, 10000, 16L * 1024 * 1024, 256L * 1024 * 1024);
+        this(packagesDirectory, maxProcedureLines, 20000, 16L * 1024 * 1024, 256L * 1024 * 1024);
     }
 
     PlsqlChunkingService(Path packagesDirectory, int maxProcedureLines, int maximumFiles,
                          long maximumFileBytes, long maximumTotalBytes) {
+        this(packagesDirectory, maxProcedureLines, maximumFiles, maximumFileBytes, maximumTotalBytes, true);
+    }
+
+    PlsqlChunkingService(Path packagesDirectory, int maxProcedureLines, int maximumFiles,
+                         long maximumFileBytes, long maximumTotalBytes, boolean replaceInvalidCharacters) {
         if (maxProcedureLines < 1) {
             throw new IllegalArgumentException("maxProcedureLines must be at least 1");
         }
@@ -93,6 +100,7 @@ public class PlsqlChunkingService {
         this.maximumFiles = maximumFiles;
         this.maximumFileBytes = maximumFileBytes;
         this.maximumTotalBytes = maximumTotalBytes;
+        this.replaceInvalidCharacters = replaceInvalidCharacters;
     }
 
     private static Path resolvePackagesDirectory(String configuredDirectory) {
@@ -112,6 +120,11 @@ public class PlsqlChunkingService {
     public void initialize() {
         loadChunks();
         PackageScanStatistics statistics = statistics();
+        if (statistics.replacementDecodedFiles() > 0) {
+            LOGGER.warn("PL/SQL source decoding used replacement characters: files={}, warnings={}. "
+                            + "Affected text is approximate; verify comments, literals and identifiers against original files.",
+                    statistics.replacementDecodedFiles(), statistics.warningSummary());
+        }
         LOGGER.info("PL/SQL package scan complete: root={}, files={}, read={}, chunks={}, failed={}, elapsedMs={}, errors={}",
                 statistics.rootDirectory(), statistics.scannedFiles(), statistics.readFiles(), statistics.chunkCount(),
                 statistics.failedFiles(), statistics.elapsedMillis(), statistics.errorSummary());
@@ -156,6 +169,8 @@ public class PlsqlChunkingService {
 
         List<Path> sourceFiles = new ArrayList<>();
         List<String> errors = new ArrayList<>();
+        List<String> warnings = new ArrayList<>();
+        int replacementDecodedFiles = 0;
         int[] failureCount = {0};
         int[] scannedFileCount = {0};
         try (Stream<Path> paths = Files.walk(root)) {
@@ -189,7 +204,13 @@ public class PlsqlChunkingService {
                     addError(errors, failureCount, relative + " skipped: configured source size limit reached");
                     continue;
                 }
-                String source = readPackageSource(path);
+                DecodedSource decoded = readPackageSource(path);
+                String source = decoded.content();
+                if (decoded.replaced()) {
+                    replacementDecodedFiles++;
+                    addError(warnings, relative + " decoded with " + decoded.encoding()
+                            + " replacement characters; first invalid byte offset=" + decoded.firstInvalidByteOffset());
+                }
                 readFiles++;
                 totalBytes += fileSize;
                 List<PlsqlChunk> fileChunks = chunkFile(root, path, source);
@@ -203,32 +224,50 @@ public class PlsqlChunkingService {
         }
         long elapsedMillis = (System.nanoTime() - started) / 1_000_000;
         PackageScanStatistics stats = new PackageScanStatistics(root.toString(), scannedFileCount[0], readFiles,
-                chunks.size(), failureCount[0], elapsedMillis, List.copyOf(errors));
+                chunks.size(), failureCount[0], elapsedMillis, List.copyOf(errors), replacementDecodedFiles, List.copyOf(warnings));
         return new ScanSnapshot(List.copyOf(chunks), stats);
     }
 
-    private String readPackageSource(Path path) throws IOException {
+    private DecodedSource readPackageSource(Path path) throws IOException {
         byte[] bytes = Files.readAllBytes(path);
-        boolean utf8Bom = bytes.length >= 3 && (bytes[0] & 0xff) == 0xef
-                && (bytes[1] & 0xff) == 0xbb && (bytes[2] & 0xff) == 0xbf;
-        if (utf8Bom) {
-            // A BOM explicitly identifies UTF-8. Strip it without changing original line numbers.
-            return decodeSource(bytes, 3, StandardCharsets.UTF_8);
+        if (bytes.length >= 3 && (bytes[0] & 0xff) == 0xef
+                && (bytes[1] & 0xff) == 0xbb && (bytes[2] & 0xff) == 0xbf) {
+            return decodeSource(bytes, 3, StandardCharsets.UTF_8, replaceInvalidCharacters);
+        }
+        if (bytes.length >= 2 && (bytes[0] & 0xff) == 0xff && (bytes[1] & 0xff) == 0xfe) {
+            return decodeSource(bytes, 2, StandardCharsets.UTF_16LE, replaceInvalidCharacters);
+        }
+        if (bytes.length >= 2 && (bytes[0] & 0xff) == 0xfe && (bytes[1] & 0xff) == 0xff) {
+            return decodeSource(bytes, 2, StandardCharsets.UTF_16BE, replaceInvalidCharacters);
         }
         try {
-            return decodeSource(bytes, 0, StandardCharsets.UTF_8);
+            return decodeSource(bytes, 0, StandardCharsets.UTF_8, false);
         } catch (CharacterCodingException invalidUtf8) {
-            // Do not silently replace malformed bytes: a failed ANSI decode is reported by the scan.
-            return decodeSource(bytes, 0, ANSI_CHARSET);
+            return decodeSource(bytes, 0, ANSI_CHARSET, replaceInvalidCharacters);
         }
     }
 
-    private String decodeSource(byte[] bytes, int offset, Charset charset) throws CharacterCodingException {
-        return charset.newDecoder()
+    private DecodedSource decodeSource(byte[] bytes, int offset, Charset charset, boolean allowReplacement)
+            throws CharacterCodingException {
+        ByteBuffer input = ByteBuffer.wrap(bytes, offset, bytes.length - offset);
+        var decoder = charset.newDecoder()
                 .onMalformedInput(CodingErrorAction.REPORT)
-                .onUnmappableCharacter(CodingErrorAction.REPORT)
-                .decode(ByteBuffer.wrap(bytes, offset, bytes.length - offset))
-                .toString();
+                .onUnmappableCharacter(CodingErrorAction.REPORT);
+        try {
+            return new DecodedSource(decoder.decode(input).toString(), charset.name(), false, -1);
+        } catch (CharacterCodingException exception) {
+            if (!allowReplacement) throw exception;
+            int firstInvalidByteOffset = input.position();
+            // Recover only in memory. Preserve line endings and make undecodable bytes visible as U+FFFD.
+            String content = decoder.reset()
+                    .onMalformedInput(CodingErrorAction.REPLACE)
+                    .onUnmappableCharacter(CodingErrorAction.REPLACE)
+                    .decode(ByteBuffer.wrap(bytes, offset, bytes.length - offset)).toString();
+            return new DecodedSource(content, charset.name(), true, firstInvalidByteOffset);
+        }
+    }
+
+    private record DecodedSource(String content, String encoding, boolean replaced, int firstInvalidByteOffset) {
     }
 
     private void addError(List<String> errors, int[] failureCount, String message) {

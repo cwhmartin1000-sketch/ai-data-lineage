@@ -8,6 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -31,6 +35,8 @@ public class PlsqlChunkingService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PlsqlChunkingService.class);
     private static final Set<String> SUPPORTED_EXTENSIONS = Set.of(".pck", ".pkb", ".pks", ".sql");
     private static final int ERROR_SUMMARY_LIMIT = 5;
+    // Windows Traditional Chinese "ANSI" code page; independent of the host OS locale.
+    private static final Charset ANSI_CHARSET = Charset.forName("MS950");
 
     private static final String UNKNOWN = "UNKNOWN";
     private static final Pattern PACKAGE_NAME = Pattern.compile(
@@ -183,7 +189,7 @@ public class PlsqlChunkingService {
                     addError(errors, failureCount, relative + " skipped: configured source size limit reached");
                     continue;
                 }
-                String source = Files.readString(path, StandardCharsets.UTF_8);
+                String source = readPackageSource(path);
                 readFiles++;
                 totalBytes += fileSize;
                 List<PlsqlChunk> fileChunks = chunkFile(root, path, source);
@@ -199,6 +205,30 @@ public class PlsqlChunkingService {
         PackageScanStatistics stats = new PackageScanStatistics(root.toString(), scannedFileCount[0], readFiles,
                 chunks.size(), failureCount[0], elapsedMillis, List.copyOf(errors));
         return new ScanSnapshot(List.copyOf(chunks), stats);
+    }
+
+    private String readPackageSource(Path path) throws IOException {
+        byte[] bytes = Files.readAllBytes(path);
+        boolean utf8Bom = bytes.length >= 3 && (bytes[0] & 0xff) == 0xef
+                && (bytes[1] & 0xff) == 0xbb && (bytes[2] & 0xff) == 0xbf;
+        if (utf8Bom) {
+            // A BOM explicitly identifies UTF-8. Strip it without changing original line numbers.
+            return decodeSource(bytes, 3, StandardCharsets.UTF_8);
+        }
+        try {
+            return decodeSource(bytes, 0, StandardCharsets.UTF_8);
+        } catch (CharacterCodingException invalidUtf8) {
+            // Do not silently replace malformed bytes: a failed ANSI decode is reported by the scan.
+            return decodeSource(bytes, 0, ANSI_CHARSET);
+        }
+    }
+
+    private String decodeSource(byte[] bytes, int offset, Charset charset) throws CharacterCodingException {
+        return charset.newDecoder()
+                .onMalformedInput(CodingErrorAction.REPORT)
+                .onUnmappableCharacter(CodingErrorAction.REPORT)
+                .decode(ByteBuffer.wrap(bytes, offset, bytes.length - offset))
+                .toString();
     }
 
     private void addError(List<String> errors, int[] failureCount, String message) {
